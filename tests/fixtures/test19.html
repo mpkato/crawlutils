@@ -1,0 +1,740 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<link rel="canonical" href="http://calorie.slism.jp/107116/" />
+<title>ぶどう - カロリー計算/栄養成分 | カロリーSlism</title>
+<meta name="description" content="ぶどうのカロリーは204g(1房（可食部）)で120キロカロリー,100gで59kcal、銅やカリウムの栄養(成分)が多く,ぶどう(果物)は別名葡萄/ブドウといい,ダイエット食材指数は3,腹持ち1.5,栄養価は3。" />
+<meta name="keywords" content="ぶどう,葡萄,ブドウ,銅,カリウム,カロリー,栄養" />
+<link rel="stylesheet" href="//cdn.slism.jp/sblog/style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="//cdn.slism.jp/sblog/css/top.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="//cdn.slism.jp/sblog/css/featured/tok.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="//cdn.slism.jp/calorie/css/calorieCal.css" type="text/css" media="screen" />
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+
+
+
+
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23161281-1']);
+  _gaq.push(['_setDomainName', 'slism.jp']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+<script type="text/javascript" src="//cdn.slism.jp/sblog/js/mouseover.js"></script>
+<script src="https://apis.google.com/js/platform.js" async defer>
+  {lang: 'ja'}
+</script>
+
+
+<script type="text/javascript" src="/calorie/js/calCalc.js"></script>
+<link rel="stylesheet" href="//cdn.slism.jp/calorie/css/jquery-ui-1.8.14.custom.css" type="text/css" />
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+
+<script type="text/javascript">
+arrListData = new Array();
+totalKcal = 0;
+notEnter = 0;
+
+$(function() {
+
+$('#tabs').tabs();
+
+function sA(idN) {
+	if (idN.show()) {
+		var idnP = idN.offset().top;	
+		if ($(window).scrollTop() < idnP && ($(window).scrollTop() + $(window).height()) > idnP) {
+			return true;
+		} else {
+			return false;
+		}
+	} else {
+		return false;
+	}
+}
+
+$('#fatTab').click(function() {
+		if (sA($('#fat_acid_saturationGraph')) && !$('#fat_acid_saturationGraph').hasClass('egA')) { $('#fat_acid_saturationGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+		if (sA($('#fat_acid_polyunsaturatedGraph')) && !$('#fat_acid_polyunsaturatedGraph').hasClass('egA')) { $('#fat_acid_polyunsaturatedGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+		if (sA($('#total_amountGraph')) && !$('#total_amountGraph').hasClass('egA')) { $('#total_amountGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+		if (sA($('#n6_polyunsaturatedGraph')) && !$('#n6_polyunsaturatedGraph').hasClass('egA')) { $('#n6_polyunsaturatedGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+		if (sA($('#oleic_acidGraph')) && !$('#oleic_acidGraph').hasClass('egA')) { $('#oleic_acidGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+		if (sA($('#linoleic_acidGraph')) && !$('#linoleic_acidGraph').hasClass('egA')) { $('#linoleic_acidGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+		if (sA($('#alpha_linolenic_acidGraph')) && !$('#alpha_linolenic_acidGraph').hasClass('egA')) { $('#alpha_linolenic_acidGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+	});
+$('#aminoSwitchTab').click(function() {
+		if (sA($('#isoleucineGraph')) && !$('#isoleucineGraph').hasClass('egA')) { $('#isoleucineGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+		if (sA($('#leucineGraph')) && !$('#leucineGraph').hasClass('egA')) { $('#leucineGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+		if (sA($('#lysineGraph')) && !$('#lysineGraph').hasClass('egA')) { $('#lysineGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+		if (sA($('#sulfur_containing_amino_acid_totalGraph')) && !$('#sulfur_containing_amino_acid_totalGraph').hasClass('egA')) { $('#sulfur_containing_amino_acid_totalGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+		if (sA($('#aromatic_amino_acid_totalGraph')) && !$('#aromatic_amino_acid_totalGraph').hasClass('egA')) { $('#aromatic_amino_acid_totalGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+		if (sA($('#threonineGraph')) && !$('#threonineGraph').hasClass('egA')) { $('#threonineGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+		if (sA($('#tryptophanGraph')) && !$('#tryptophanGraph').hasClass('egA')) { $('#tryptophanGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+		if (sA($('#valineGraph')) && !$('#valineGraph').hasClass('egA')) { $('#valineGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+		if (sA($('#histidineGraph')) && !$('#histidineGraph').hasClass('egA')) { $('#histidineGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+		if (sA($('#arginineGraph')) && !$('#arginineGraph').hasClass('egA')) { $('#arginineGraph').css("width","0%").animate({width: "1.01%"}, animateTime).addClass('egA');}
+		if (sA($('#alanineGraph')) && !$('#alanineGraph').hasClass('egA')) { $('#alanineGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+		if (sA($('#aspartic_acidGraph')) && !$('#aspartic_acidGraph').hasClass('egA')) { $('#aspartic_acidGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+		if (sA($('#glutamic_acidGraph')) && !$('#glutamic_acidGraph').hasClass('egA')) { $('#glutamic_acidGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+		if (sA($('#glycineGraph')) && !$('#glycineGraph').hasClass('egA')) { $('#glycineGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+		if (sA($('#prolineGraph')) && !$('#prolineGraph').hasClass('egA')) { $('#prolineGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+		if (sA($('#serineGraph')) && !$('#serineGraph').hasClass('egA')) { $('#serineGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+		if (sA($('#amino_acid_totalGraph')) && !$('#amino_acid_totalGraph').hasClass('egA')) { $('#amino_acid_totalGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+		if (sA($('#ammoniaGraph')) && !$('#ammoniaGraph').hasClass('egA')) { $('#ammoniaGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+	});
+
+$(window).scroll(function(){
+	if(sA($('#pfcGraph')) && !$('#pfcGraph').hasClass('egA')) {draw(751, 120, 3.28, 2.7333333333333, 1.8, 0.76923076923077, 128.12, 21.353333333333); $('#pfcGraph').addClass('egA');}
+
+	if (sA($('#energy_kcalGraph')) && !$('#energy_kcalGraph').hasClass('egA')) { $('#energy_kcalGraph').css("width","0%").animate({width: "15.98%"}, animateTime).addClass('egA');}
+	if (sA($('#proteinGraph')) && !$('#proteinGraph').hasClass('egA')) { $('#proteinGraph').css("width","0%").animate({width: "2.41%"}, animateTime).addClass('egA');}
+	if (sA($('#fatGraph')) && !$('#fatGraph').hasClass('egA')) { $('#fatGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+	if (sA($('#carbohydrateGraph')) && !$('#carbohydrateGraph').hasClass('egA')) { $('#carbohydrateGraph').css("width","0%").animate({width: "30.5%"}, animateTime).addClass('egA');}
+
+		if (sA($('#va_retinol_equivalentGraph')) && !$('#va_retinol_equivalentGraph').hasClass('egA')) { $('#va_retinol_equivalentGraph').css("width","0%").animate({width: "1.85%"}, animateTime).addClass('egA');}
+		if (sA($('#ve_tocopherol_alphaGraph')) && !$('#ve_tocopherol_alphaGraph').hasClass('egA')) { $('#ve_tocopherol_alphaGraph').css("width","0%").animate({width: "9.09%"}, animateTime).addClass('egA');}
+		if (sA($('#vb1Graph')) && !$('#vb1Graph').hasClass('egA')) { $('#vb1Graph').css("width","0%").animate({width: "25%"}, animateTime).addClass('egA');}
+		if (sA($('#vb2Graph')) && !$('#vb2Graph').hasClass('egA')) { $('#vb2Graph').css("width","0%").animate({width: "5.56%"}, animateTime).addClass('egA');}
+		if (sA($('#niacinGraph')) && !$('#niacinGraph').hasClass('egA')) { $('#niacinGraph').css("width","0%").animate({width: "5.75%"}, animateTime).addClass('egA');}
+		if (sA($('#vb6Graph')) && !$('#vb6Graph').hasClass('egA')) { $('#vb6Graph').css("width","0%").animate({width: "22.86%"}, animateTime).addClass('egA');}
+		if (sA($('#folateGraph')) && !$('#folateGraph').hasClass('egA')) { $('#folateGraph').css("width","0%").animate({width: "10.2%"}, animateTime).addClass('egA');}
+		if (sA($('#pantothenic_acidGraph')) && !$('#pantothenic_acidGraph').hasClass('egA')) { $('#pantothenic_acidGraph').css("width","0%").animate({width: "13.33%"}, animateTime).addClass('egA');}
+		if (sA($('#biotinGraph')) && !$('#biotinGraph').hasClass('egA')) { $('#biotinGraph').css("width","0%").animate({width: "8.41%"}, animateTime).addClass('egA');}
+		if (sA($('#vcGraph')) && !$('#vcGraph').hasClass('egA')) { $('#vcGraph').css("width","0%").animate({width: "12.36%"}, animateTime).addClass('egA');}
+	
+		if (sA($('#natriumGraph')) && !$('#natriumGraph').hasClass('egA')) { $('#natriumGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+		if (sA($('#kaliumGraph')) && !$('#kaliumGraph').hasClass('egA')) { $('#kaliumGraph').css("width","0%").animate({width: "31.84%"}, animateTime).addClass('egA');}
+		if (sA($('#calciumGraph')) && !$('#calciumGraph').hasClass('egA')) { $('#calciumGraph').css("width","0%").animate({width: "5.54%"}, animateTime).addClass('egA');}
+		if (sA($('#magnesiumGraph')) && !$('#magnesiumGraph').hasClass('egA')) { $('#magnesiumGraph').css("width","0%").animate({width: "13.33%"}, animateTime).addClass('egA');}
+		if (sA($('#phosphorusGraph')) && !$('#phosphorusGraph').hasClass('egA')) { $('#phosphorusGraph').css("width","0%").animate({width: "8.03%"}, animateTime).addClass('egA');}
+		if (sA($('#ironGraph')) && !$('#ironGraph').hasClass('egA')) { $('#ironGraph').css("width","0%").animate({width: "5.73%"}, animateTime).addClass('egA');}
+		if (sA($('#zincGraph')) && !$('#zincGraph').hasClass('egA')) { $('#zincGraph').css("width","0%").animate({width: "6.67%"}, animateTime).addClass('egA');}
+		if (sA($('#cupperGraph')) && !$('#cupperGraph').hasClass('egA')) { $('#cupperGraph').css("width","0%").animate({width: "41.67%"}, animateTime).addClass('egA');}
+		if (sA($('#manganeseGraph')) && !$('#manganeseGraph').hasClass('egA')) { $('#manganeseGraph').css("width","0%").animate({width: "20.51%"}, animateTime).addClass('egA');}
+	
+	        if (sA($('#dietary_fiber_total_amountGraph')) && !$('#dietary_fiber_total_amountGraph').hasClass('egA')) { $('#dietary_fiber_total_amountGraph').css("width","0%").animate({width: "1.28%"}, animateTime).addClass('egA');}
+        
+		if (sA($('#ingredient_indexGraph')) && !$('#ingredient_indexGraph').hasClass('egA')) { $('#ingredient_indexGraph').css("width","0%").animate({width: "60%"}, animateTime).addClass('egA');}
+        if (sA($('#fillingGraph')) && !$('#fillingGraph').hasClass('egA')) { $('#fillingGraph').css("width","0%").animate({width: "30%"}, animateTime).addClass('egA');}
+        if (sA($('#nutrition_valueGraph')) && !$('#nutrition_valueGraph').hasClass('egA')) { $('#nutrition_valueGraph').css("width","0%").animate({width: "60%"}, animateTime).addClass('egA');}
+        if (sA($('#calorieGraph')) && !$('#calorieGraph').hasClass('egA')) { $('#calorieGraph').css("width","0%").animate({width: "11.8%"}, animateTime).addClass('egA');}
+	        
+});
+
+	if(sA($('#pfcGraph')) && !$('#pfcGraph').hasClass('egA')) {draw(751, 120, 3.28, 2.7333333333333, 1.8, 0.76923076923077, 128.12, 21.353333333333); $('#pfcGraph').addClass('egA');}
+
+
+var animateTime = 1500;
+
+if (sA($('#energy_kcalGraph')) && !$('#energy_kcalGraph').hasClass('egA')) { $('#energy_kcalGraph').css("width","0%").animate({width: "15.98%"}, animateTime).addClass('egA');}
+if (sA($('#proteinGraph')) && !$('#proteinGraph').hasClass('egA')) { $('#proteinGraph').css("width","0%").animate({width: "2.41%"}, animateTime).addClass('egA');}
+if (sA($('#fatGraph')) && !$('#fatGraph').hasClass('egA')) { $('#fatGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+if (sA($('#carbohydrateGraph')) && !$('#carbohydrateGraph').hasClass('egA')) { $('#carbohydrateGraph').css("width","0%").animate({width: "30.5%"}, animateTime).addClass('egA');}
+if (sA($('#va_retinol_equivalentGraph')) && !$('#va_retinol_equivalentGraph').hasClass('egA')) { $('#va_retinol_equivalentGraph').css("width","0%").animate({width: "1.85%"}, animateTime).addClass('egA');}
+if (sA($('#ve_tocopherol_alphaGraph')) && !$('#ve_tocopherol_alphaGraph').hasClass('egA')) { $('#ve_tocopherol_alphaGraph').css("width","0%").animate({width: "9.09%"}, animateTime).addClass('egA');}
+if (sA($('#vb1Graph')) && !$('#vb1Graph').hasClass('egA')) { $('#vb1Graph').css("width","0%").animate({width: "25%"}, animateTime).addClass('egA');}
+if (sA($('#vb2Graph')) && !$('#vb2Graph').hasClass('egA')) { $('#vb2Graph').css("width","0%").animate({width: "5.56%"}, animateTime).addClass('egA');}
+if (sA($('#niacinGraph')) && !$('#niacinGraph').hasClass('egA')) { $('#niacinGraph').css("width","0%").animate({width: "5.75%"}, animateTime).addClass('egA');}
+if (sA($('#vb6Graph')) && !$('#vb6Graph').hasClass('egA')) { $('#vb6Graph').css("width","0%").animate({width: "22.86%"}, animateTime).addClass('egA');}
+if (sA($('#folateGraph')) && !$('#folateGraph').hasClass('egA')) { $('#folateGraph').css("width","0%").animate({width: "10.2%"}, animateTime).addClass('egA');}
+if (sA($('#pantothenic_acidGraph')) && !$('#pantothenic_acidGraph').hasClass('egA')) { $('#pantothenic_acidGraph').css("width","0%").animate({width: "13.33%"}, animateTime).addClass('egA');}
+if (sA($('#biotinGraph')) && !$('#biotinGraph').hasClass('egA')) { $('#biotinGraph').css("width","0%").animate({width: "8.41%"}, animateTime).addClass('egA');}
+if (sA($('#vcGraph')) && !$('#vcGraph').hasClass('egA')) { $('#vcGraph').css("width","0%").animate({width: "12.36%"}, animateTime).addClass('egA');}
+if (sA($('#natriumGraph')) && !$('#natriumGraph').hasClass('egA')) { $('#natriumGraph').css("width","0%").animate({width: "1%"}, animateTime).addClass('egA');}
+if (sA($('#kaliumGraph')) && !$('#kaliumGraph').hasClass('egA')) { $('#kaliumGraph').css("width","0%").animate({width: "31.84%"}, animateTime).addClass('egA');}
+if (sA($('#calciumGraph')) && !$('#calciumGraph').hasClass('egA')) { $('#calciumGraph').css("width","0%").animate({width: "5.54%"}, animateTime).addClass('egA');}
+if (sA($('#magnesiumGraph')) && !$('#magnesiumGraph').hasClass('egA')) { $('#magnesiumGraph').css("width","0%").animate({width: "13.33%"}, animateTime).addClass('egA');}
+if (sA($('#phosphorusGraph')) && !$('#phosphorusGraph').hasClass('egA')) { $('#phosphorusGraph').css("width","0%").animate({width: "8.03%"}, animateTime).addClass('egA');}
+if (sA($('#ironGraph')) && !$('#ironGraph').hasClass('egA')) { $('#ironGraph').css("width","0%").animate({width: "5.73%"}, animateTime).addClass('egA');}
+if (sA($('#zincGraph')) && !$('#zincGraph').hasClass('egA')) { $('#zincGraph').css("width","0%").animate({width: "6.67%"}, animateTime).addClass('egA');}
+if (sA($('#cupperGraph')) && !$('#cupperGraph').hasClass('egA')) { $('#cupperGraph').css("width","0%").animate({width: "41.67%"}, animateTime).addClass('egA');}
+if (sA($('#manganeseGraph')) && !$('#manganeseGraph').hasClass('egA')) { $('#manganeseGraph').css("width","0%").animate({width: "20.51%"}, animateTime).addClass('egA');}
+if (sA($('#dietary_fiber_total_amountGraph')) && !$('#dietary_fiber_total_amountGraph').hasClass('egA')) { $('#dietary_fiber_total_amountGraph').css("width","0%").animate({width: "1.28%"}, animateTime).addClass('egA');}
+
+
+if (sA($('#calorieGraph')) && !$('#calorieGraph').hasClass('egA')) { $('#calorieGraph').css("width","0%").animate({width: "11.8%"}, animateTime).addClass('egA');}
+if (sA($('#ingredient_indexGraph')) && !$('#ingredient_indexGraph').hasClass('egA')) { $('#ingredient_indexGraph').css("width","0%").animate({width: "60%"}, animateTime).addClass('egA');}
+if (sA($('#fillingGraph')) && !$('#fillingGraph').hasClass('egA')) { $('#fillingGraph').css("width","0%").animate({width: "30%"}, animateTime).addClass('egA');}
+if (sA($('#nutrition_valueGraph')) && !$('#nutrition_valueGraph').hasClass('egA')) { $('#nutrition_valueGraph').css("width","0%").animate({width: "60%"}, animateTime).addClass('egA');}
+
+
+});
+</script>
+
+<link rel="stylesheet" href="//cdn.slism.jp/calorie/css/data.css" type="text/css" />
+
+<link rel="stylesheet" href="//cdn.slism.jp/calorie/css/twitterComment.css" type="text/css" media="screen" />
+<script type="text/javascript" src="//cdn.slism.jp/calorie/js/jquery.twitterComment.js"></script>
+<script type="text/javascript" src="//cdn.slism.jp/calorie/js/jquery.oj.js"></script>
+<script type="text/javascript" src="//cdn.slism.jp/calorie/js/jquery.autoresize.min.js"></script>
+</head>
+<body id="toTop">
+<div id="centerPositionCcds">
+
+<div id="headerCcds">
+<div><a href="/"><img src="//cdn.slism.jp/calorie/images/ccdsLogo.png" width="314" height="44" alt="カロリーSlism[Calorie計算＆栄養分析！ダイエットをサポート]" /></a></div>
+<p class="ccdsDescription">食品の栄養素が一目でわかる･カロリー計算できる</p>
+
+
+
+<!--/●header--></div>
+
+<ul class="navigationTop" style="top:31px;left:784px;">
+<li><a href="/">カロリーTOP</a></li>
+<li><a href="http://slism.jp/sitemap/">サイトマップ</a></li>
+<!--/●navigationTop--></ul>
+
+<ul class="subHeaderMenu">
+<li><a href="http://slism.jp/featured/"><img src="//cdn.slism.jp/sblog/images/tokushu/sub_Menu-01_off.png" width="130" height="32" alt="ダイエット特集" /></a></li>
+<li><a href="http://slism.jp/method/"><img src="//cdn.slism.jp/sblog/images/tokushu/sub_Menu-02_off.png" width="130" height="32" alt="ダイエット方法" /></a></li>
+<li><a href="http://slism.jp/diet-tool/"><img src="//cdn.slism.jp/sblog/images/tokushu/sub_Menu-06_off.png" width="132" height="32" alt="ダイエットツール" /></a></li>
+<li><a href="http://slism.jp/communication/"><img src="//cdn.slism.jp/sblog/images/tokushu/sub_Menu-08_off.png" width="132" height="32" alt="ニュース" /></a></li>
+</ul>
+<!--/●subHeaderMenu-->
+
+<div class="breadcrumb subBreadcrumb">
+<div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+<a href="http://slism.jp/" itemprop="url"><span itemprop="title">ダイエット</span></a><span class="mglr6">&raquo;</span>
+</div>
+
+ 
+<div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+<a href="/" itemprop="url"><span itemprop="title">カロリー計算</span></a><span class="mglr6">&raquo;</span>
+</div>
+
+<div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+<a href="/category/4/" itemprop="url"><span itemprop="title">果物</span></a><span class="mglr6">&raquo;</span>
+</div>
+<div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+<span itemprop="title">ぶどう</span>
+</div>
+
+<!-- .breadcrumb end --></div>
+
+
+
+
+<div id="contentsTokushu">
+<div class="contents">
+<div id="contentsPadding">
+<ul class="ccdsSnsBtn">
+<li><a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加" rel="nofollow"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script></li>
+<li><a class="twitter-share-button" href="https://twitter.com/share?url=http%3A%2F%2Fcalorie.slism.jp%2F107116%2F" data-count="horizontal" rel="nofollow">Tweet</a>
+<script type="text/javascript">
+window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.getElementById(id)){return}js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);return window.twttr||(t={_e:[],ready:function(f){t._e.push(f)}})}(document,"script","twitter-wjs"));
+</script>
+</li>
+<li><g:plusone size="medium" href="http://calorie.slism.jp/107116/"></g:plusone>
+</li>
+<li><iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fcalorie.slism.jp%2F107116%2F&amp;width=120&amp;layout=button_count&amp;action=like&amp;show_faces=false&amp;share=false&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:120px; height:21px;" allowTransparency="true"></iframe>
+</li>
+</ul>
+
+
+<div id="searchForm" class="ccds_searchArea_data" style="clear:both; margin-bottom:14px;">
+<form action="/" method="get" name="sF">
+<input type="text" name="searchWord" value="" id="searchWord" placeholder="食材を入れて検索ください"/>
+<input type="hidden" name="search" value="検索" />
+<input type="image" src="//cdn.slism.jp/calorie/images/ccds-Search-button_off.png" onMouseOver="this.src='//cdn.slism.jp/calorie/images/ccds-Search-button_on.png'" onMouseOut="this.src='//cdn.slism.jp/calorie/images/ccds-Search-button_off.png'" class="ccds_searchButton" />
+</form>
+<!--/●ccds_searchArea--></div>
+
+<div class="clearfix" style="clear:both;">
+
+<noscript>
+    <div id="noscriptMessage">
+        <p>javascriptが無効な場合カロリー計算機の一部機能が正しくご利用いただけません。<br />javascriptを有効にすることで、より便利にご利用いただくことができます。</p>
+    </div>
+</noscript>
+
+<div style="overflow:auto;">
+<div style="width:414px; float:left;">
+<h1 class="ccdsSingleHl01">ぶどう <span style="font-weight:normal; font-size:12px; color:#4c4548;">(葡萄/ブドウ)</span></h1>
+</div>
+<div style="float:right; width:210px; text-align:right; margin-top:2px; margin-right:5px;">
+<img src="//cdn.slism.jp/calorie/images/itemImgListImg.gif" style="vertical-align: middle;"><span style="margin:0px 10px 0px; font-size:13px; color:#8f8f8f;">食品</span><img src="//cdn.slism.jp/calorie/images/itemImgListImg.gif" style="vertical-align: middle;"><span style="margin:0px 0px 0px 10px; font-size:13px; color:#8f8f8f;">果物</span>
+</div>
+</div>
+ 
+<div id="analysis" class="clearfix" style="width: 414px; float:left;">
+<h2>食品分析数値</h2>
+<table style="text-align:left; font-size:14px; margin-bottom:10px;">
+<tr><th style="width:224px;">ぶどうのカロリー</th><td><strong style="font-size: 15px;">59kcal</strong> <span style="color:#8c8c8c;">100g</span><br><strong style="font-size: 15px;">120kcal</strong> <span style="color:#8c8c8c;">204g(1房（可食部）)</span></td></tr>
+<tr><th>ダイエットの食材指数</th><td><div class="level level30"></div></td></tr>
+<tr><th>腹持ち</th><td><div class="level level15"></div></td></tr>
+<tr><th>栄養価</th><td><div class="level level30"></div></td></tr>
+<tr><th>特筆すべき栄養素</th><td><strong>銅, カリウム</strong></td></tr>
+</table>
+<div class="note">ぶどうは何か特徴のある栄養素が含まれているというほど栄養が入っているわけではない。<br>
+ぶどうには気になる栄養素としてアントシアニンが含まれている。<br>
+アントシアニンは視力回復や動脈硬化にもいいとは言われているが、その有効性については確かな証拠が少なく民間療法ということになっている。<br>
+ぶどうを構成している三大栄養素のうちの炭水化物の中身は糖質が多く、食べ過ぎるとダイエットにはいいとは言えないが、ぶどうを一房食べてもその成分の殆どが水分で140kcal程度のカロリーしか摂取しないことになるので食べ過ぎに注意すればそれほど気になるカロリーではない。<br>
+巨峰1房：300g程度、デラウエア1房：94g程度、マスカット1房：240g程度</div>
+<p class="note_general_constituent">ぶどう（一房）240gの廃棄率は15％程度で可食部は204g。 / (廃棄率)果皮及び種子。大粒種の場合20%。(トリアシルグリセロール当量)未同定脂肪酸(Tr)を含まない</p>
+<div class="ccdsSingleFormBg">
+<form action="/calorie/calCalc.php" method="get" class="addCalculatorForm">
+<input type="hidden" name="addCalculator_x" value="1" />
+<p class="ccdsSingleNum">
+<input type="text" name="amount" class="amount ccdsSingleInput" value="204"  maxlength="6"  style="ime-mode:disabled" />g<span class="kcal singlelistKcal" >120</span>kcal
+<input type="image" name="redisplayGraph" class="redisplayGraph" src="//cdn.slism.jp/calorie/images/redisplayGraph.gif" alt="グラフ再表示" width="172" height="23" style="display:none; margin-left:10px; vertical-align: bottom;"/>
+</p>
+<input type="image" name="addCalculator" src="//cdn.slism.jp/calorie/images/add_calculatorA.gif" alt="カロリー・栄養計算機へ追加" width="162" height="23"/>
+<a href="/"><img src="//cdn.slism.jp/calorie/images/add_no_go_top.gif" width="131" height="23" alt="追加せずトップへ" class="topReturnImg" /></a>
+<input type="hidden" name="addNo" value="107116" />
+<input type="hidden" name="name" value="ぶどう" />
+<input type="hidden" name="kcal" class="hiddenKcal" value="120" />
+<input type="hidden" name="kpa" class="kpa" value="0.59" />
+<input type="hidden" name="amount_measure" value="g" />
+<input type="hidden" name="amount_comment" value="1房（可食部）" />
+<input type="hidden" name="amount_original" value="204" />
+<input type="hidden" name="foodImageFileName" value="107116.jpg" />
+</form>
+<!--/●ccdsSingleFormBg--></div>
+
+</div><!-- /analysis -->
+
+<div class="clearfix" style="width:210px;float:right;margin-bottom:5px;">
+<div style="margin-bottom:10px;">
+<div id="itemImg">
+<h2>ぶどう</h2>
+<div style="text-align: center;">
+<img src="http://cdn.slism.jp/calorie/foodImages/107116.jpg" width="200" height="200" alt="ぶどう" id="foodImage" />
+</div>
+<p style="text-align:right; margin: 2px 5px 4px 0px; color: #425a7b;">Grape</p>
+<!-- #itemImg end --></div>
+
+</div>
+<div style="margin-bottom:10px;">
+<div id="miniGraph">
+<h2>ぶどうのダイエット食品分析</h2>
+<div style="padding-left:10px;">
+<table>
+<tr><td class="label" >カロリー</td><td style="width:80px;"><img src="//cdn.slism.jp/calorie/images/calorieGraph.gif" style="border: 1px solid #6600cc; width:11.8%; height:14px;" id="calorieGraph" /></td></tr>
+<tr><td class="label">ダイエット食材指数</td><td><img src="//cdn.slism.jp/calorie/images/ingredient_indexGraph.gif" style="border: 1px solid #ff762b; width:60%; height:14px;" id="ingredient_indexGraph" /></td></tr>
+<tr><td class="label">腹持ち</td><td><img src="//cdn.slism.jp/calorie/images/fillingGraph.gif" style="border: 1px solid #b0cc8e; width:30%; height:14px;" id="fillingGraph" /></td></tr>
+<tr><td class="label">栄養</td><td><img src="//cdn.slism.jp/calorie/images/nutrition_valueGraph.gif" style="border: 1px solid #7597c1; width:60%; height:14px;" id="nutrition_valueGraph" /></td></tr>
+<tr><td class="label">水分</td><td>83 (%)</td></tr>
+<tr><td class="label">廃棄率</td><td>15 (%)</td></tr>
+</table>
+</div>
+<!-- #miniGraph end --></div>
+
+</div>
+<div style="margin-bottom:10px;">
+
+</div>
+</div>
+
+
+</div><!-- /clearfix -->
+
+<div id="data">
+<div id="main">
+<h2>ぶどう:1房（可食部） 204gの栄養成分</h2>
+<p class="note02">一食あたりの目安：18歳～29歳/女性/51kg/必要栄養量暫定値算出の基準カロリー1800kcal</p>
+<div id="mainData" style="float:left; width: 364px; margin-bottom:20px;">
+<div class="caption">
+<h3 style="float:left;">【総カロリーと三大栄養素】</h3><p class="guide" style="float:right; margin:10px 0px; color:#818a38;">（一食あたりの目安）</p>
+</div>
+<table style="width:100%; clear:both;">
+<tr><td class="label">エネルギー</td><td>120kcal</td><td class="guide" style="width:90px;font-size:9px;color:#818a38;text-align:right;">536～751kcal</td></tr>
+<tr><td colspan="3"><div class="graph2"><img src="//cdn.slism.jp/calorie/images/bar02.gif" height="18px" width="15.98%" id="energy_kcalGraph"></div></td></tr>
+<tr><td class="label">タンパク質</td><td>0.82g (3.28kcal)</td><td class="guide" style="text-align: right;">15～34g</td></tr>
+<tr><td colspan="3"><div class="graph2"><img src="//cdn.slism.jp/calorie/images/bar02.gif" height="18px" width="2.41%" id="proteinGraph"></div></td></tr>
+<tr><td class="label">脂質</td><td>0.2g (1.8kcal)</td><td class="guide" style="text-align: right;">13～20g</td></tr>
+<tr><td colspan="3"><div class="graph2"><img src="//cdn.slism.jp/calorie/images/bar02.gif" height="18px" width="1%" id="fatGraph"></div></td></tr>
+<tr><td class="label">炭水化物</td><td>32.03g (128.12kcal)</td><td class="guide" style="text-align: right;">75～105g</td></tr>
+<tr><td colspan="3"><div class="graph2"><img src="//cdn.slism.jp/calorie/images/bar02.gif" height="18px" width="30.5%" id="carbohydrateGraph"></div></td></tr>
+</table>
+</div><!-- /mainData -->
+
+<div id="mainChart" style="float:right;width:260px;">
+<div class="caption">
+<h3>【PFCバランス】</h3>
+</div>
+<div id="pfcGraph">
+<img id="pfcBase" src="//cdn.slism.jp/calorie/pfc2.jpg">
+<canvas id="pfc" width="260" height="260"></canvas>
+<!-- #pfcGraph end--></div>
+<!-- .caption end --></div>
+<!-- #mainChart end --></div>
+
+
+<div style="clear:both; padding:6px 10px; border: 1px solid #DCDCDC; margin: 0px 0px 30px;">
+<p class="note02" style="line-height: 20px;">ぶどうのカロリーは204g(1房（可食部）)で120kcalのカロリー。ぶどうは100g換算で59kcalのカロリーで、80kcalあたりのグラム目安量は135.59g。炭水化物が多く32.03g、たんぱく質が0.82g、脂質が0.2gとなっており、ビタミン・ミネラルでは銅とカリウムの成分が高い。</p>
+</div>
+</div><!-- /main -->
+
+<div id="tabs" style="clear:both;">
+  <ul style="list-style: none;" class="clearfix">
+    <li style="float: left;"><a id="majorTab" href="#major"><h2 id="majorSwitch">主要成分</h2></a></li>
+    <li style="float: left;"><a id="fatTab" href="#fat"><h2 id="fatSwitch">脂肪酸</h2></a></li>
+    <li style="float: left;"><a id="aminoSwitchTab" href="#amino"><h2 id="aminoSwitch">アミノ酸</h2></a></li>
+  </ul>
+
+    <div id="major" class="tabInner" style="clear:both;">
+    <p class="note02">ぶどう:204g(1房（可食部）)あたりのビタミン・ミネラル・食物繊維・塩分など</p>
+                  <div id="vitamin">
+          <div class="caption">
+            <h3 style="float:left;">【ビタミン】</h3><p class="guide" style="float:right; margin:10px 0px; color:#818a38;">（一食あたりの目安）</p>
+          </div>
+        <table style="width:100%; clear:both;">
+        
+                <tr><td class="name">ビタミンA</td><td class="valMeasure">4.08μg</td><td class="guide" style="text-align: right;">221μgRE</td></tr>
+        <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1.85%" id="va_retinol_equivalentGraph"></div></td></tr>
+                <tr><td class="name">ビタミンE</td><td class="valMeasure">0.2mg</td><td class="guide" style="text-align: right;">2.2mg</td></tr>
+        <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="9.09%" id="ve_tocopherol_alphaGraph"></div></td></tr>
+                <tr><td class="name">ビタミンB1</td><td class="valMeasure">0.08mg</td><td class="guide" style="text-align: right;">0.32mg</td></tr>
+        <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="25%" id="vb1Graph"></div></td></tr>
+                <tr><td class="name">ビタミンB2</td><td class="valMeasure">0.02mg</td><td class="guide" style="text-align: right;">0.36mg</td></tr>
+        <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="5.56%" id="vb2Graph"></div></td></tr>
+                <tr><td class="name">ナイアシン</td><td class="valMeasure">0.2mg</td><td class="guide" style="text-align: right;">3.48mgNE</td></tr>
+        <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="5.75%" id="niacinGraph"></div></td></tr>
+                <tr><td class="name">ビタミンB6</td><td class="valMeasure">0.08mg</td><td class="guide" style="text-align: right;">0.35mg</td></tr>
+        <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="22.86%" id="vb6Graph"></div></td></tr>
+                <tr><td class="name">葉酸</td><td class="valMeasure">8.16μg</td><td class="guide" style="text-align: right;">80μg</td></tr>
+        <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="10.2%" id="folateGraph"></div></td></tr>
+                <tr><td class="name">パントテン酸</td><td class="valMeasure">0.2mg</td><td class="guide" style="text-align: right;">1.5mg</td></tr>
+        <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="13.33%" id="pantothenic_acidGraph"></div></td></tr>
+                <tr><td class="name">ビオチン</td><td class="valMeasure">1.43μg</td><td class="guide" style="text-align: right;">17μg</td></tr>
+        <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="8.41%" id="biotinGraph"></div></td></tr>
+                <tr><td class="name">ビタミンC</td><td class="valMeasure">4.08mg</td><td class="guide" style="text-align: right;">33mg</td></tr>
+        <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="12.36%" id="vcGraph"></div></td></tr>
+                
+        </table>
+        </div><!-- /vitamin -->
+                    <div id="mineral">
+        <div class="caption">
+        <h3 style="float:left;">【ミネラル】</h3><p class="guide" style="float:right; margin:10px 0px; color:#818a38;">（一食あたりの目安）</p>
+        </div>
+        <table style="width:100%; clear:both;">
+        
+                <tr><td class="name">ナトリウム</td><td class="valMeasure">2.04mg</td><td class="guide" style="text-align: right;">～1000mg</td></tr>
+        <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="natriumGraph"></div></td></tr>
+                <tr><td class="name">カリウム</td><td class="valMeasure">265.2mg</td><td class="guide" style="text-align: right;">833mg</td></tr>
+        <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="31.84%" id="kaliumGraph"></div></td></tr>
+                <tr><td class="name">カルシウム</td><td class="valMeasure">12.24mg</td><td class="guide" style="text-align: right;">221mg</td></tr>
+        <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="5.54%" id="calciumGraph"></div></td></tr>
+                <tr><td class="name">マグネシウム</td><td class="valMeasure">12.24mg</td><td class="guide" style="text-align: right;">91.8mg</td></tr>
+        <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="13.33%" id="magnesiumGraph"></div></td></tr>
+                <tr><td class="name">リン</td><td class="valMeasure">30.6mg</td><td class="guide" style="text-align: right;">381mg</td></tr>
+        <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="8.03%" id="phosphorusGraph"></div></td></tr>
+                <tr><td class="name">鉄</td><td class="valMeasure">0.2mg</td><td class="guide" style="text-align: right;">3.49mg</td></tr>
+        <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="5.73%" id="ironGraph"></div></td></tr>
+                <tr><td class="name">亜鉛</td><td class="valMeasure">0.2mg</td><td class="guide" style="text-align: right;">3mg</td></tr>
+        <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="6.67%" id="zincGraph"></div></td></tr>
+                <tr><td class="name">銅</td><td class="valMeasure">0.1mg</td><td class="guide" style="text-align: right;">0.24mg</td></tr>
+        <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="41.67%" id="cupperGraph"></div></td></tr>
+                <tr><td class="name">マンガン</td><td class="valMeasure">0.24mg</td><td class="guide" style="text-align: right;">1.17mg</td></tr>
+        <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="20.51%" id="manganeseGraph"></div></td></tr>
+                
+        </table>
+        </div><!-- /mineral -->
+                    <div id="etc" style="clear:both;">
+        <div class="left">
+        <div class="caption">
+        <h3 style="float:left;">【その他】</h3><p class="guide" style="float:right; margin:10px 0px; color:#818a38;">（一食あたりの目安）</p>
+        </div>
+        <table style="width:100%;">
+	
+                <tr><td class="name">食物繊維 総量</td><td class="valMeasure">1.02g</td><td class="guide" style="text-align: right;">5.7g～</td></tr>
+        <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1.28%" id="dietary_fiber_total_amountGraph"></div></td></tr>
+                	
+        </table>
+        </div><!-- /right -->
+        </div><!-- /etc -->
+            </div><!-- /major -->
+
+    <div id="fat" class="tabInner" style="clear:both;">
+    <p class="note02">ぶどう:204g(1房（可食部）)あたりの脂肪酸</p>
+     
+      <div class="left">
+      <div class="caption">
+      <h3 style="float:left;">【脂肪酸】</h3><p class="guide" style="float:right; margin:10px 0px; color:#818a38;">（一食あたりの目安）</p>
+      </div>
+      <table style="width:100%;">
+      
+            <tr><td class="name">脂肪酸 飽和</td><td class="valMeasure">0.02g</td><td class="guide" style="text-align: right;">3g～4.7g</td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="fat_acid_saturationGraph"></div></td></tr>
+                  <tr><td class="name">脂肪酸 多価不飽和</td><td class="valMeasure">0.02g</td><td class="guide" style="text-align: right;">3g～8.3g</td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="fat_acid_polyunsaturatedGraph"></div></td></tr>
+                  <tr><td class="name">脂肪酸 総量</td><td class="valMeasure">0.06g</td><td class="guide" style="text-align: right;"></td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="total_amountGraph"></div></td></tr>
+                  <tr><td class="name">n-6系 多価不飽和</td><td class="valMeasure">0.02g</td><td class="guide" style="text-align: right;"></td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="n6_polyunsaturatedGraph"></div></td></tr>
+                  <tr><td class="name">18:1 オレイン酸</td><td class="valMeasure">8.16mg</td><td class="guide" style="text-align: right;"></td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="oleic_acidGraph"></div></td></tr>
+                  <tr><td class="name">18:2 n-6 リノール酸</td><td class="valMeasure">20.4mg</td><td class="guide" style="text-align: right;"></td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="linoleic_acidGraph"></div></td></tr>
+                  <tr><td class="name">18:3 n-3 α－リノレン酸</td><td class="valMeasure">6.12mg</td><td class="guide" style="text-align: right;"></td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="alpha_linolenic_acidGraph"></div></td></tr>
+                  
+      </table>
+      </div><!-- /right -->
+      </div><!-- /fat -->
+
+    <div id="amino" class="tabInner" style="clear:both;">
+    <p class="note02">ぶどう:204g(1房（可食部）)あたりのアミノ酸</p>
+          <div class="left">
+      <div class="caption">
+      <h3 style="float:left;">【アミノ酸】</h3><p class="guide" style="float:right; margin:10px 0px; color:#818a38;">（一食あたりの目安）</p>
+      </div>
+      <table style="width:100%;">
+      
+            <tr><td class="name">イソロイシン</td><td class="valMeasure">13.46mg</td><td class="guide" style="text-align: right;"></td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="isoleucineGraph"></div></td></tr>
+                  <tr><td class="name">ロイシン</td><td class="valMeasure">22.44mg</td><td class="guide" style="text-align: right;"></td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="leucineGraph"></div></td></tr>
+                  <tr><td class="name">リシン(リジン)</td><td class="valMeasure">22.44mg</td><td class="guide" style="text-align: right;"></td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="lysineGraph"></div></td></tr>
+                  <tr><td class="name">含硫アミノ酸</td><td class="valMeasure">16.73mg</td><td class="guide" style="text-align: right;"></td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="sulfur_containing_amino_acid_totalGraph"></div></td></tr>
+                  <tr><td class="name">芳香族アミノ酸</td><td class="valMeasure">22.44mg</td><td class="guide" style="text-align: right;"></td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="aromatic_amino_acid_totalGraph"></div></td></tr>
+                  <tr><td class="name">トレオニン(スレオニン)</td><td class="valMeasure">20.4mg</td><td class="guide" style="text-align: right;"></td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="threonineGraph"></div></td></tr>
+                  <tr><td class="name">トリプトファン</td><td class="valMeasure">4.9mg</td><td class="guide" style="text-align: right;"></td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="tryptophanGraph"></div></td></tr>
+                  <tr><td class="name">バリン</td><td class="valMeasure">19.58mg</td><td class="guide" style="text-align: right;"></td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="valineGraph"></div></td></tr>
+                  <tr><td class="name">ヒスチジン</td><td class="valMeasure">16.73mg</td><td class="guide" style="text-align: right;"></td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="histidineGraph"></div></td></tr>
+                  <tr><td class="name">アルギニン</td><td class="valMeasure">79.56mg</td><td class="guide" style="text-align: right;"></td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1.01%" id="arginineGraph"></div></td></tr>
+                  <tr><td class="name">アラニン</td><td class="valMeasure">85.68mg</td><td class="guide" style="text-align: right;"></td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="alanineGraph"></div></td></tr>
+                  <tr><td class="name">アスパラギン酸</td><td class="valMeasure">28.56mg</td><td class="guide" style="text-align: right;"></td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="aspartic_acidGraph"></div></td></tr>
+                  <tr><td class="name">グルタミン酸</td><td class="valMeasure">91.8mg</td><td class="guide" style="text-align: right;"></td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="glutamic_acidGraph"></div></td></tr>
+                  <tr><td class="name">グリシン</td><td class="valMeasure">17.95mg</td><td class="guide" style="text-align: right;"></td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="glycineGraph"></div></td></tr>
+                  <tr><td class="name">プロリン</td><td class="valMeasure">63.24mg</td><td class="guide" style="text-align: right;"></td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="prolineGraph"></div></td></tr>
+                  <tr><td class="name">セリン</td><td class="valMeasure">20.2mg</td><td class="guide" style="text-align: right;"></td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="serineGraph"></div></td></tr>
+                  <tr><td class="name">アミノ酸合計</td><td class="valMeasure">550.8mg</td><td class="guide" style="text-align: right;"></td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="amino_acid_totalGraph"></div></td></tr>
+                  <tr><td class="name">アンモニア</td><td class="valMeasure">24.48mg</td><td class="guide" style="text-align: right;"></td></tr>
+      <tr><td colspan="3"><div class="graph"><img src="//cdn.slism.jp/calorie/images/bar01.gif" height="8px" width="1%" id="ammoniaGraph"></div></td></tr>
+                  
+      </table>
+      </div><!-- /right -->
+      </div><!-- /amino -->
+
+
+</div><!-- /tabs -->
+
+<div id="contentsBottom" style="clear:both; margin-bottom: 30px;">
+<ul id="linkList" style="float:right;">
+<li><a href="/calorie/computeBase.pdf" target=”_blank”>栄養素摂取適正値算出基準</a>(pdf)</li>
+</ul>
+<p style="clear:both;">※食品成分含有量を四捨五入し含有量が0になった場合、含まれていないものとし表示していません。</p>
+<p>※一食あたりの目安は18歳～29歳の平常時女性51kg、一日の想定カロリー1800kcalのデータから算出しています。</p>
+<p>※流通・保存・調理過程におけるビタミン・ミネラル含有量の損失については考慮されていません。</p>
+<p>※計算の過程で数kcalの誤差が生じる可能性があります。</p>
+<!-- #contentsBottom end --></div>
+
+
+<div class="ad-bottom-area">
+<img src="http://cdn.slism.jp/calorie/images/ad-txt.jpg">
+<div class="ad-inner">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- カロリーSlism下 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:336px;height:280px"
+     data-ad-client="ca-pub-7618537432990152"
+     data-ad-slot="9048691858"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<!--/●ad-inner--></div>
+<!--/●ad-bottom-area--></div>
+ 
+<div id="exercise">
+<h2>運動時におけるカロリー消費目安</h2>
+<div class="clearfix" style="padding:10px;">
+<p>ぶどう:1房（可食部） 204gのカロリー「120kcal」を消費するのに必要な有酸素運動の時間</p>
+<ul style="margin-right: 10px;">
+<li class="box clearfix"><span class="label">ウォーキング</span><span class="value">45分</span></li>
+<li class="box clearfix"><span class="label">ジョギング</span><span class="value">27分</span></li>
+<li class="box clearfix"><span class="label">自転車</span><span class="value">17分</span></li>
+<li class="box clearfix"><span class="label">なわとび</span><span class="value">14分</span></li>
+</ul>
+<ul style="margin-right: 10px;">
+<li class="box clearfix"><span class="label">ストレッチ</span><span class="value">54分</span></li>
+<li class="box clearfix"><span class="label">階段上り</span><span class="value">15分</span></li>
+<li class="box clearfix"><span class="label">掃除機</span><span class="value">39分</span></li>
+<li class="box clearfix"><span class="label">お風呂掃除</span><span class="value">36分</span></li>
+</ul>
+<ul>
+<li class="box clearfix"><span class="label">水中ウォーキング</span><span class="value">34分</span></li>
+<li class="box clearfix"><span class="label">水泳</span><span class="value">17分</span></li>
+<li class="box clearfix"><span class="label">エアロビクス</span><span class="value">21分</span></li>
+<li class="box clearfix"><span class="label">山を登る</span><span class="value">22分</span></li>
+</ul>
+</div>
+<!-- #exercise end --></div>
+ 
+<h2>ぶどうを追加してカロリー計算機へ移動する</h2><div class="ccdsSingleFormBg">
+<form action="/calorie/calCalc.php" method="get" class="addCalculatorForm">
+<input type="hidden" name="addCalculator_x" value="1" />
+<p class="ccdsSingleNum">
+<input type="text" name="amount" class="amount ccdsSingleInput" value="204"  maxlength="6"  style="ime-mode:disabled" />g<span class="kcal singlelistKcal" >120</span>kcal
+<input type="image" name="redisplayGraph" class="redisplayGraph" src="//cdn.slism.jp/calorie/images/redisplayGraph.gif" alt="グラフ再表示" width="172" height="23" style="display:none; margin-left:10px; vertical-align: bottom;"/>
+</p>
+<input type="image" name="addCalculator" src="//cdn.slism.jp/calorie/images/add_calculatorA.gif" alt="カロリー・栄養計算機へ追加" width="162" height="23"/>
+<a href="/"><img src="//cdn.slism.jp/calorie/images/add_no_go_top.gif" width="131" height="23" alt="追加せずトップへ" class="topReturnImg" /></a>
+<input type="hidden" name="addNo" value="107116" />
+<input type="hidden" name="name" value="ぶどう" />
+<input type="hidden" name="kcal" class="hiddenKcal" value="120" />
+<input type="hidden" name="kpa" class="kpa" value="0.59" />
+<input type="hidden" name="amount_measure" value="g" />
+<input type="hidden" name="amount_comment" value="1房（可食部）" />
+<input type="hidden" name="amount_original" value="204" />
+<input type="hidden" name="foodImageFileName" value="107116.jpg" />
+</form>
+<!--/●ccdsSingleFormBg--></div>
+ 
+<div id="comment" style="margin-top: 10px;">
+<h2>ユーザが評価したぶどうのダイエット＆栄養口コミ</h2>
+<div style="padding:10px;">
+<p class="noneData" >まだユーザの口コミはありません。</p>
+<p style="line-height:20px; color: #aa5a19; margin: 10px 30px 20px 80px;">Twitterアカウントを利用してこの食品の栄養バランスやダイエット用食材としての評価をクチコミすることができます。</p>
+<noscript><p class="noneData">javascriptが有効でなければ、コメント機能はご利用いただけません。</p></noscript>
+
+<div style="text-align: right; padding-right: 30px;">
+<a href="/calorie/twitterOauth.php?no=107116" rel="nofollow"><img src="//cdn.slism.jp/calorie/images/twitterAuth.gif" /></a>
+</div>
+
+</div>
+</div><!-- /comment -->
+
+</div><!-- /data -->
+
+</div><!-- /contentsPadding -->
+</div><!-- /contents -->
+
+<div id="contentsTokushuRight">
+<a href="/"><img src="//cdn.slism.jp/calorie/images/ccdsMiniBanner_off.png" width="300" height="74" alt="カロリー計算[カロリーSlism]" style="margin-bottom:9px;" /></a>
+<div style="text-align:center; margin-bottom:2px;"><img src="//cdn.slism.jp/sblog/images/top/atxt01.gif" width="78" height="9" /></div>
+<div class="space01">
+<!--300x250-->
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-7618537432990152";
+/* カロリーSlism右上 */
+google_ad_slot = "8894241000";
+google_ad_width = 300;
+google_ad_height = 250;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+<!--/●space01--></div>
+<aside class="sidebar">
+<div class="ccds_sidehl">ぶどうが材料として使われている料理</div>
+<div class="menuContents">
+<ul>
+
+  <li><a href="/201267/">ぶどうケーキ</a></li>
+  <li><a href="/200878/">プリンアラモード</a></li>
+  <li><a href="/201266/">ぶどうゼリー</a></li>
+  <li><a href="/200598/">フルーツゼリー</a></li>
+
+</ul>
+
+</div>
+</aside>
+
+<aside class="sidebar">
+<div class="ccds_sidehl">カリウムが多い食品</div>
+<div class="menuContents">
+<ul>
+
+  <li><a href="/109020/">刻み昆布</a></li>
+  <li><a href="/109013/">鬼昆布</a></li>
+  <li><a href="/109017/">真昆布</a></li>
+  <li><a href="/109014/">がごめ昆布</a></li>
+  <li><a href="/109019/">利尻昆布</a></li>
+  <li><a href="/109015/">昆布</a></li>
+  <li><a href="/109040/">わかめ</a></li>
+  <li><a href="/109021/">とろろ昆布</a></li>
+  <li><a href="/109007/">岩海苔</a></li>
+  <li><a href="/109031/">ひじき</a></li>
+
+</ul>
+
+</div>
+</aside>
+
+<aside class="sidebar">
+<div class="ccds_sidehl">その他の果物</div>
+<div class="menuContents">
+<ul>
+
+  <li><a href="/107041/">バレンシアオレンジのカロリー</a></li>
+  <li><a href="/107124/">ブルーベリーのカロリー</a></li>
+  <li><a href="/107156/">レモンのカロリー</a></li>
+  <li><a href="/107060/">グズベリーのカロリー</a></li>
+  <li><a href="/107015/">いちじくのカロリー</a></li>
+  <li><a href="/107073/">ざくろのカロリー</a></li>
+  <li><a href="/107093/">夏みかんのカロリー</a></li>
+  <li><a href="/107009/">あんずの缶詰のカロリー</a></li>
+  <li><a href="/107001/">あけびの果肉のカロリー</a></li>
+  <li><a href="/107136/">桃のカロリー</a></li>
+
+</ul>
+
+</div>
+</aside>
+
+<aside class="sidebar">
+<div class="ccds_sidehl">カロリー・栄養一覧</div>
+<div class="menuContents">
+<ul><li>食品</li><li><ul><li><a href="/category/2/">穀類</a>(48)</li><li><a href="/category/3/">野菜</a>(164)</li><li><a href="/category/4/">果物</a>(81)</li><li><a href="/category/5/">いも・でん粉</a>(21)</li><li><a href="/category/6/">砂糖・甘味</a>(21)</li><li><a href="/category/7/">豆・種実</a>(28)</li><li><a href="/category/8/">きのこ</a>(21)</li><li><a href="/category/9/">海藻</a>(30)</li><li><a href="/category/10/">魚介類</a>(171)</li><li><a href="/category/11/">肉</a>(121)</li><li><a href="/category/12/">乳製品・卵</a>(36)</li><li><a href="/category/13/">調味料・香辛料・油</a>(156)</li><li><a href="/category/14/">飲料・酒</a>(78)</li></ul></li><li>料理</li><li><ul><li><a href="/category/16/">主食</a>(411)</li><li><a href="/category/17/">おかず・加工食品</a>(832)</li><li><a href="/category/18/">おやつ・おつまみ・お菓子</a>(276)</li></ul></li></ul>
+
+</div>
+</aside>
+
+<!--/●contentsTokushuRight--></div>
+
+<!--/●contentsTokushu --></div>
+
+<!--/●centerPositionCcds--></div>
+<div id="bgFooter">
+<div id="footer">
+<p class="toTop">
+<img src="//cdn.slism.jp/sblog/images/top/iconToHome.gif" width="14" height="11" style="vertical-align:middle;" /> <a href="http://calorie.slism.jp/">カロリーSlism TOP</a>
+<img src="//cdn.slism.jp/sblog/images/top/iconToHome.gif" width="14" height="11" style="vertical-align:middle;" /> <a href="http://slism.jp/">ダイエットSlism TOP</a>　
+<img src="//cdn.slism.jp/sblog/images/top/iconMoveTop.png" width="14" height="11" style="vertical-align:middle;" /> <a href="#toTop">ページの先頭へ戻る</a>
+<!-- .toTop end --></p>
+
+<ul class="footerNaviCalorie">
+<li><a href="http://slism.jp/">HOME</a> | </li>
+<li><a href="http://calorie.slism.jp/">カロリー・栄養</a> | </li>
+<li><a href="http://slism.jp/featured/">ダイエット特集</a> | </li>
+<li><a href="http://slism.jp/method/">ダイエット方法</a> | </li>
+<li><a href="http://slism.jp/diet-tool/">ダイエットツール</a> | </li>
+<li><a href="http://slism.jp/related_terms/">ダイエットワード</a> | </li>
+<li><a href="http://slism.jp/communication/">ニュース</a></li>
+<!--/●footerNavi--></ul>
+<address>Copyright (c) <a href="http://slism.jp/">Diet Slism</a> All Rights Reserved.</address>
+<!-- #footer end --></div>
+<!-- #bgFooter end --></div>
+</body>
+</html>
+

@@ -1,0 +1,597 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+<head>
+  <link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css' /><title>Amazon EC2 &mdash; MongoDB Ecosystem</title><link rel="shortcut icon" href="https://media.mongodb.org/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="index" />
+
+  <meta name="release" content="3.0"/>
+  <meta name="version" content="3.0"/>
+  <meta name="DC.Source" content="https://github.com/mongodb/docs-ecosystem/blob/master/source/platforms/amazon-ec2.txt"/>
+  <meta property="og:image" content="http://s3.amazonaws.com/info-mongodb-com/_com_assets/cms/mongodb-for-giant-ideas-bbab5c3cf8.png">
+  <meta property="og:image:secure_url" content="https://webassets.mongodb.com/_com_assets/cms/mongodb-for-giant-ideas-bbab5c3cf8.png">
+  
+   <link rel="stylesheet" href="../../_static/mongodb-docs.css" type="text/css" />
+   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+   <link rel="stylesheet" href="../../_static/css/navbar.min.css" type="text/css" />
+    
+  <script type="text/javascript" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" src="https://code.jquery.com/jquery-2.2.4.min.js" crossorigin=anonymous></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/lib/bootstrap.js"></script>
+    <script type="text/javascript" src="../../_static/lib/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../_static/controller.js"></script>
+
+  <script type="text/javascript">
+     function showNav() {
+       document.getElementById("sphinxsidebar").style.display = "block";
+       document.getElementById("left-column").style.display = "flex";
+       document.getElementById("showNav").style.display="none";
+     }
+
+     function closeNav() {
+       document.getElementById("showNav").style.display="flex";
+       document.getElementById("left-column").style.display="none";
+     }
+  </script>
+      <link rel="search" type="application/opensearchdescription+xml" href="https://docs.mongodb.com/osd.xml" title="MongoDB Help"/>
+<!-- <link rel="index" title="Index" href="../../genindex/" /> -->
+<link rel="search" title="Search" href="../../search/" />
+<link rel="top" title="MongoDB Ecosystem" href="../../" />
+<link rel="up" title="Platforms" href="../" />
+<link rel="next" title="EC2 Backup and Restore" href="../../tutorial/backup-and-restore-mongodb-on-amazon-ec2/" />
+<link rel="prev" title="Platforms" href="../" /><script type='text/javascript'>
+   var gptadslots=[];
+   var googletag = googletag || {};
+   googletag.cmd = googletag.cmd || [];
+   (function(){ var gads = document.createElement('script');
+      gads.async = true; gads.type = 'text/javascript';
+      var useSSL = 'https:' == document.location.protocol;
+      gads.src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt.js';
+      var node = document.getElementsByTagName('script')[0];
+      node.parentNode.insertBefore(gads, node);
+   })();
+</script>
+
+<script type="text/javascript">
+   googletag.cmd.push(function() {
+
+      //Adslot 1 declaration
+      gptadslots[1]= googletag.defineSlot('/40039723/docs.mongodb.org/ecosystem', [[160,600],[243,202],[293,244]],'mongodb-docs-eco-1').addService(googletag.pubads());
+
+      googletag.pubads().enableSingleRequest();
+      googletag.pubads().enableAsyncRendering();
+      googletag.enableServices();
+   });
+</script>
+  <script>
+    window['_fs_debug'] = false;
+    window['_fs_host'] = 'fullstory.com';
+    window['_fs_org'] = '54YFM';
+    window['_fs_namespace'] = 'FS';
+    (function(m,n,e,t,l,o,g,y){
+        if (e in m && m.console && m.console.log) { m.console.log('FullStory namespace conflict. Please set window["_fs_namespace"].'); return;}
+        g=m[e]=function(a,b){g.q?g.q.push([a,b]):g._api(a,b);};g.q=[];
+        o=n.createElement(t);o.async=1;o.src='https://'+_fs_host+'/s/fs.js';
+        y=n.getElementsByTagName(t)[0];y.parentNode.insertBefore(o,y);
+        g.identify=function(i,v){g(l,{uid:i});if(v)g(l,v)};g.setUserVars=function(v){g(l,v)};
+        g.identifyAccount=function(i,v){o='account';v=v||{};v.acctId=i;g(o,v)};
+        g.clearUserCookie=function(c,d,i){if(!c || document.cookie.match('fs_uid=[`;`]*`[`;`]*`[`;`]*`')){
+        d=n.domain;while(1){n.cookie='fs_uid=;domain='+d+
+        ';path=/;expires='+new Date(0).toUTCString();i=d.indexOf('.');if(i<0)break;d=d.slice(i+1)}}};
+    })(window,document,window['_fs_namespace'],'script','user');
+  </script></head>
+<body data-project="ecosystem" data-project-title="MongoDB Ecosystem" data-branch="master" data-enable-marian=1>
+  <!-- Google Tag Manager -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-JQHP"
+                    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push(
+     {'gtm.start': new Date().getTime(),event:'gtm.js'}
+   );var f=d.getElementsByTagName(s)[0],
+   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+   '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+   })(window,document,'script','dataLayer','GTM-JQHP');</script>
+  <!-- End Google Tag Manager -->
+<div id="navbar" data-navprops='{"links": [{"url": "https://docs.mongodb.com/manual/","text": "Server"},{"url": "https://docs.mongodb.com/ecosystem/drivers/","text": "Drivers","active": true},{"url": "https://docs.mongodb.com/cloud/","text": "Cloud"},{"url": "https://docs.mongodb.com/tools/","text": "Tools"},{"url": "https://docs.mongodb.com/tutorials/","text": "Tutorials"}]}'></div>
+   <script>
+      window.googleSearchCx = "014132741538533607290:vbud4n2gg40"
+      window.googleSearchPlaceholder = "Search Ecosystem"
+      window.googleSearchResultsUrl = "http://docs.mongodb.com/ecosystem/search/"
+   </script>
+    <script src="../../_static/navbar.min.js"></script>
+  
+
+
+
+  <div class="content" >
+
+
+   <div id="left-column">
+         <aside id="sidebar" class="sidebar">
+             
+  <div class="sphinxsidebar" id="sphinxsidebar">
+    <div id="sphinxsidebarwrapper" class="sphinxsidebarwrapper"><a href="javascript:void(0)" class="closeNav" id="closeNav" onclick="closeNav()">Close &times;</a>
+
+
+<h3>
+  <a href="../../">MongoDB Ecosystem</a>
+</h3>
+
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../drivers/">MongoDB Drivers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/c/">C Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/cpp/">C++ Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/csharp/">C# and .NET Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/java/">Java Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/node-js/">Node.js Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/perl/">Perl Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/php/">PHP Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../drivers/php-libraries/">PHP Libraries, Frameworks and Tools</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/python/">Python Driver</a></li>
+<li class="toctree-l2"><a class="reference external" href="https://docs.mongodb.com/ruby-driver/master/">Ruby Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/scala/">Scala Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/community-supported-drivers/">Community Supported Drivers Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/specs/">MongoDB Drivers Specs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/syntax-table/">Driver Syntax Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../drivers/driver-compatibility-reference/">Driver Compatibility</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/">MongoDB Integration and Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tools/hadoop/">MongoDB Connector for Hadoop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial/getting-started-with-hadoop/">Getting Started with Hadoop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../use-cases/hadoop/">Hadoop and MongoDB Use Cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial/configure-red-hat-enterprise-linux-identity-management/">Configure Red Hat Enterprise Linux Identity Management with MongoDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial/manage-red-hat-enterprise-linux-identity-management/">Operational Procedures using Red Hat Enterprise Linux Identity Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tools/http-interfaces/">HTTP Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tools/munin/">Munin Configuration Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tools/wireshark/">Wireshark Support for MongoDB Protocol</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../">Platforms</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Amazon EC2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial/backup-and-restore-mongodb-on-amazon-ec2/">EC2 Backup and Restore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../digitalocean/">DigitalOcean</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dotcloud/">dotCloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modulus/">Modulus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rackspace-cloud/">Rackspace Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../red-hat-openshift/">Red Hat OpenShift</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vmware-cloud-foundry/">VMware Cloud Foundry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../windows-azure/">Microsoft Azure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../windows/">Windows Quick Links and Reference Center</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../use-cases/">Use Cases</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../use-cases/storing-log-data/">Storing Log Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../use-cases/pre-aggregated-reports-mmapv1/">Pre-Aggregated Reports (MMAPv1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../use-cases/hierarchical-aggregation/">Hierarchical Aggregation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../use-cases/product-catalog/">Product Catalog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../use-cases/inventory-management/">Inventory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../use-cases/category-hierarchy/">Category Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../use-cases/metadata-and-asset-management/">Metadata and Asset Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../use-cases/storing-comments/">Storing Comments</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+           
+         </aside>
+
+   </div>
+
+
+    <div id="main-column" class="main-column">
+
+    <span id="showNav" class="showNav" onclick="showNav()">Navigation</span>
+
+
+      
+        <div class="document">
+            <div class="documentwrapper"><div class="bodywrapper">
+              <div class="body" data-pagename="platforms/amazon-ec2">
+                   <a class="edit-link" href="https://github.com/mongodb/docs-ecosystem/blob/master/source/platforms/amazon-ec2.txt" target="_blank" title="Edit platforms/amazon-ec2.txt on GitHub">
+    
+      <span class="icon-edit"></span>
+    
+  </a>
+                
+                
+   <div class="bc">
+     
+       <ul>
+          <li><a href="../">Platforms</a><span class="bcpoint"> > </span></li>
+          <li>Amazon EC2</li> 
+      </ul>
+    
+  </div>
+                
+                  <div class="section" id="amazon-ec2">
+<span id="id1"></span><h1>Amazon EC2<a class="headerlink" href="#amazon-ec2" title="Permalink to this headline">¶</a></h1>
+<div class="contents twocols local topic" id="on-this-page">
+<p class="topic-title first">On this page</p>
+<ul class="simple">
+<li><a class="reference internal" href="#mongodb-atlas-and-ec2" id="id4">MongoDB Atlas and EC2</a></li>
+<li><a class="reference internal" href="#mongodb-cloud-manager-and-ec2" id="id5">MongoDB Cloud Manager and EC2</a></li>
+<li><a class="reference internal" href="#storage-considerations" id="id6">Storage Considerations</a></li>
+<li><a class="reference internal" href="#manually-deploy-mongodb-on-ec2" id="id7">Manually Deploy MongoDB on EC2</a></li>
+<li><a class="reference internal" href="#backup-restore-verify" id="id8">Backup, Restore, Verify</a></li>
+<li><a class="reference internal" href="#deployment-notes" id="id9">Deployment Notes</a></li>
+<li><a class="reference internal" href="#additional-resources" id="id10">Additional Resources</a></li>
+</ul>
+</div>
+<p>To deploy MongoDB on <a class="reference external" href="http://aws.amazon.com/ec2/">Amazon EC2</a>, you
+can either:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#deploy-mongodb-ec2"><span class="std std-ref">Set up a new instance manually</span></a>, or</li>
+<li>Use MongoDB Atlas or MongoDB Cloud Manager.</li>
+</ul>
+<div class="section" id="mongodb-atlas-and-ec2">
+<h2>MongoDB Atlas and EC2<a class="headerlink" href="#mongodb-atlas-and-ec2" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://www.mongodb.com/cloud?jmp=docs">MongoDB Atlas</a> is a hosted
+database as a service from the team that engineers the database. Atlas
+deploys MongoDB on AWS EC2 instances. The MongoDB Atlas GUI allows you:</p>
+<ul class="simple">
+<li>Set up and manage your clusters</li>
+<li>Scale up or out with automated sharding</li>
+<li>Monitor your MongoDB deployments running in MongoDB Atlas</li>
+<li>Configure security controls</li>
+<li>Manage automated backups and failure recovery</li>
+</ul>
+<a class="reference internal image-reference" href="../../_images/ec2-atlas.png"><img alt="../../_images/ec2-atlas.png" src="../../_images/ec2-atlas.png" style="width: 697px;" /></a>
+</div>
+<div class="section" id="mongodb-cloud-manager-and-ec2">
+<h2>MongoDB Cloud Manager and EC2<a class="headerlink" href="#mongodb-cloud-manager-and-ec2" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://www.mongodb.com/cloud/cloud-manager?jmp=docs">MongoDB Cloud Manager</a> is a
+management platform for MongoDB, delivered as a cloud service. MongoDB
+Cloud Manager allows you to:</p>
+<ul class="simple">
+<li>Monitor your deployment and set custom alerts</li>
+<li>Automate database setup and maintenance</li>
+<li>Visualize and optimize query performance</li>
+<li>Manage automated backups and recovery</li>
+</ul>
+</div>
+<div class="section" id="storage-considerations">
+<span id="id3"></span><h2>Storage Considerations<a class="headerlink" href="#storage-considerations" title="Permalink to this headline">¶</a></h2>
+<p>EC2 instances can be configured with either ephemeral storage or
+persistent storage using the Elastic Block Store (EBS). Ephemeral
+storage is lost when instances are terminated, so it is generally not
+recommended unless you understand the data loss implications.</p>
+<p>For almost all deployments EBS will be the better choice. For
+production systems we recommend using</p>
+<ul class="simple">
+<li>EBS-optimized EC2 instances</li>
+<li>Provisioned IOPS (PIOPS) EBS volumes</li>
+</ul>
+<p>Storage configuration needs vary among deployments, but for best
+performance we recommend separate volumes for <em>data files</em>, the
+<em>journal</em>, and the <em>log</em>. Each has different write behavior, and
+placing them on separate volumes reduces I/O contention.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Using different storage devices will affect your ability to create
+snapshot-style backups of your data, since the files will be on
+different devices and volumes.</p>
+</div>
+<p>For optimal performance in terms of the storage layer, use disks
+backed by RAID-10. RAID-5 and RAID-6 do not typically provide
+sufficient performance to support a MongoDB deployment.</p>
+<p>Avoid RAID-0 with MongoDB deployments. While RAID-0 provides good write
+performance, it also provides limited availability and can lead to
+reduced performance on read operations, particularly when using
+Amazon’s EBS volumes.</p>
+</div>
+<div class="section" id="manually-deploy-mongodb-on-ec2">
+<span id="deploy-mongodb-ec2"></span><h2>Manually Deploy MongoDB on EC2<a class="headerlink" href="#manually-deploy-mongodb-on-ec2" title="Permalink to this headline">¶</a></h2>
+<p>The following steps can be used to deploy MongoDB on EC2 yourself. The
+instances will be configured with the following characteristics:</p>
+<ul class="simple">
+<li>Amazon Linux</li>
+<li>MongoDB installed via <code class="docutils literal"><span class="pre">yum</span></code></li>
+<li>Individual PIOPS EBS volumes for data (1000 IOPS), journal (250 IOPS),
+and log (100 IOPS)</li>
+<li>Updated read-ahead values for each block device</li>
+<li>Update ulimit settings</li>
+</ul>
+<p>Before continuing be sure to have the following:</p>
+<ul class="simple">
+<li>Install <a class="reference external" href="http://aws.amazon.com/developertools/351">EC2 command line tools</a></li>
+<li><a class="reference external" href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/generating-a-keypair.html">Generate an EC2 key pair</a> for connecting to the instance via SSH</li>
+<li><a class="reference external" href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html#creating-security-group">Create a security group</a> that allows SSH connections</li>
+</ul>
+<p>Create the instance using the key pair and security group previously
+created and also include the <code class="xref mongodb mongodb-setting docutils literal"><span class="pre">--ebs-optimized</span></code> flag and
+specify individual PIOPS EBS volumes (<code class="file docutils literal"><span class="pre">/dev/xvdf</span></code> for data,
+<code class="file docutils literal"><span class="pre">/dev/xvdg</span></code> for journal, <code class="file docutils literal"><span class="pre">/dev/xvdh</span></code> for log). Refer to the
+documentation for <a class="reference external" href="http://docs.aws.amazon.com/AWSEC2/latest/CommandLineReference/ApiReference-cmd-RunInstances.html">ec2-run-instances</a>
+for more information on devices and parameters.:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>ec2-run-instances ami-05355a6c -t m1.large -g <span class="o">[</span>SECURITY-GROUP<span class="o">]</span> -k <span class="o">[</span>KEY-PAIR<span class="o">]</span> -b <span class="s2">&quot;/dev/xvdf=:200:false:io1:1000&quot;</span> -b <span class="s2">&quot;/dev/xvdg=:25:false:io1:250&quot;</span> -b <span class="s2">&quot;/dev/xvdh=:10:false:io1:100&quot;</span> --ebs-optimized <span class="nb">true</span>
+</pre></div>
+</div>
+<p>You can use the returned instance-id to ascertain the IP Address or
+DNS information for the instance:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>ec2-describe-instances <span class="o">[</span>INSTANCE-ID<span class="o">]</span>
+</pre></div>
+</div>
+<p>Now SSH into the instance:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>ssh -i /path/to/keypair.pem ec2-user@ec2-1-2-3-4.amazonaws.com
+</pre></div>
+</div>
+<p>After login, update installed packages, add the MongoDB yum repo, and install MongoDB:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s2">&quot;[mongodb-org-3.4]</span>
+<span class="s2">name=MongoDB Repository</span>
+<span class="s2">baseurl=https://repo.mongodb.org/yum/amazon/2013.03/mongodb-org/3.4/x86_64/</span>
+<span class="s2">gpgcheck=1</span>
+<span class="s2">enabled=1</span>
+<span class="s2">gpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc&quot;</span> <span class="p">|</span>
+  sudo tee -a /etc/yum.repos.d/mongodb-org-3.4.repo
+</pre></div>
+</div>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>sudo yum -y update <span class="o">&amp;&amp;</span> sudo yum install -y mongodb-org-server <span class="se">\</span>
+    mongodb-org-shell mongodb-org-tools
+</pre></div>
+</div>
+<p>Next, create/configure the mount points, mount each volume, set
+ownership (MongoDB runs under the <code class="xref mongodb mongodb-setting docutils literal"><span class="pre">mongod</span></code> user/group), and
+set the <code class="file docutils literal"><span class="pre">/journal</span></code> link:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>sudo mkdir /data /log /journal
+
+sudo mkfs.xfs /dev/xvdf
+sudo mkfs.xfs /dev/xvdg
+sudo mkfs.xfs /dev/xvdh
+
+<span class="nb">echo</span> <span class="s1">&#39;/dev/xvdf /data xfs defaults,auto,noatime,noexec 0 0</span>
+<span class="s1">/dev/xvdg /journal xfs defaults,auto,noatime,noexec 0 0</span>
+<span class="s1">/dev/xvdh /log xfs defaults,auto,noatime,noexec 0 0&#39;</span> <span class="p">|</span> sudo tee -a /etc/fstab
+
+sudo mount /data
+sudo mount /journal
+sudo mount /log
+
+sudo chown mongod:mongod /data /journal /log
+
+sudo ln -s /journal /data/journal
+</pre></div>
+</div>
+<p>Now configure the following MongoDB parameters by editing the
+configuration file <code class="file docutils literal"><span class="pre">/etc/mongod.conf</span></code> so that it contains the
+following:</p>
+<div class="highlight-ini"><div class="highlight"><pre><span></span><span class="na">dbpath</span> <span class="o">=</span> <span class="s">/data</span>
+<span class="na">logpath</span> <span class="o">=</span> <span class="s">/log/mongod.log</span>
+</pre></div>
+</div>
+<p>If you don’t want MongoDB to start at boot, you can issue the following
+command:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>sudo chkconfig mongod off
+</pre></div>
+</div>
+<p>By default Amazon Linux uses <code class="xref mongodb mongodb-program docutils literal"><span class="pre">ulimit</span></code> settings that are not
+appropriate for MongoDB. To setup <code class="xref mongodb mongodb-program docutils literal"><span class="pre">ulimit</span></code> to match the
+documented <a class="reference external" href="http://docs.mongodb.org/manual/reference/ulimit">ulimit settings</a>, run the
+following command:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s1">&#39;* soft nofile 64000</span>
+<span class="s1">* hard nofile 64000</span>
+<span class="s1">* soft nproc 64000</span>
+<span class="s1">* hard nproc 64000&#39;</span> <span class="p">|</span> sudo tee /etc/security/limits.d/90-mongodb.conf
+</pre></div>
+</div>
+<p>Additionally, default read ahead settings on EC2 may not be optimized for
+MongoDB. Refer to the <a class="reference external" href="http://docs.mongodb.org/manual/administration/production-notes">Production
+Notes</a> for the recommended configuration
+for your Linux distribution and selected MongoDB storage engine.
+For example, to set readahead to 0 for use with the WiredTiger storage engine,</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>sudo blockdev --setra <span class="m">0</span> /dev/xvdf
+</pre></div>
+</div>
+<p>To make this change persistent across system boot, issue the following
+command:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s1">&#39;ACTION==&quot;add|change&quot;, KERNEL==&quot;xvdf&quot;, ATTR{bdi/read_ahead_kb}=&quot;0&quot;&#39;</span> <span class="p">|</span> sudo tee -a /etc/udev/rules.d/85-ebs.rules
+</pre></div>
+</div>
+<p>Once again, repeat the above command for all required volumes (note:
+the device we created was named <code class="file docutils literal"><span class="pre">/dev/xvdf</span></code> but the name used by
+the system is <code class="file docutils literal"><span class="pre">xvdf</span></code>).</p>
+<p>To start <code class="xref mongodb mongodb-program docutils literal"><span class="pre">mongod</span></code>, issue the following command:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>sudo service mongod start
+</pre></div>
+</div>
+<p>Then connect to the MongoDB instance using the <code class="xref mongodb mongodb-program docutils literal"><span class="pre">mongo</span></code> shell:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>mongo
+</pre></div>
+</div>
+<p>To have MongoDB startup automatically at boot issue the following command:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>sudo chkconfig mongod on
+</pre></div>
+</div>
+<p>For production deployments consider using <a class="reference external" href="http://docs.mongodb.org/manual/replication/">Replica Sets</a> or <a class="reference external" href="http://docs.mongodb.org/manual/sharding/">Sharding</a>.</p>
+</div>
+<div class="section" id="backup-restore-verify">
+<h2>Backup, Restore, Verify<a class="headerlink" href="#backup-restore-verify" title="Permalink to this headline">¶</a></h2>
+<p>Depending upon the configuration of your EC2 instances, there are a
+number of ways to conduct regular backups of your data. For specific
+instructions on backing up, restoring and verifying refer to
+<a class="reference internal" href="../../tutorial/backup-and-restore-mongodb-on-amazon-ec2/#ec2-backup-and-restore"><span class="std std-ref">EC2 Backup and Restore</span></a>.</p>
+</div>
+<div class="section" id="deployment-notes">
+<h2>Deployment Notes<a class="headerlink" href="#deployment-notes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="instance-types">
+<h3>Instance Types<a class="headerlink" href="#instance-types" title="Permalink to this headline">¶</a></h3>
+<p>MongoDB works on most 64-bit EC2 types including Linux and Windows.
+Refer to the <a class="reference external" href="http://docs.mongodb.org/manual/installation">Supported Platforms</a> documentation
+to ensure your selected platform is compatible with your version
+of MongoDB.</p>
+<div class="section" id="running-mongodb">
+<h4>Running MongoDB<a class="headerlink" href="#running-mongodb" title="Permalink to this headline">¶</a></h4>
+<p>Before starting a <code class="xref mongodb mongodb-program docutils literal"><span class="pre">mongod</span></code> instance, decide where to put your
+data files.  Run <code class="xref mongodb mongodb-program docutils literal"><span class="pre">df</span> <span class="pre">-h</span></code> to see a list of available
+volumes. On some images, <code class="file docutils literal"><span class="pre">/mnt</span></code> will be the locally-attached
+storage volume. Alternatively, you may want to use <a class="reference external" href="http://aws.amazon.com/ebs/">Elastic Block Store</a> which will have a different mount
+point.</p>
+<p>Mounting the filesystem with the <code class="docutils literal"><span class="pre">mount</span> <span class="pre">-o</span> <span class="pre">noatime</span></code> option can
+improve disk performance. For example, the following is an example
+of an <code class="docutils literal"><span class="pre">/etc/fstab</span></code> stanza with this option:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">mapper</span><span class="o">/</span><span class="n">my_vol</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mongodb</span> <span class="n">xfs</span> <span class="n">noatime</span><span class="p">,</span><span class="n">noexec</span> <span class="mi">0</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>Create the mongodb data file directory in the desired location and then
+start the <code class="xref mongodb mongodb-program docutils literal"><span class="pre">mongod</span></code> server:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>mkdir /mnt/db
+./mongod --fork --logpath ~/mongod.log --dbpath /mnt/db/
+</pre></div>
+</div>
+</div>
+<div class="section" id="operating-system">
+<h4>Operating System<a class="headerlink" href="#operating-system" title="Permalink to this headline">¶</a></h4>
+<p>Refer to the MongoDB on Virtual Environments section of the
+<a class="reference external" href="http://docs.mongodb.org/manual/administration/production-notes">Production Notes</a> for
+configuration recommendations.</p>
+</div>
+</div>
+<div class="section" id="networking">
+<h3>Networking<a class="headerlink" href="#networking" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="port-management">
+<h4>Port Management<a class="headerlink" href="#port-management" title="Permalink to this headline">¶</a></h4>
+<p>By default, the <code class="xref mongodb mongodb-program docutils literal"><span class="pre">mongod</span></code> listens on port <code class="docutils literal"><span class="pre">27017</span></code>. To change
+the default port, use the <a class="reference external" href="https://docs.mongodb.com/manual/reference/configuration-options/#net.port" title="(in mongodb-manual v3.4)"><code class="xref mongodb mongodb-setting docutils literal"><span class="pre">net.port</span></code></a> setting or
+<a class="reference external" href="https://docs.mongodb.com/manual/reference/program/mongotop/#cmdoption-port" title="(in mongodb-manual v3.4)"><code class="xref std std-option docutils literal"><span class="pre">--port</span></code></a> option.</p>
+</div>
+<div class="section" id="keepalive">
+<h4>Keepalive<a class="headerlink" href="#keepalive" title="Permalink to this headline">¶</a></h4>
+<p>Change the default TCP keepalive time to 300 seconds. See our
+<a class="reference external" href="http://docs.mongodb.org/manual/faq/diagnostics">troubleshooting</a> page for details.</p>
+</div>
+<div class="section" id="enhanced-networking-on-supported-instance-types">
+<h4>Enhanced Networking on Supported Instance Types<a class="headerlink" href="#enhanced-networking-on-supported-instance-types" title="Permalink to this headline">¶</a></h4>
+<p>When available, enable AWS’s <a class="reference external" href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/enhanced-networking.html#enabling_enhanced_networking">Enhanced Networking</a>
+for your instance. Not all instance types support Enhanced Networking.
+Refer to the <a class="reference external" href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/enhanced-networking.html#enabling_enhanced_networking">AWS documentation</a>
+for more information.</p>
+</div>
+</div>
+<div class="section" id="secure-instances">
+<h3>Secure Instances<a class="headerlink" href="#secure-instances" title="Permalink to this headline">¶</a></h3>
+<p>Restrict access to your instances by using the Security Groups feature
+within AWS. A Security Group is a set of firewall rules for incoming
+packets that can apply to TCP, UDP or ICMP.</p>
+<p>A common approach is to create a MongoDB security group that contains
+the nodes of your cluster (replica set members or sharded cluster
+members), followed by the creation of a separate security group for your
+app servers or clients.</p>
+<p>Create a rule in your MongoDB security group with the “source” field set
+to the Security Group name containing your app servers and the port set
+to 27017 (or whatever port you use for your MongoDB). This will ensure
+that only your app servers have permission to connect to your MongoDB
+instances.</p>
+<p>Remember that Security Groups only control ingress traffic.</p>
+</div>
+<div class="section" id="communication-across-regions">
+<h3>Communication Across Regions<a class="headerlink" href="#communication-across-regions" title="Permalink to this headline">¶</a></h3>
+<p>Every EC2 instance will have a private IP address that can be used to
+communicate within the EC2 network. It is also possible to assign a
+public “elastic” IP to communicate with the servers from another
+network. If using different EC2 regions, servers can only communicate
+via public IPs.</p>
+<p>To set up a cluster of servers that spans multiple regions, it is
+recommended to name the server hostname to the “public dns name”
+provided by EC2. This will ensure that servers from a different network
+use the public IP, while the local servers use the private IP, thereby
+saving costs. This is required since EC2 security groups are local to a
+region.</p>
+<p>To control communications between instances in different regions (for
+example, if you have two members of a replica set in one region and a
+third member in another), it is possible to use a built-in firewall
+(such as IPtables on Linux) to restrict allowed traffic to certain
+(elastic) IP addresses or ports.</p>
+<p>For example one solution is following, on each server:</p>
+<ul class="simple">
+<li>set the hostname of the server</li>
+</ul>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>sudo hostname server1
+</pre></div>
+</div>
+<ul class="simple">
+<li>install “bind”, it will serve as local resolver</li>
+<li>add a zone for your domain, say “myorg.com”, and add the CNAMEs for all your servers</li>
+</ul>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">server1</span>          <span class="n">IN</span>     <span class="n">CNAME</span>   <span class="n">ec2</span><span class="o">-</span><span class="mi">50</span><span class="o">-</span><span class="mi">19</span><span class="o">-</span><span class="mi">237</span><span class="o">-</span><span class="mf">42.</span><span class="n">compute</span><span class="o">-</span><span class="mf">1.</span><span class="n">amazonaws</span><span class="o">.</span><span class="n">com</span><span class="o">.</span>
+<span class="n">server2</span>          <span class="n">IN</span>     <span class="n">CNAME</span>   <span class="n">ec2</span><span class="o">-</span><span class="mi">50</span><span class="o">-</span><span class="mi">18</span><span class="o">-</span><span class="mi">157</span><span class="o">-</span><span class="mf">87.</span><span class="n">us</span><span class="o">-</span><span class="n">west</span><span class="o">-</span><span class="mf">1.</span><span class="n">compute</span><span class="o">.</span><span class="n">amazonaws</span><span class="o">.</span><span class="n">com</span><span class="o">.</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>restart bind and modify /etc/resolv.conf to use the local bind</li>
+</ul>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">search</span> <span class="n">myorg</span><span class="o">.</span><span class="n">conf</span>
+<span class="n">nameserver</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span>
+</pre></div>
+</div>
+<p>Then:</p>
+<ul class="simple">
+<li>verify that you can properly resolve server1, server2, … using a
+tool like dig.</li>
+<li>when running mongod, <code class="xref mongodb mongodb-method docutils literal"><span class="pre">db.serverStatus()</span></code> should show the
+correct hostname, e.g. “server1:27017”.</li>
+<li>you can then set up replica sets or shards using the simple
+hostname. For example connect to server1 and run
+<code class="samp docutils literal"><span class="pre">rs.initiate()</span></code>, then <code class="samp docutils literal"><span class="pre">rs.add('server2:27017')</span></code>.</li>
+</ul>
+</div>
+</div>
+<div class="commref section" id="additional-resources">
+<h2>Additional Resources<a class="headerlink" href="#additional-resources" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://www.mongodb.com/blog/post/virtualizing-mongodb-amazon-ec2-and-gce-part-1?jmp=docs">Virtualizing MongoDB on Amazon EC2 and GCE: Part 1</a></li>
+<li><a class="reference external" href="https://www.mongodb.com/blog/post/virtualizing-mongodb-amazon-ec2-and-gce-part-2?jmp=docs">Virtualizing MongoDB on Amazon EC2 and GCE: Part 2</a></li>
+</ul>
+</div>
+</div>
+
+                
+    <div id="btnv">
+      <span class="btn-arrow-left">&larr; &nbsp;</span>
+      <a class="btn-prev-text" href="../" title="Previous Section: Platforms"><span>Platforms</span></a>
+      <a class="btn-next-text" href="../../tutorial/backup-and-restore-mongodb-on-amazon-ec2/" title="Next Section: EC2 Backup and Restore"><span>EC2 Backup and Restore</span></a>
+      <span class="btn-arrow-right">&nbsp;&rarr;</span>
+    </div>
+                  <div class="footer">
+                    <div class="copyright">
+                      <p>&copy; MongoDB, Inc 2008-present. MongoDB, Mongo, and the leaf logo are registered trademarks of MongoDB, Inc.</p>
+                    </div>
+                  </div>
+              </div></div>
+            </div>
+        </div>
+    </div>
+    <div class="right-column">
+      <div class="wrapper"> <div id='mongodb-docs-eco-1'>
+   <script type='text/javascript'>
+      googletag.cmd.push(function() { googletag.display('mongodb-docs-eco-1'); });
+   </script>
+</div>
+           <div class="social">
+             <a class="twitter-icon" href="https://twitter.com/MongoDB"><i class="fa fa-twitter-square"></i></a>
+             <a class="youtube-icon" href="https://www.youtube.com/user/MongoDB"><i class="fa fa-youtube-square"></i></a>
+             <a class="facebook-icon" href="https://www.facebook.com/mongodb"><i class="fa fa-facebook-square"></i></a>
+             <a class="gplus-icon" href="https://plus.google.com/u/1/101024085748034940765/posts?cfem=1"><i class="fa fa-google-plus-square"></i></a>
+           </div>
+        
+      </div>
+    </div>
+    
+      <div id="rating-panel"></div>
+    
+    <div class="clearfix"></div>
+  </div>
+  
+
+  <script type="text/javascript">
+  // Bootstrap array of links that should trigger a full page reload
+  window.docsExcludedNav = ['/drivers', '/drivers/c', '/drivers/cpp', '/drivers/csharp', '/drivers/go', '/drivers/erlang', '/drivers/node-js', '/drivers/perl', '/drivers/php', '/drivers/python', '/drivers/ruby', '/drivers/scala'];
+  </script></body>
+</html>

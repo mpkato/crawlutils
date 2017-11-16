@@ -1,0 +1,202 @@
+<!DOCTYPE html><html xmlns:og="http://ogp.me/ns#"><head><meta charset="UTF-8" /><title>AWSのEC2 (Amazon Linux) に mongoDBをインストールするメモ - Qiita</title><meta content="width=device-width,initial-scale=1" name="viewport" /><meta content="yum install mongoDB で落ちてこない。
+
+このページを参照する。
+Amazon EC2 へMongoDBをインストール(公式・英語)
+
+日本語じゃないと・・・という人へメモ
+
+
+yumリポジトリを追加
+
+
+mondodb.repoを新規作成
+echo &quot;[MongoDB]
+name=MongoDB Repository
+baseurl=http://downloads-distro.mongodb.org/repo/redhat/os/x86_64
+g..." name="description" /><meta content="summary" name="twitter:card" /><meta content="@Qiita" name="twitter:site" /><meta content="hajimeni" name="twitter:creator" /><meta content="AWSのEC2 (Amazon Linux) に mongoDBをインストールするメモ - Qiita" property="og:title" /><meta content="article" property="og:type" /><meta content="https://qiita.com/hajimeni/items/c8a8f0a07444d88e8014" property="og:url" /><meta content="https://cdn.qiita.com/assets/qiita-fb-2887e7b4aad86fd8c25cea84846f2236.png" property="og:image" /><meta content="`yum install mongoDB` で落ちてこない。
+
+このページを参照する。
+[Amazon EC2 へMongoDBをインストール(公式・英語)](http://docs.mongodb.org/ecosystem/pla..." property="og:description" /><meta content="Qiita" property="og:site_name" /><meta content="564524038" property="fb:admins" /><link rel="canonical" href="https://qiita.com/hajimeni/items/c8a8f0a07444d88e8014" /><link rel="shortcut icon" type="image/x-icon" href="https://cdn.qiita.com/assets/favicons/public/production-4ff10c1e1e2b5fcb353ff9cafdd56c70.ico" /><link rel="apple-touch-icon" type="image/png" href="https://cdn.qiita.com/assets/favicons/public/apple-touch-icon-f9a6afad761ec2306e10db2736187c8b.png" /><link href="/opensearch.xml" rel="search" title="Qiita" type="application/opensearchdescription+xml" /><link rel="stylesheet" media="all" href="https://cdn.qiita.com/assets/public-7e6a9de37970b22eaed66941598bb109.min.css" /><meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="q/YBkNHVMp2YFcTQCMPED6g5xtvjDxb8pXbKjPA+z7Ljns/Tkv7UplzJZSW5gBlkKoYlrEMpcyiMoUXJJ3xBtw==" /><script>
+  window.gtmDataLayer = [
+    {
+      'analytics.dimension5': 'false',
+      'app.env': 'production',
+      'app.layoutVersion': 1,
+      'app.userId': null
+    },
+    { 'gtm.start': new Date().getTime(), event: 'gtm.js' }
+  ];
+</script>
+<script src="https://www.googletagmanager.com/gtm.js?id=GTM-TBQWPN&l=gtmDataLayer" async></script>
+</head><body class="without-js" id=""><noscript><iframe height="0" src="//www.googletagmanager.com/ns.html?id=GTM-TBQWPN" style="display:none;visibility:hidden" width="0"></iframe></noscript><script>
+  document.body.className = document.body.className.replace('without-js', '') + ' with-js';
+  window.Qiita = {"asset_host":"cdn.qiita.com","TLD":"com","controller_path":"public/items","controller_action":"public/items#show","controller":"items","action":"show","action_path":"public/items#show","env":"production","flash":{},"is_team_page":false,"request_parameters":{"controller":"public/items","action":"show","user_id":"hajimeni","type":"items","id":"c8a8f0a07444d88e8014"},"root_domain":"qiita.com","variant":null,"config":{"mixpanel":{"per_team":"c0a2116368b33b44b5029ebd2cc9b094","public":"17d24b448ca579c365d2d1057f3a1791","team":"b7c0342acba2dbc8742484d98788efb3"},"default_locale":"en","locale":"ja"},"team":null,"user":null,"GIT_BRANCH":null,"DEBUG":false};
+
+</script>
+<div class="headerContainer headerContainer-public" role="navigation"><script type="application/json" class="js-react-on-rails-component" data-component-name="HeaderContainer" data-dom-id="HeaderContainer-react-component-d14f7d07-2e16-4b9d-af0b-0928bf62514b">{"user":null,"team":null,"news":{"type":"Release","content":"Qiitaユーザー向けのMastodon、Qiitadon を試験的に公開しました","url":"http://blog.qiita.com/post/161193715974/qiitadon?utm_source=qiita\u0026utm_medium=header_news"},"initial_unread_count":null,"siteid_image":"https://cdn.qiita.com/siteid-reverse.png","is_team_page":false,"on_team_setting":false,"show_post_menu":true,"show_search_menu":true,"is_fluid":false,"locale":"ja"}</script>
+    <div id="HeaderContainer-react-component-d14f7d07-2e16-4b9d-af0b-0928bf62514b"></div>
+    
+</div><div id="main"><script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', '', 'auto', { name: 'userTracker' });
+ga('userTracker.send', 'pageview');</script><script async="" src="https://www.google-analytics.com/analytics.js"></script><script type="application/ld+json">{  "@context": "http://schema.org",  "@type": "BreadcrumbList",  "itemListElement": [    {      "@type": "ListItem",      "position": 1,      "item": {        "@id": "/",        "name": "Qiita"      }    },    {      "@type": "ListItem",      "position": 2,      "item": {        "@id": "/items",        "name": "投稿"      }    },    {      "@type": "ListItem",      "position": 3,      "item": {        "@id": "/tags/AWS",        "name": "AWS"      }    }  ]}</script><article itemscope="" itemtype="http://schema.org/Article"><div class="ArticleMainHeader "><div class="container"></div><div class="container"><div class="row s-flex-align-center"><div class="col-sm-9"><h1 class="ArticleMainHeader__title" itemprop="headline">AWSのEC2 (Amazon Linux) に mongoDBをインストールするメモ</h1><ul class="TagList"><li class="TagList__item" data-count="7077"><a class="u-link-unstyled TagList__label" href="/tags/AWS"><img alt="AWS" class="TagList__icon" src="https://s3-ap-northeast-1.amazonaws.com/qiita-tag-image/e4c5b2934424684d712ca939b6d82a4da7722844/medium.jpg?1479386754" /><span>AWS</span></a></li><li class="TagList__item" data-count="1094"><a class="u-link-unstyled TagList__label" href="/tags/EC2"><img alt="EC2" class="TagList__icon" src="https://s3-ap-northeast-1.amazonaws.com/qiita-tag-image/4ae615331431e777bdbb02397a470487a260327f/medium.jpg?1429788488" /><span>EC2</span></a></li><li class="TagList__item" data-count="290"><a class="u-link-unstyled TagList__label" href="/tags/AmazonLinux"><img alt="AmazonLinux" class="TagList__icon" src="https://s3-ap-northeast-1.amazonaws.com/qiita-tag-image/14944b1133beaa34a7fca8b31679e095111b8021/medium.jpg?1425321525" /><span>AmazonLinux</span></a></li><li class="TagList__item" data-count="872"><a class="u-link-unstyled TagList__label" href="/tags/MongoDB"><img alt="MongoDB" class="TagList__icon" src="https://s3-ap-northeast-1.amazonaws.com/qiita-tag-image/666f5dc4780b97e9410ae3effeeb13fd64e17291/medium.jpg?1364839063" /><span>MongoDB</span></a></li></ul></div><div class="col-sm-3"><div class="itemsShowHeaderStock"><ul class="list-unstyled itemsShowHeaderStock_statusList"><li><div class="itemsShowHeaderStock_count stock"><span class="fa fa-thumbs-up"></span><span class="js-likecount">37</span></div><div class="itemsShowHeaderStock_countText">いいね</div></li><li><div class="itemsShowHeaderStock_count" content="0 UserComments" itemprop="commentCount"><span class="fa fa-comment"></span>0</div><div class="itemsShowHeaderStock_countText">コメント</div></li></ul></div><div class="js-likebutton" data-props="{&quot;like_status&quot;:false,&quot;like_count&quot;:37,&quot;uuid&quot;:&quot;c8a8f0a07444d88e8014&quot;,&quot;likable_type&quot;:&quot;Article&quot;,&quot;position&quot;:&quot;article-header&quot;}"></div><ul class="list-inline ArticleMainHeader__users"><li class="js-hovercard" data-hovercard-target-name="yunonymous"><a itemprop="url" href="/yunonymous"><img alt="yunonymous" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/128199/profile-images/1473717130" /></a></li><li class="js-hovercard" data-hovercard-target-name="tos-miyake"><a itemprop="url" href="/tos-miyake"><img alt="tos-miyake" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/31015/profile-images/1473685600" /></a></li><li class="js-hovercard" data-hovercard-target-name="hirym"><a itemprop="url" href="/hirym"><img alt="hirym" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/94388/profile-images/1473706252" /></a></li><li class="js-hovercard" data-hovercard-target-name="rentalname@github"><a itemprop="url" href="/rentalname@github"><img alt="rentalname@github" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/13697/profile-images/1473682969" /></a></li><li class="js-hovercard" data-hovercard-target-name="circularuins"><a itemprop="url" href="/circularuins"><img alt="circularuins" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/36889/profile-images/1473687238" /></a></li><li class="js-hovercard" data-hovercard-target-name="ichiki1023"><a itemprop="url" href="/ichiki1023"><img alt="ichiki1023" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/73659/profile-images/1473699579" /></a></li><li class="js-hovercard" data-hovercard-target-name="bisque33"><a itemprop="url" href="/bisque33"><img alt="bisque33" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/32701/profile-images/1474153370" /></a></li><li class="js-hovercard" data-hovercard-target-name="Yasu-umi"><a itemprop="url" href="/Yasu-umi"><img alt="Yasu-umi" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/54969/profile-images/1492103495" /></a></li><li class="js-hovercard" data-hovercard-target-name="tomookaku"><a itemprop="url" href="/tomookaku"><img alt="tomookaku" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/32563/profile-images/1473685930" /></a></li><li class="js-hovercard" data-hovercard-target-name="chubchubkun"><a itemprop="url" href="/chubchubkun"><img alt="chubchubkun" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/47556/profile-images/1473761129" /></a></li><li><a href="/hajimeni/items/c8a8f0a07444d88e8014/likers"><span class="fa fa-ellipsis-h"></span></a></li></ul></div></div></div></div><div class="ArticleAsideHeader"><div class="container"><div class="u-flex u-space-between"><div class="u-flex u-flex-wrap"><div class="u-flex u-align-center s-pdv-5 u-flex-wrap"><div class="ArticleAsideHeader__author"><a href="/hajimeni"><img class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/1546/profile-images/1473683646" alt="1473683646" /></a> <a class="u-link-unstyled" href="/hajimeni">hajimeni</a> </div><div class="ArticleAsideHeader__date"><span><time datetime="2014-06-12T17:41:35+09:00" itemprop="datePublished">2014年06月12日</time>に投稿</span></div></div><div class="u-flex u-align-center s-pdv-5 mobile-hidden"></div><div class="u-flex u-align-center s-pdv-5 mobile-hidden"></div></div><div class="u-flex u-align-center s-flex-justiry-between s-pdv-5 u-shrink-0"><div class="ArticleAsideHeader__stock"><div class="js-stockbutton" data-position="top" data-props="{&quot;stock_status&quot;:false}"></div></div><div class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="fa fa-ellipsis-h fa-lg"></span></a><ul class="dropdown-menu dropdown-menu-right"><li><a href="/hajimeni/items/c8a8f0a07444d88e8014.md"><span class="fa fa-fw fa-file-text-o"></span> Markdownで本文を見る</a></li><li><a data-target=".js-report-form" data-toggle="modal" href="#"><span class="fa fa-fw fa-flag"></span> 問題がある投稿を報告する</a></li></ul></div></div></div></div></div><div class="container"><div class="row" id="article-body-wrapper"><div class="col-sm-9"><section class="markdownContent markdownContent-headingEnabled js-task-list-container clearfix position-relative" id="item-c8a8f0a07444d88e8014" itemprop="articleBody"><div class="alert alert-warning"><i class="fa fa-clock-o"></i> この記事は最終更新日から1年以上が経過しています。</div><p><code>yum install mongoDB</code> で落ちてこない。</p>
+
+<p>このページを参照する。<br>
+<a href="http://docs.mongodb.org/ecosystem/platforms/amazon-ec2/" rel="nofollow noopener" target="_blank">Amazon EC2 へMongoDBをインストール(公式・英語)</a></p>
+
+<p>日本語じゃないと・・・という人へメモ</p>
+
+<h4>
+<span id="yumリポジトリを追加" class="fragment"></span><a href="#yum%E3%83%AA%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA%E3%82%92%E8%BF%BD%E5%8A%A0"><i class="fa fa-link"></i></a>yumリポジトリを追加</h4>
+
+<div class="code-frame" data-lang="bash">
+<div class="code-lang"><span class="bold">mondodb.repoを新規作成</span></div>
+<div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s2">"[MongoDB]</span>
+<span class="s2">name=MongoDB Repository</span>
+<span class="s2">baseurl=http://downloads-distro.mongodb.org/repo/redhat/os/x86_64</span>
+<span class="s2">gpgcheck=0</span>
+<span class="s2">enabled=1"</span> <span class="p">|</span> sudo tee -a /etc/yum.repos.d/mongodb.repo
+</pre></div>
+</div>
+
+<h4>
+<span id="インストール可能になるmongo一覧" class="fragment"></span><a href="#%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E5%8F%AF%E8%83%BD%E3%81%AB%E3%81%AA%E3%82%8Bmongo%E4%B8%80%E8%A6%A7"><i class="fa fa-link"></i></a>インストール可能になるmongo一覧</h4>
+
+<div class="code-frame" data-lang="bash">
+<div class="code-lang"><span class="bold">yumのlist</span></div>
+<div class="highlight"><pre><span></span>yum list <span class="p">|</span> grep mongo
+</pre></div>
+</div>
+
+<p><code>mongo-10gen.x86_64                   2.4.10-mongodb_1               MongoDB<br>
+mongo-10gen-server.x86_64            2.4.10-mongodb_1               MongoDB<br>
+mongo-10gen-unstable.x86_64          2.5.2-mongodb_1                MongoDB<br>
+mongo-10gen-unstable-mongos.x86_64   2.5.2-mongodb_1                MongoDB<br>
+mongo-10gen-unstable-server.x86_64   2.5.2-mongodb_1                MongoDB<br>
+mongo-10gen-unstable-shell.x86_64    2.5.2-mongodb_1                MongoDB<br>
+mongo-10gen-unstable-tools.x86_64    2.5.2-mongodb_1                MongoDB<br>
+mongo18-10gen.x86_64                 1.8.5-mongodb_1                MongoDB<br>
+mongo18-10gen-server.x86_64          1.8.5-mongodb_1                MongoDB<br>
+mongo20-10gen.x86_64                 2.0.8-mongodb_1                MongoDB<br>
+mongo20-10gen-server.x86_64          2.0.8-mongodb_1                MongoDB<br>
+mongodb-org.x86_64                   2.6.1-2                        MongoDB<br>
+mongodb-org-mongos.x86_64            2.6.1-2                        MongoDB<br>
+mongodb-org-server.x86_64            2.6.1-2                        MongoDB<br>
+mongodb-org-shell.x86_64             2.6.1-2                        MongoDB<br>
+mongodb-org-tools.x86_64             2.6.1-2                        MongoDB<br>
+mongodb-org-unstable.x86_64          2.7.1-1                        MongoDB<br>
+mongodb-org-unstable-mongos.x86_64   2.7.1-1                        MongoDB<br>
+mongodb-org-unstable-server.x86_64   2.7.1-1                        MongoDB<br>
+mongodb-org-unstable-shell.x86_64    2.7.1-1                        MongoDB<br>
+mongodb-org-unstable-tools.x86_64    2.7.1-1                        MongoDB<br>
+</code></p>
+
+<h4>
+<span id="インストール" class="fragment"></span><a href="#%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><i class="fa fa-link"></i></a>インストール</h4>
+
+<p>mongodb-orgが一番新しいので、これを使います。<br>
+10genはmongodbを開発している会社の旧名ですね。</p>
+
+<div class="code-frame" data-lang="bash">
+<div class="code-lang"><span class="bold">install</span></div>
+<div class="highlight"><pre><span></span>yum install mongodb-org
+</pre></div>
+</div>
+
+<h3>
+<span id="備考" class="fragment"></span><a href="#%E5%82%99%E8%80%83"><i class="fa fa-link"></i></a>備考</h3>
+
+<p>なんかEC2用のイメージが有るっぽい。Aws MarketPlaceのイメージからインスタンスを作れるらしい。</p>
+
+<div class="code-frame" data-lang="bash">
+<div class="code-lang"><span class="bold">AMIからインスタンス作成</span></div>
+<div class="highlight"><pre><span></span>ec2-run-instances ami-05355a6c -t m1.large -g <span class="o">[</span>SECURITY-GROUP<span class="o">]</span> -k <span class="o">[</span>KEY-PAIR<span class="o">]</span> -b <span class="s2">"/dev/xvdf=:200:false:io1:1000"</span> -b <span class="s2">"/dev/xvdg=:25:false:io1:250"</span> -b <span class="s2">"/dev/xvdh=:10:false:io1:100"</span> --ebs-optimized <span class="nb">true</span>
+
+ec2-describe-instances <span class="o">[</span>INSTANCE-ID<span class="o">]</span>
+</pre></div>
+</div>
+
+<p>インスタンス作った後に気づいた(´・ω:;.:...</p>
+<div class="hidden"><form class="js-task-list-update" action="/hajimeni/items/c8a8f0a07444d88e8014" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="_method" value="patch" /><input type="hidden" name="authenticity_token" value="LAUEFtmqq+X8cjpfVwbm4Gvmv/guOFj5N/Z8sBbp1LNkbcpVmoFN3jium6rmRTuL6Vlcj44ePS0eIfP1watatg==" /><input type="hidden" name="updated_at_confirmation_in_unixtime" id="updated_at_confirmation_in_unixtime" value="1402562495" class="js-task-list-updated-at" /><textarea name="raw_body" id="raw_body" class="js-task-list-field">
+`yum install mongoDB` で落ちてこない。
+
+このページを参照する。
+[Amazon EC2 へMongoDBをインストール(公式・英語)](http://docs.mongodb.org/ecosystem/platforms/amazon-ec2/)
+
+日本語じゃないと・・・という人へメモ
+
+#### yumリポジトリを追加
+
+```bash:mondodb.repoを新規作成
+echo &quot;[MongoDB]
+name=MongoDB Repository
+baseurl=http://downloads-distro.mongodb.org/repo/redhat/os/x86_64
+gpgcheck=0
+enabled=1&quot; | sudo tee -a /etc/yum.repos.d/mongodb.repo
+```
+
+#### インストール可能になるmongo一覧
+
+```bash:yumのlist
+yum list | grep mongo
+```
+
+```mongo-10gen.x86_64                   2.4.10-mongodb_1               MongoDB
+mongo-10gen-server.x86_64            2.4.10-mongodb_1               MongoDB
+mongo-10gen-unstable.x86_64          2.5.2-mongodb_1                MongoDB
+mongo-10gen-unstable-mongos.x86_64   2.5.2-mongodb_1                MongoDB
+mongo-10gen-unstable-server.x86_64   2.5.2-mongodb_1                MongoDB
+mongo-10gen-unstable-shell.x86_64    2.5.2-mongodb_1                MongoDB
+mongo-10gen-unstable-tools.x86_64    2.5.2-mongodb_1                MongoDB
+mongo18-10gen.x86_64                 1.8.5-mongodb_1                MongoDB
+mongo18-10gen-server.x86_64          1.8.5-mongodb_1                MongoDB
+mongo20-10gen.x86_64                 2.0.8-mongodb_1                MongoDB
+mongo20-10gen-server.x86_64          2.0.8-mongodb_1                MongoDB
+mongodb-org.x86_64                   2.6.1-2                        MongoDB
+mongodb-org-mongos.x86_64            2.6.1-2                        MongoDB
+mongodb-org-server.x86_64            2.6.1-2                        MongoDB
+mongodb-org-shell.x86_64             2.6.1-2                        MongoDB
+mongodb-org-tools.x86_64             2.6.1-2                        MongoDB
+mongodb-org-unstable.x86_64          2.7.1-1                        MongoDB
+mongodb-org-unstable-mongos.x86_64   2.7.1-1                        MongoDB
+mongodb-org-unstable-server.x86_64   2.7.1-1                        MongoDB
+mongodb-org-unstable-shell.x86_64    2.7.1-1                        MongoDB
+mongodb-org-unstable-tools.x86_64    2.7.1-1                        MongoDB
+```
+
+#### インストール
+
+mongodb-orgが一番新しいので、これを使います。
+10genはmongodbを開発している会社の旧名ですね。
+
+```bash:install
+yum install mongodb-org
+```
+
+### 備考
+
+なんかEC2用のイメージが有るっぽい。Aws MarketPlaceのイメージからインスタンスを作れるらしい。
+
+```bash:AMIからインスタンス作成
+ec2-run-instances ami-05355a6c -t m1.large -g [SECURITY-GROUP] -k [KEY-PAIR] -b &quot;/dev/xvdf=:200:false:io1:1000&quot; -b &quot;/dev/xvdg=:25:false:io1:250&quot; -b &quot;/dev/xvdh=:10:false:io1:100&quot; --ebs-optimized true
+
+ec2-describe-instances [INSTANCE-ID]
+```
+
+インスタンス作った後に気づいた(´・ω:;.:...
+</textarea><input type="submit" name="commit" value="Save changes" data-disable-with="Save changes" /></form></div></section></div><div class="col-sm-3"><div class="socialButtons"><div class="socialButtons_twitter"><a class="twitter-share-button" data-text="AWSのEC2 (Amazon Linux) に mongoDBをインストールするメモ by @hajimeni on @Qiita" data-url="https://qiita.com/hajimeni/items/c8a8f0a07444d88e8014" href="https://twitter.com/share">ツイート</a></div><div class="socialButtons_hatebu"><a class="hatena-bookmark-button" data-hatena-bookmark-layout="simple-balloon" data-hatena-bookmark-title="AWSのEC2 (Amazon Linux) に mongoDBをインストールするメモ" href="http://b.hatena.ne.jp/entry/https://qiita.com/hajimeni/items/c8a8f0a07444d88e8014" title="はてブに追加"><img alt="はてブに追加" height="20" src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" style="border: none;" width="20" /></a><script async="async" charset="utf-8" src="https://b.st-hatena.com/js/bookmark_button.js" type="text/javascript"></script></div><div class="socialButtons_googlePlus"><div class="g-plusone" data-href="https://qiita.com/hajimeni/items/c8a8f0a07444d88e8014" data-size="medium"></div></div><div class="socialButtons_qiitadon"><a class="mastodonShareButton" href="https://qiitadon.com/share?text=AWS%E3%81%AEEC2+%28Amazon+Linux%29+%E3%81%AB+mongoDB%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B%E3%83%A1%E3%83%A2+by+hajimeni+https%3A%2F%2Fqiita.com%2Fhajimeni%2Fitems%2Fc8a8f0a07444d88e8014+%23Qiita+%23MongoDB+%23AWS+%23EC2+%23AmazonLinux" target="_blank" title="Qiitadonでトゥート">Toot</a></div><div class="socialButtons_facebook"><div class="fb-like" data-action="like" data-href="https://qiita.com/hajimeni/items/c8a8f0a07444d88e8014" data-layout="button_count" data-share="false" data-show-faces="false"></div></div><div class="socialButtons_pocket"><a class="pocket-btn" data-lang="en" data-pocket-count="horizontal" data-pocket-label="pocket"></a></div></div><section class="itemsShowAuthorInfo" itemprop="author" itemscope="" itemtype="http://schema.org/Person"><a href="/hajimeni"><img alt="" class="itemsShowAuthorInfo_userIcon" itemprop="image" src="https://qiita-image-store.s3.amazonaws.com/0/1546/profile-images/1473683646" /></a><div class="itemsShowAuthorInfo_profileStats"><strong class="itemsShowAuthorInfo_userName" itemprop="name"><a itemprop="url" href="/hajimeni">hajimeni</a></strong><div class="itemsShowAuthorInfo_contribution"><span class="itemsShowAuthorInfo_count">504</span><span class="itemsShowAuthorInfo_unit">Contribution</span></div><script type="application/json" id="js-react-on-rails-context">{}</script>
+<script type="application/json" class="js-react-on-rails-component" data-component-name="UserFollowButton" data-dom-id="UserFollowButton-react-component-bb4e9355-598d-40f2-8461-0ad62ffeca64">{"initial_followed_by":false,"position":"author-info","size":"btn-xs","url_name":"hajimeni"}</script>
+    <div id="UserFollowButton-react-component-bb4e9355-598d-40f2-8461-0ad62ffeca64"></div>
+    
+</div><section class="itemsShowAuthorPopularItems"><h5 class="itemsShowAuthorPopularItems_sectionTitle">人気の投稿</h5><ul class="itemsShowAuthorPopularItems_posts list-unstyled"><li itemscope="" itemtype="http://schema.org/Article"> <a itemprop="url" href="/hajimeni/items/67d9e9b0d169bf68d1c9">Linuxでjdkをwgetする方法</a></li><li itemscope="" itemtype="http://schema.org/Article"> <a itemprop="url" href="/hajimeni/items/73d2155fc59e152630c4">Gitでマージ済みブランチを一括削除</a></li><li itemscope="" itemtype="http://schema.org/Article"> <a itemprop="url" href="/hajimeni/items/3c93fd981e92f66a20ce">Macにhomebrewを使ってmongodbをインストール</a></li><li itemscope="" itemtype="http://schema.org/Article"> <a itemprop="url" href="/hajimeni/items/c130f20ef17ce9c056e2">Java7からのjcmdのススメ(ThreadDump/HeapDump他)</a></li><li itemscope="" itemtype="http://schema.org/Article"> <a itemprop="url" href="/hajimeni/items/c8a8f0a07444d88e8014">AWSのEC2 (Amazon Linux) に mongoDBをインストールするメモ</a></li></ul></section></section><div class="scroll-chaser"></div><script type="application/json" class="js-react-on-rails-component" data-component-name="Toc" data-dom-id="Toc-react-component-fd3ffc17-ed06-425d-a871-7f99073e388c">{"body":"\u003cul\u003e\n\u003cli\u003e\n\u003ca href=\"#yum%E3%83%AA%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA%E3%82%92%E8%BF%BD%E5%8A%A0\"\u003eyumリポジトリを追加\u003c/a\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E5%8F%AF%E8%83%BD%E3%81%AB%E3%81%AA%E3%82%8Bmongo%E4%B8%80%E8%A6%A7\"\u003eインストール可能になるmongo一覧\u003c/a\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB\"\u003eインストール\u003c/a\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003ca href=\"#%E5%82%99%E8%80%83\"\u003e備考\u003c/a\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n","wrapper":"#article-body-wrapper"}</script>
+    <div id="Toc-react-component-fd3ffc17-ed06-425d-a871-7f99073e388c"></div>
+    
+</div></div><div class="row"><div class="col-sm-9"><div class="ArticleFooter__menu"><div class="s-flex-align-center"><div class="js-likebutton" data-props="{&quot;like_status&quot;:false,&quot;like_count&quot;:37,&quot;show_count&quot;:true,&quot;uuid&quot;:&quot;c8a8f0a07444d88e8014&quot;,&quot;likable_type&quot;:&quot;Article&quot;,&quot;position&quot;:&quot;article-footer&quot;}"></div><div class="ArticleFooter__userList"><div class="ArticleFooter__user"><div class="js-hovercard" data-hovercard-target-name="kasumani"><a itemprop="url" href="/kasumani"><img alt="kasumani" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/3397/profile-images/1473683087" /></a></div></div><div class="ArticleFooter__user"><div class="js-hovercard" data-hovercard-target-name="Reds"><a itemprop="url" href="/Reds"><img alt="Reds" class="thumb thumb--xs" src="https://0.gravatar.com/avatar/e751888e30cdc35253c1a3b241977adf?d=https%3A%2F%2Fidenticons.github.com%2F0e2f15414d97b8b642022be91ff105e0.png" /></a></div></div><div class="ArticleFooter__user"><div class="js-hovercard" data-hovercard-target-name="takumakei"><a itemprop="url" href="/takumakei"><img alt="takumakei" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/24372/profile-images/1473684104" /></a></div></div><div class="ArticleFooter__user"><div class="js-hovercard" data-hovercard-target-name="kin3qiita"><a itemprop="url" href="/kin3qiita"><img alt="kin3qiita" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/37627/profile-images/1473687491" /></a></div></div><div class="ArticleFooter__user"><div class="js-hovercard" data-hovercard-target-name="taishigami"><a itemprop="url" href="/taishigami"><img alt="taishigami" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/12378/profile-images/1473682388" /></a></div></div><div class="ArticleFooter__user"><div class="js-hovercard" data-hovercard-target-name="ispern"><a itemprop="url" href="/ispern"><img alt="ispern" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/3787/profile-images/1473683528" /></a></div></div><div class="ArticleFooter__user"><div class="js-hovercard" data-hovercard-target-name="tamaco"><a itemprop="url" href="/tamaco"><img alt="tamaco" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/52776/profile-images/1473692835" /></a></div></div><div class="ArticleFooter__user"><div class="js-hovercard" data-hovercard-target-name="kosuda"><a itemprop="url" href="/kosuda"><img alt="kosuda" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/43957/profile-images/1473689714" /></a></div></div><div class="ArticleFooter__user"><div class="js-hovercard" data-hovercard-target-name="applideveloper"><a itemprop="url" href="/applideveloper"><img alt="applideveloper" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/25434/profile-images/1475026490" /></a></div></div><div class="ArticleFooter__user"><div class="js-hovercard" data-hovercard-target-name="Rivaldo10Messi"><a itemprop="url" href="/Rivaldo10Messi"><img alt="Rivaldo10Messi" class="thumb thumb--xs" src="https://qiita-image-store.s3.amazonaws.com/0/42595/profile-images/1473689215" /></a></div></div><div class="ArticleFooter__user"><a href="/hajimeni/items/c8a8f0a07444d88e8014/likers"><span class="fa fa-ellipsis-h"></span></a></div></div></div><div class="u-flex u-align-center"><div class="ArticleFooter__stock"><div class="js-stockbutton" data-position="footer_menu" data-props="{&quot;stock_status&quot;:false}"></div></div><div class="ArticleFooter__editRequest"><a class="u-link-no-underline" data-toggle="tooltip" title="投稿者に記事をより良くするための提案ができます 💪" href="/drafts/c8a8f0a07444d88e8014/edit"><span class="fa fa-send-o fa-lg"></span> <span>編集リクエスト</span></a></div><div class="dropdown ArticleFooter__dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="fa fa-ellipsis-h"></span></a><ul class="dropdown-menu dropdown-menu-right"><li><a href="/hajimeni/items/c8a8f0a07444d88e8014.md"><span class="fa fa-fw fa-file-text-o"></span> Markdownで本文を見る</a></li><li><a data-target=".js-report-form" data-toggle="modal" href="#"><i class="fa fa-fw fa-flag"></i> 問題がある投稿を報告する</a></li></ul></div></div></div><div class="itemsShowBody_articleColumnFooter"><div class="socialButtons"><div class="socialButtons_twitter"><a class="twitter-share-button" data-text="AWSのEC2 (Amazon Linux) に mongoDBをインストールするメモ by @hajimeni on @Qiita" data-url="https://qiita.com/hajimeni/items/c8a8f0a07444d88e8014" href="https://twitter.com/share">ツイート</a></div><div class="socialButtons_hatebu"><a class="hatena-bookmark-button" data-hatena-bookmark-layout="simple-balloon" data-hatena-bookmark-title="AWSのEC2 (Amazon Linux) に mongoDBをインストールするメモ" href="http://b.hatena.ne.jp/entry/https://qiita.com/hajimeni/items/c8a8f0a07444d88e8014" title="はてブに追加"><img alt="はてブに追加" height="20" src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" style="border: none;" width="20" /></a><script async="async" charset="utf-8" src="https://b.st-hatena.com/js/bookmark_button.js" type="text/javascript"></script></div><div class="socialButtons_googlePlus"><div class="g-plusone" data-href="https://qiita.com/hajimeni/items/c8a8f0a07444d88e8014" data-size="medium"></div></div><div class="socialButtons_qiitadon"><a class="mastodonShareButton" href="https://qiitadon.com/share?text=AWS%E3%81%AEEC2+%28Amazon+Linux%29+%E3%81%AB+mongoDB%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B%E3%83%A1%E3%83%A2+by+hajimeni+https%3A%2F%2Fqiita.com%2Fhajimeni%2Fitems%2Fc8a8f0a07444d88e8014+%23Qiita+%23MongoDB+%23AWS+%23EC2+%23AmazonLinux" target="_blank" title="Qiitadonでトゥート">Toot</a></div><div class="socialButtons_facebook"><div class="fb-like" data-action="like" data-href="https://qiita.com/hajimeni/items/c8a8f0a07444d88e8014" data-layout="button_count" data-share="false" data-show-faces="false"></div></div><div class="socialButtons_pocket"><a class="pocket-btn" data-lang="en" data-pocket-count="horizontal" data-pocket-label="pocket"></a></div></div></div><div class="itemsShowComment_wrapper" id="comments"><script type="application/json" class="js-react-on-rails-component" data-component-name="PublicCommentListContainer" data-dom-id="PublicCommentListContainer-react-component-99028280-e8aa-496b-9295-06c4264eb68a">{"currentUser":null,"initialComments":[],"monthly_public_image_uploadable_size_limit":null,"total_uploaded_public_image_size_in_current_month":null,"item":{"id":78831,"uuid":"c8a8f0a07444d88e8014","suspended":false,"secret":false},"owner":{"url_name":"hajimeni"},"is_team":false,"is_project":false,"logged_in":false,"polling":false,"mention_candidates":[{"id":1546,"url_name":"hajimeni","profile_image_url":"https://qiita-image-store.s3.amazonaws.com/0/1546/profile-images/1473683646"}]}</script>
+    <div id="PublicCommentListContainer-react-component-99028280-e8aa-496b-9295-06c4264eb68a"></div>
+    
+</div></div></div></div></article><div class="js-report-form modal fade reportForm"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button name="button" type="submit" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">問題がある投稿を報告する</h4></div><div class="modal-body"><form class="new_public_issue_report" id="new_public_issue_report" action="/api/internal/issue_reports" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="+dNnCyEW1cqMQmx31FB+iwBgkGbzizTtt6fg88UBSNexu6lIYj0z8UiezYJlE6Pggt9zEVOtUTmecG+2EkPG0g==" /><input type="hidden" value="PublicDomainArticle" name="public_issue_report[target_type]" id="public_issue_report_target_type" /><input type="hidden" value="78831" name="public_issue_report[target_id]" id="public_issue_report_target_id" /><p>この投稿にどのような問題がありますか？</p><br /><div class="form-group"><ul class="list-unstyled"><li><label><input required="required" type="radio" value="spam" name="public_issue_report[reason]" id="public_issue_report_reason_spam" /> スパムです </label></li><li><label><input required="required" type="radio" value="harassment" name="public_issue_report[reason]" id="public_issue_report_reason_harassment" /> 攻撃的または迷惑な内容を含んでいます </label></li><li><label><input required="required" type="radio" value="inappropriate_content" name="public_issue_report[reason]" id="public_issue_report_reason_inappropriate_content" /> 不適切な内容を含んでいます </label></li></ul></div><div class="reportForm_submitButtonContainer"><button name="button" type="submit" class="btn btn-primary reportForm_submitButton"><i class="fa fa-send"></i> 送信</button></div></form></div></div></div></div><script id="js-item" type="application/json">{ "url": "https://qiita.com/hajimeni/items/c8a8f0a07444d88e8014", "id": 78831, "uuid": "c8a8f0a07444d88e8014" }</script><script class="js-user" type="application/json">{&quot;id&quot;:1546,&quot;url_name&quot;:&quot;hajimeni&quot;,&quot;profile_image_url&quot;:&quot;https://qiita-image-store.s3.amazonaws.com/0/1546/profile-images/1473683646&quot;}</script><script language="JavaScript" src="//cdn.bigmining.com/private/js/qiita_bigmining.js" type="text/javascript"></script></div><footer class="footer"><div class="footer_inner"><div class="footer_container"><ul class="footer_links-left"><li class="footer_link"><a class="footer_copyright" href="http://increments.co.jp">© 2011-2017 Increments Inc.</a></li><li class="footer_link"><a href="https://qiita.com/terms">利用規約</a></li><li class="footer_link"><a href="https://qiita.com/privacy">プライバシー</a></li><li class="footer_link"><a href="http://help.qiita.com">ヘルプ</a></li><li class="footer_link"><a href="https://increments.zendesk.com/anonymous_requests/new">お問い合わせ</a></li></ul><ul class="footer_links-right"><li class="footer_link"><a href="https://qiita.com/about">Qiitaとは</a></li><li class="footer_link"><a href="/users">ユーザー</a></li><li class="footer_link"><a href="/tags">タグ</a></li><li class="footer_link"><a href="http://blog.qiita.com">ブログ</a></li><li class="footer_link"><a href="https://qiita.com/api/v2/docs">API</a></li><li class="footer_link"><a href="https://teams.qiita.com/">Team</a></li><li class="footer_link"><a href="http://kobito.qiita.com">Kobito</a></li><li class="footer_link"><a class="js-public-form-feedback-link" data-target=".js-feedback-form" data-toggle="modal" href=""><i class="fa fa-heart"></i> ご意見 <i class="fa fa-caret-down"></i></a></li></ul></div></div></footer><div class="js-feedback-form modal fade feedbackForm"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button name="button" type="submit" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">ご意見</h4></div><div class="modal-body"><form class="js-feedback-form-form" action="/feedbacks" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="gmjrru0vko5FMXL0pEHo2X6B/+OiE5N1B0ptop882iXKACXtrgR0tYHt0wEVAjWy/D4clAI19qEuneLnSH5UIA==" /><input type="hidden" name="redirect_path" id="redirect_path" value="/hajimeni/items/c8a8f0a07444d88e8014" /><div class="form-group"><textarea name="feedback[message]" id="feedback_message" class="form-control js-feedback-form-text-area" placeholder="Qiitaについてのご意見をお聞かせください。" required="required" rows="5">
+</textarea></div><div class="feedbackForm_submitButtonContainer"><button name="button" type="submit" class="btn btn-primary feedbackForm_submitButton"><i class="fa fa-send"></i> 送信</button><p class="feedbackForm_note">いただいたご意見への返信は行っておりません。<br />返信の必要な内容については、<a href="https://increments.zendesk.com/anonymous_requests/new">こちら</a> からお問い合わせください。</p></div><div style="position:fixed;top:-99999px;opacity:0.0001;"><input name="feedback[name]" type="text" /></div></form></div></div></div></div><script>// if (window.mixpanel instanceof Element) {
+//   window.mixpanel = [];
+// }
+// (function(f,b){if(!b.__SV){var a,e,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");
+// for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=f.createElement("script");a.type="text/javascript";a.async=!0;a.src="//cdn.mxpnl.com/libs/mixpanel-2.2.min.js";e=f.getElementsByTagName("script")[0];e.parentNode.insertBefore(a,e)}})(document,window.mixpanel||[]);</script><script src="https://cdn.qiita.com/assets/public-10760930362445b2f8c22a2a904f4da9.min.js"></script></body></html>

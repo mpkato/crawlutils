@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://opengraphprotocol.org/schema/" xmlns:fb="http://www.facebook.com/2008/fbml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>第3回　MongoDBのクエリを使いこなそう：MongoDBでゆるふわDB体験｜gihyo.jp … 技術評論社</title>
+<meta name="description" content="MongoDBはリレーショナルデータベースではないため，SQLは使用できません。その代わりMongoDB特有の「Mongoクエリ言語」を用います。" />
+<meta name="keywords" content="技術評論社,gihyo.jp,MongoDB,クエリ,Mongoクエリ言語,データベース操作" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:site" content="@gihyojp"/>
+<meta property="og:title" content="第3回　MongoDBのクエリを使いこなそう" />
+<meta property="og:type" content="article" />
+<meta property="og:description" content="MongoDBはリレーショナルデータベースではないため，SQLは使用できません。その代わりMongoDB特有の「Mongoクエリ言語」を用います。" />
+<meta property="og:url" content="http://gihyo.jp/dev/serial/01/mongodb/0003" />
+<meta property="og:image" content="http://image.gihyo.co.jp/assets/images/ICON/2012/thumb/TH300_1039_mongo_db.png" />
+<meta property="og:site_name" content="gihyo.jp" />
+<meta property="fb:app_id" content="185201618169441" />
+
+<script type="application/ld+json">
+{"@context":"http:\/\/schema.org","@type":"Article","headline":"第3回　MongoDBのクエリを使いこなそう","image":{"@type":"ImageObject","url":"http:\/\/image.gihyo.co.jp\/assets\/images\/ICON\/2012\/thumb\/TH300_1039_mongo_db.png","height":100,"width":100},"datePublished":"2012-12-19T13:34:00+09:00","dateModified":"2013-01-10T19:20:18+09:00","author":{"@type":"Person","name":""},"publisher":{"@type":"Organization","name":"株式会社技術評論社","logo":{"@type":"ImageObject","url":"http:\/\/image.gihyo.co.jp\/assets\/templates\/gihyojp2007\/image\/gihyo_logo.png","width":292,"height":54}},"description":"MongoDBはリレーショナルデータベースではないため，SQLは使用できません。その代わりMongoDB特有の「Mongoクエリ言語」を用います。"}
+</script>
+<base href="/" />
+<link rel="canonical" href="http://gihyo.jp/dev/serial/01/mongodb/0003" />
+<link rel="publisher" href="https://plus.google.com/113010907831932672815" />
+<link rel="alternate" type="application/rss+xml" title="gihyo.jp：DEVELOPER STAGE RSS1.0" href="http://gihyo.jp/dev/feed/rss1" />
+<link rel="alternate" type="application/rss+xml" title="gihyo.jp：DEVELOPER STAGE RSS2.0" href="http://gihyo.jp/dev/feed/rss2" />
+<link rel="alternate" type="application/atom+xml" title="gihyo.jp：DEVELOPER STAGE Atom" href="http://gihyo.jp/dev/feed/atom" />
+<!--[if lt IE 9]>
+<script src="//ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+<![endif]-->
+<style>*{font-size:100%;list-style:none;margin:0;padding:0}body{color:#333;font-family:'ヒラギノ角ゴ ProN W3','Hiragino Kaku Gothic ProN','メイリオ',Meiryo,sans-serif;font-size:12px;line-height:1.4;text-align:center;-webkit-text-autospace:ideograph-numeric ideograph-alpha;-moz-text-autospace:ideograph-numeric ideograph-alpha;-ms-text-autospace:ideograph-numeric ideograph-alpha;text-autospace:ideograph-numeric ideograph-alpha}a{color:#05C;text-decoration:none;word-wrap:break-word}a:visited{color:#3388cc}.clearfix{display:block}.clearfix:after{clear:both;content:"";display:block;height:0}img{border:none;vertical-align:top;-ms-interpolation-mode:bicubic}#wrapper{position:relative;width:985px;margin:0 auto;text-align:left}#header{position:relative;-webkit-text-size-adjust:100%;-ms-interpolation-mode:bicubic}#header:after{clear:both;content:'';display:block;height:0}#header #logo{padding:22px 0}#header #logo a{display:inline-block}#header .utility{border-top:3px solid #0068B7;position:absolute;right:0;top:0}#header ul{display:block;float:left;left:0px;padding-top:22px;top:0px}#header ul li{border-collapse:separate;display:block;float:left;height:21px;width:auto}#header ul li a{display:block;-webkit-font-feature-settings:'kern','liga','pwid';-moz-font-feature-settings:'kern','liga','pwid';font-feature-settings:'kern','liga','pwid';height:21px;text-rendering:optimizelegibility}#header #shortcut li a{background:transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAKCAMAAACg0N8BAAAAS1BMVEX///8TkxwZniPw+PEaoSRGtE7x+fGY0ZxuwHRtv3O13bjU7dY+pEUnpDASkRsYnCEXmiAUlh4opjIwnziLzZDS6tSo2qwimioVmB/5voWQAAAAAXRSTlMAQObYZgAAADRJREFUeF4VxcUBwDAQxECZIczpv1LfzkNiDsh6PZpzXwcOU+CXxi6Vzdzg/fIC8ZwwKasDUJQCMERw8roAAAAASUVORK5CYII=) no-repeat 15px center;background-size:auto 5px;color:#333;display:block;font-size:11px;font-weight:bold;line-height:21px;padding:0 15px 0 22px;white-space:nowrap;width:auto}#header #searchForm{background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAYCAMAAAAmopZHAAABelBMVEX///+ZmZm/v7/////y8vLl5eXv7+/m5ua2trampqafn5/5+fnS0tKsrKwzfcmzs7Pf39/s7Oy5ubkqcbo5hdP39/fz+P0ud8E0fsuPvu4jaK9llMQ8idjn5+fP4/fP4vaNvOzGxsbH2OlsqOUnbrZ9s+pCkeLZ2dlan+bn8fs5htQxe8bJycn6+vqenp6Nve07iNeKu+309PSCqNDx9flGkuBQktU8h9Nbj8RnpOFIkdsveMO7u7s7htJPkdRno+E4g9F8seg+i9s5hdKwy+ZajsMsdb4karH8/PyCqdDExMTk7fYzfso3gs8xesVHkNv9/f3x9vo2gc3KysrL3vHc3Nw6fsM4hNGgv9/o6OhMld/Nzc1mpugqcrtGkuFKk94+i9oyfcigv95KlN/t7e1ZjcI8itna6PcyfMhbkMVJk97MzMw7h9ZIkt26uro7iNYsdL1+s+ptqeabxfC/1u0tdb/w8PAsdL58suiwy+c2gc45fMHa6fdtqedp8vz/AAAAAXRSTlMAQObYZgAAAVBJREFUeF5tkGVvK0EMRccDyxBmZigzMzMz9zEzv//e6U7SpGrOJ+tcy7oycijawFHTFDXDVKjztkkXubANWXZhjQ+NbQBNJuVE8h/RPQC47lXQ3IHuwsVJ18A3ggFcD1fkwFkpnPo1PPjqt66CKbwNNukufe3MZ0d8oYNVvvbM8QBGuRDu/Pz/8oUv9P1IBziteTnRn8p/uZ3pOrQWXhMTcHvNJ99PZ99cxSp/qufzxAbcI7zr5bvJzdjHyroVzC0TDTAVNTGZGPfNTu1Yo95Ixg1gOD4NGt2rWmvXG0HvYpR4oIM5ngIvOvf35ydvLhLt4zUx8zuFdvmob98MPe/NEK5BiW85fkkBUIs6IUT2wD1jSEAV4Jg2CBqvcxumEB1YaQ62JLbfhvGKwRh7FCD/MXOI/5BEgOq091BK/byJCCT0BOkDQBtDLQLGQa0DegfVNig5kouP/AAAAABJRU5ErkJggg==) no-repeat 0 26px;background-size:auto 12px;display:block;float:left;height:20px;margin-left:15px;padding-top:20px;padding-left:15px;width:auto}#header #searchForm #searchFormKeyword{background:#FFF;border:1px solid #CCC;border-radius:2px;-moz-box-sizing:border-box;box-sizing:border-box;font-size:12px;height:24px;line-height:2;margin-right:4px;padding:0 0.5em;position:relative;width:267px}.submitButton{background:#33A61D;border:1px solid #098a13;border-radius:2px;-moz-box-sizing:border-box;box-sizing:border-box;color:#FFF;cursor:pointer;display:block;float:right;font-weight:bold;line-height:2;padding:0 0.8em;text-align:center;text-shadow:0 0 2px #098a13;-webkit-appearance:none}#header #searchForm #searchFormSubmit{font-size:11px}#header #headerBanner01,#header #headerBanner02{margin-bottom:15px}#header #headerBanner01{float:left}#header #headerBanner02{float:right}.headCategoryNavigation{display:block;line-height:1;margin-bottom:4px;-ms-interpolation-mode:bicubic;position:relative;-webkit-text-size-adjust:100%;width:100%}.headCategoryNavigation .main{background:#0068B7;display:block;width:100%}.headCategoryNavigation .main li{float:left;display:block;height:34px;margin-top:4px;width:auto}.headCategoryNavigation .main li:first-child{margin-left:5px}.headCategoryNavigation .main .change{float:right}.headCategoryNavigation .main li a{color:#FBFBFF;display:block;-webkit-font-feature-settings:"kern", "liga", "pwid";-moz-font-feature-settings:"kern", "liga", "pwid";font-feature-settings:"kern", "liga", "pwid";font-size:12px;font-weight:bold;height:34px;line-height:30px;padding:0 20px;text-align:center;text-rendering:optimizelegibility;text-shadow:0 0 2px #144b83;width:auto}.headCategoryNavigation .main .change a{font-weight:normal;padding-left:0}.headCategoryNavigation .main .change a:before{content:'▶ ';font-size:0.5em;vertical-align:middle}#topicPath{-webkit-font-feature-settings:"kern", "liga", "palt";-moz-font-feature-settings:"kern", "liga", "palt";font-feature-settings:"kern", "liga", "palt";line-height:1;overflow:hidden;padding:0 10px 15px 10px;position:relative;text-overflow:ellipsis;text-rendering:optimizelegibility;vertical-align:bottom;white-space:pre}#main{float:left;width:818px}#main #primary{float:left;font-size:117%;width:505px}#main #secondary{float:right;width:302px}#sub{float:right;width:157px}.readingContent01 p{margin:0 0 1em 0;line-height:1.9}</style>
+<link rel="prefetch" href="/dev/serial/01/mongodb/0003?page=3" />
+<!--[if lt IE 9]>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.4/jquery.min.js"></script>
+<![endif]-->
+<!--[if gte IE 9]><!-->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<!--<![endif]-->
+<script type='text/javascript'>
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+(function() {
+var gads = document.createElement('script');
+gads.async = true;
+gads.type = 'text/javascript';
+var useSSL = 'https:' == document.location.protocol;
+gads.src = (useSSL ? 'https:' : 'http:') + 
+'//www.googletagservices.com/tag/js/gpt.js';
+var node = document.getElementsByTagName('script')[0];
+node.parentNode.insertBefore(gads, node);
+})();
+</script>
+<script type='text/javascript'>
+googletag.cmd.push(function() {
+googletag.defineSlot('/33530947/dev-bigbanner', [728,90], 'div-gpt-ad-1369887592403-0').addService(googletag.pubads());
+googletag.defineSlot('/33530947/dev-centertextlink1', [300,16], 'div-gpt-ad-1369887592403-2').addService(googletag.pubads());
+googletag.defineSlot('/33530947/dev-centertextlink2', [300,16], 'div-gpt-ad-1369887592403-3').addService(googletag.pubads());
+googletag.defineSlot('/33530947/dev-rectangle1', [300,300], 'div-gpt-ad-1369887592403-4').addService(googletag.pubads());
+googletag.defineSlot('/33530947/dev-rectangle2', [300,300], 'div-gpt-ad-1369887592403-5').addService(googletag.pubads());
+googletag.defineSlot('/33530947/dev-mainregularbanner', [468,60], 'div-gpt-ad-1369887592403-7').addService(googletag.pubads());
+googletag.defineSlot('/33530947/dev-textlink1', [485,16], 'div-gpt-ad-1369887592403-8').addService(googletag.pubads());
+googletag.defineSlot('/33530947/dev-textlink2', [485,16], 'div-gpt-ad-1369887592403-9').addService(googletag.pubads());
+googletag.defineSlot('/33530947/dev-articlerectangle', [336,280], 'div-gpt-ad-1369887592403-10').addService(googletag.pubads());
+googletag.defineSlot('/33530947/dev-delimiterregularbanner', [468,60], 'div-gpt-ad-1369887592403-11').addService(googletag.pubads());
+googletag.defineSlot('/33530947/dev-delimiterrectangle', [300,300], 'div-gpt-ad-1369887592403-12').addService(googletag.pubads());
+googletag.defineSlot('/33530947/dev-minibanner', [243,90], 'div-gpt-ad-1369887592403-13').addService(googletag.pubads());
+googletag.defineSlot('/33530947/dev-smallrectangle', [300,100], 'div-gpt-ad-1369887592403-14').addService(googletag.pubads());
+
+googletag.pubads().enableSingleRequest();
+googletag.enableServices();
+});
+</script></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+<div id="wrapper">
+
+<header role="banner">
+<div id="header" itemscope itemtype="http://schema.org/WPHeader">
+
+<h1 id="logo"><a href="http://gihyo.jp/"><img src="http://image.gihyo.co.jp/assets/templates/gihyojp2007/image/gihyojp_logo.png" alt="gihyo.jp" width="141" height="27" /></a></h1>
+
+<div class="utility">
+
+<ul id="shortcut">
+
+<li class="num02"><a href="http://gihyo.jp/site/inquiry">お問い合わせ</a></li>
+<li class="num03"><a href="http://gihyo.jp/site/profile">会社案内</a></li>
+</ul>
+
+<div id="searchForm">
+<form action="/result"><input id="searchFormKeyword" name="query" type="text" value="検索したい用語を入力" /><input id="searchFormSubmit" class="submitButton" value="検索" type="submit" /></form>
+</div>
+
+</div>
+
+<div id="headerBanner01"><div id='div-gpt-ad-1369887592403-0' style='width:728px; height:90px; margin:0 auto'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1369887592403-0'); });
+</script>
+</div>
+</div>
+<div id="headerBanner02"><div id='div-gpt-ad-1369887592403-13' style='width:243px; height:90px; margin:0 auto'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1369887592403-13'); });
+</script>
+</div>
+</div>
+</div>
+
+
+
+<div id="categoryNavigation" class="headCategoryNavigation">
+<ul class="main clearfix">
+<li class="current"><a href="http://gihyo.jp/dev" title="DEVELOPER STAGE">デベロッパ</a></li>
+<li><a href="http://gihyo.jp/admin" title="ADMINISTRATOR STAGE">アドミニストレータ</a></li>
+<li><a href="http://gihyo.jp/design" title="WEB+DESIGN STAGE">WEB＋デザイン</a></li>
+<li><a href="http://gihyo.jp/lifestyle" title="LIFESTYLE STAGE">ライフスタイル</a></li>
+<li class="change"><a href="http://gihyo.jp/book" title="書籍案内">書籍案内</a></li>
+<li class="change"><a href="https://gihyo.jp/dp" title="Gihyo Digital Publishing">電子書籍</a></li></ul>
+</div>
+
+<div id="topicPath" itemprop="breadcrumb">
+<script type="text/javascript">
+
+</script><span class="B_crumbBox"><span class="B_firstCrumb"><a href="http://gihyo.jp/" class="B_homeCrumb" title="トップページ">gihyo.jp</a></span> &raquo; <a href="http://gihyo.jp/dev" class="B_crumb" title="DEVELOPER STAGE">DEVELOPER STAGE</a> &raquo; <a href="http://gihyo.jp/dev/serial" class="B_crumb" title="連載">連載</a> &raquo; <a href="http://gihyo.jp/dev/serial/01/mongodb" class="B_crumb" title="MongoDBでゆるふわDB体験">MongoDBでゆるふわDB体験</a> &raquo; <span class="B_currentCrumb">第3回　MongoDBのクエリを使いこなそう</span></span>
+</div>
+</header>
+<div id="content" class="clearfix">
+<div id="main">
+<article role="main">
+<div id="primary" itemscope itemtype="http://schema.org/Article">
+
+
+<h1 class="mainTitle01"><a href="http://gihyo.jp/dev/serial/01/mongodb">MongoDBでゆるふわDB体験</a></h1>
+<h2 class="subTitle01" itemprop="name">第3回　MongoDBのクエリを使いこなそう</h2>
+
+<div id="article" class="sectionBlock01 main">
+
+<div class="sectionInfo01">
+<div class="sectionProperty">
+<div id="socialBookmark" class="clearfix">
+
+<ul id="socialBookmarkList">
+<li class="twitter"><a href="https://twitter.com/share" data-lang="ja" data-count="none" data-url="http://bit.ly/Z4IWez" data-text="MongoDBでゆるふわDB体験：第3回　MongoDBのクエリを使いこなそう #gihyojp" class="twitter-share-button">Twitter</a><a href="https://twitter.com/search?q=http://gihyo.jp/dev/serial/01/mongodb/0003" class="twitter--list">リスト</a></li>
+<li class="google"><g:plusone size="medium" href="http://gihyo.jp/dev/serial/01/mongodb/0003"></g:plusone></li>
+<li class="hatena"><a href="http://b.hatena.ne.jp/entry/http://gihyo.jp/dev/serial/01/mongodb/0003" class="hatena-bookmark-button" data-hatena-bookmark-title="MongoDBでゆるふわDB体験：第3回　MongoDBのクエリを使いこなそう" data-hatena-bookmark-layout="standard" data-hatena-bookmark-position="bottom-left" title="このエントリーをはてなブックマークに追加"><img src="//b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a></li>
+<li class="facebook"><div id="fb-root"></div><fb:like href="http://gihyo.jp/dev/serial/01/mongodb/0003" send="false" layout="button_count" width="100" show_faces="false" font="" style="margin-left:10px;"></fb:like></li>
+</ul>
+</div>
+<p class="date" itemprop="datePublished">2012年12月19日</p>
+
+<p class="author" itemprop="author">藤崎祥見，渡部徹太郎，林田敦</p>
+
+</div>
+
+<p class="linkTag"> <a href="http://gihyo.jp/tagList/MongoDB" rel="tag nofollow">MongoDB</a>, <a href="http://gihyo.jp/tagList/%E3%82%AF%E3%82%A8%E3%83%AA" rel="tag nofollow">クエリ</a>, <a href="http://gihyo.jp/tagList/Mongo%E3%82%AF%E3%82%A8%E3%83%AA%E8%A8%80%E8%AA%9E" rel="tag nofollow">Mongoクエリ言語</a>, <a href="http://gihyo.jp/tagList/%E3%83%87%E3%83%BC%E3%82%BF%E3%83%99%E3%83%BC%E3%82%B9%E6%93%8D%E4%BD%9C" rel="tag nofollow">データベース操作</a></p>
+
+<div id="primaryTopTextPr" style="height: 0"><div class="robots-nocontent textAdList01">
+<div id='div-gpt-ad-1369887592403-8' style='width:auto; height:auto'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1369887592403-8'); });
+</script>
+</div>
+
+<div id='div-gpt-ad-1369887592403-9' style='width:auto; height:auto'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1369887592403-9'); });
+</script>
+</div>
+
+</div></div>
+</div>
+
+<div class="readingTime">この記事を読むのに必要な時間：およそ 6 分</div>
+<div class="pageSwitch01">
+<p class="back"><a href="/dev/serial/01/mongodb/0003?page=1" rel="prev"><img src="http://image.gihyo.co.jp/assets/templates/gihyojp2007/image/image_link/pageSwitch_back.gif" alt="前のページへ" width="81" height="13" class="buttons" /></a></p>
+<ul>
+<li><a href="/dev/serial/01/mongodb/0003?page=1">1</a></li>
+<li class="current"><a href="/dev/serial/01/mongodb/0003?page=2">2</a></li>
+<li><a href="/dev/serial/01/mongodb/0003?page=3">3</a></li>
+<li><a href="/dev/serial/01/mongodb/0003?page=4">4</a></li>
+</ul>
+<p class="next"><a href="/dev/serial/01/mongodb/0003?page=3" rel="next"><img src="http://image.gihyo.co.jp/assets/templates/gihyojp2007/image/image_link/pageSwitch_next.gif" alt="次のページへ" width="81" height="13" class="buttons" /></a></p>
+</div><div class="readingContent01 autopagerize_page_element" itemprop="articleBody">
+
+
+
+<h3 id="sec4">MySQLと比較したクエリ</h3>
+
+<p id="sec4_p1">
+それでは，<wbr/>公式ドキュメントの<a href="http://docs.mongodb.org/manual/reference/sql-comparison/">SQL to MongoDB Mapping Chart</a>を参考に，<wbr/>MongoクエリをMySQLのSQLクエリと比較しながら，<wbr/>Mongoクエリ言語について学びましょう。</p>
+
+<p id="sec4_p2">以下に，<wbr/>対応表を示します。MongoクエリとSQLクエリで対応する部分は同じ色で表現しています。対応表では，<wbr/>データベース名には"testdb"，<wbr/>テーブル／<wbr/>コレクション名には"products"を使います。
+</p>
+
+<h4 id="sec4_h1">データベース操作</h4>
+
+<div id="sec4_o1" class="illust">
+<table border="border" cellspacing="0">
+<tr><th>MySQL</th><th>MongoDB</th></tr>
+<tr><td>&gt; <span style="font-weight:bold;color:purple">SHOW</span> DATABASES;</td><td>&gt; <span style="font-weight:bold;color:purple">show</span> dbs</td></tr>
+<tr><td>&gt; <span style="font-weight:bold;color:purple">USE</span> testdb;</td><td>&gt; <span style="font-weight:bold;color:purple">use</span> testdb</td></tr>
+<tr><td>&gt; <span style="font-weight:bold;color:purple">CREATE</span> DATABASE testdb;</td><td>useコマンドで自動生成
+<tr><td>&gt; <span style="font-weight:bold;color:purple">DROP</span> DATABASE testdb;</td><td>&gt; use testdb<br />&gt; db.<span style="font-weight:bold;color:purple">dropDatabase</span>()</td></tr>
+<tr><td>&gt; DESC testdb;</td><td>なし</td></tr>
+</table>
+</div>
+
+<dl id="sec4_o2" class="box01">
+<dt id="sec4_l1">[参考]</dt>
+<dd>useコマンドでデータベースを選択するだけでは，<wbr/>データベースは永続化されません。
+コレクションへ最初のドキュメントを挿入した時点で，<wbr/>データベースは初めて永続化されます。</dd>
+</dl>
+
+<h4 id="sec4_h2">コレクション操作</h4>
+
+<p id="sec4_p3">MongoDBのコレクションは，<wbr/>MySQLのテーブルに該当します。</p>
+
+<div id="sec4_o3" class="illust">
+<table border="border" cellspacing="0">
+<tr><th>MySQL</th><th>MongoDB</th></tr>
+<tr><td>&gt; CREATE TABLE products (...);</td><td>自動生成 または<br />&gt; db.<span style="font-weight:bold;color:purple">createCollection</span>("products")</td></tr></td></tr>
+<tr><td>&gt; ALTER TABLE products ADD ...;</td><td>自動生成</td></tr>
+<tr><td>&gt; <span style="font-weight:bold;color:purple">SHOW</span> TABLES;</td><td>&gt; <span style="font-weight:bold;color:purple">show</span> collections</td></tr>
+<tr><td>&gt; <span style="font-weight:bold;color:purple">DROP</span> TABLE products;</td><td>&gt; db.<wbr/>products.<span style="font-weight:bold;color:purple">drop</span>()</td></tr>
+<tr><td>&gt; <span style="font-weight:bold;color:purple">TRUNCATE</span> TABLE products;</td><td>&gt; db.<wbr/>products.<span style="font-weight:bold;color:purple">remove</span>()</td></tr>
+</table>
+</div>
+
+<div id="sec4_o4" class="codelist cline">
+<p id="sec4_p4"><strong>drop()とremove()の違い</strong></p>
+<p id="sec4_p5">remove()はコレクションが残ります。drop()はコレクションごと削除します。<br />
+show collectionsで確認できます。</p>
+<div id="sec4_o5" class="preWrap">
+<pre>
+<samp>&gt; db.products.remove() //コレクションの中のすべてのオブジェクトを削除します  
+&gt; show collections //確認，productsはまだある
+&gt; db.products.drop() //コレクションを削除します
+&gt; show collections //確認、productsはない</samp>
+</pre>
+</div>
+</div>
+
+<dl id="sec4_o6" class="box01">
+<dt id="sec4_l2">[参考]</dt>
+<dd>コレクションは，<wbr/>最初のドキュメントを挿入した時点で永続化されます。</dd>
+</dl>
+
+<h4 id="sec4_h3">ドキュメント操作</h4>
+
+<p id="sec4_p6">MongoDBのドキュメントは，<wbr/>MySQLのレコードに該当します。</p>
+
+
+<h5 id="sec4_h4">選択</h5>
+<div id="sec4_o7" class="illust">
+<table border="border" cellspacing="0">
+<tr><th>MySQL</th><th>MongoDB</th></tr>
+<tr><td>&gt; <span style="font-weight:bold;color:purple">SELECT</span> <span style="font-weight:bold;color:blue">*</span> FROM products;</td><td>&gt; db.<wbr/>products.<span style="font-weight:bold;color:purple">find</span><span style="font-weight:bold;color:blue">()</span></td></tr>
+<tr><td>&gt; <span style="font-weight:bold;color:purple">SELECT</span> <span style="font-weight:bold;color:blue">name</span> FROM products <span style="font-weight:bold;color:green">WHERE category='A' AND stock<=10</span> <span style="font-weight:bold;color:orangered">ORDER BY name</span>;</td><td>&gt; db.<wbr/>products.<span style="font-weight:bold;color:purple">find</span>(<span style="font-weight:bold;color:green">{ category : 'A' , stock : { $lte : 10 } }</span>, <span style="font-weight:bold;color:blue">{ name : 1 }</span>).<span style="font-weight:bold;color:orangered">sort({ name : 1 })</span></td></tr>
+<tr><td>&gt; <span style="font-weight:bold;color:purple">SELECT</span> <span style="font-weight:bold;color:blue">COUNT(*)</span> FROM products;</td><td>&gt; db.<wbr/>products.<span style="font-weight:bold;color:blue">count()</span></td></tr>
+<tr><td>&gt; <span style="font-weight:bold;color:purple">SELECT</span> <span style="font-weight:bold;color:blue">COUNT(*)</span> FROM products <span style="font-weight:bold;color:green">WHERE name LIKE "%camera%" OR category='C'</span>;</td><td>&gt; db.<wbr/>products.<span style="font-weight:bold;color:purple">find</span>(<span style="font-weight:bold;color:green">{ $or : [{ name : /camera/ },{ category : 'C' }] }</span>).<span style="font-weight:bold;color:blue">count()</span></td></tr>
+<tr><td>&gt; <span style="font-weight:bold;color:purple">SELECT</span> <span style="font-weight:bold;color:blue">COUNT(stock)</span> FROM products;</td><td>&gt; db.<wbr/>products.<span style="font-weight:bold;color:purple">find</span><span style="font-weight:bold;color:blue">({ stock : { $exists : true } }).count()</span></td></tr>
+<tr><td>&gt; <span style="font-weight:bold;color:blue">SELECT</span> * FROM products <span style="font-weight:bold;color:blue">LIMIT 1</span>;</td><td>&gt; db.<wbr/>products.<span style="font-weight:bold;color:blue">findOne()</span></td></tr>
+<tr><td>&gt; <span style="font-weight:bold;color:blue">SELECT</span> * FROM products <span style="font-weight:bold;color:blue">LIMIT 5</span>;</td><td>&gt; db.<wbr/>products.<span style="font-weight:bold;color:blue">limit(5)</span></td></tr>
+</table>
+</div>
+
+<div id="sec4_o8" class="codelist cline">
+<p id="sec4_p7"><strong>"has more"と表示されたら</strong></p>
+<p id="sec4_p8">MongoDBでは，<wbr/>多くのドキュメントが返された場合，<wbr/>"has more"と表示されます。続きのドキュメントを表示したい場合は，<wbr/>以下のようにします。</p>
+<div id="sec4_o9" class="preWrap">
+<pre>
+<samp>&gt; it</samp>
+</pre>
+</div>
+
+<p id="sec4_p9">一度にすべてのドキュメントを表示したい場合は，<wbr/>以下のようにします。</p>
+
+<div id="sec4_oa" class="preWrap">
+<pre>
+<samp>&gt; db.products.find().toArray()
+または
+&gt; db.products.find().toArray().forEach(printjsononeline) </samp>
+</pre>
+</div>
+<p id="sec4_pa">なお，<wbr/>一度に表示できるドキュメントの数を変更したい場合は，<wbr/>次のようにします。</p>
+
+<div id="sec4_ob" class="preWrap">
+<pre>
+<samp>&gt; DBQuery.shellBatchSize = 100</samp>
+</pre>
+</div>
+</div>
+
+<h5 id="sec4_h5">挿入</h5>
+<div id="sec4_oc" class="illust">
+<table border="border" cellspacing="0">
+<tr><th>MySQL</th><th>MongoDB</th></tr>
+<tr><td>&gt; <span style="font-weight:bold;color:purple">INSERT</span> INTO products <span style="font-weight:bold;color:blue">VALUES('A',"camera case",5)</span>;</td><td>&gt; db.<wbr/>products.<span style="font-weight:bold;color:purple">insert</span>(<span style="font-weight:bold;color:blue">{ category : 'A' , name : "camera case" , stock : 5 }</span>)</td></tr>
+</table>
+</div>
+
+<h5 id="sec4_h6">更新</h5>
+<div id="sec4_od" class="illust">
+<table border="border" cellspacing="0">
+<tr><th>MySQL</th><th>MongoDB</th></tr>
+<tr><td>&gt; <span style="font-weight:bold;color:purple">UPDATE</span> products <span style="font-weight:bold;color:blue">SET stock=10</span> <span style="font-weight:bold;color:green">WHERE category='A'</span>;</td><td>&gt; db.<wbr/>products.<span style="font-weight:bold;color:purple">update</span>(<span style="font-weight:bold;color:green">{ category : 'A' }</span>,<span style="font-weight:bold;color:blue">{ $set : { stock : 10 } }</span>, false, true)</td></tr>
+<tr><td>&gt; <span style="font-weight:bold;color:purple">UPDATE</span> products <span style="font-weight:bold;color:blue">SET stock=stock+10</span> <span style="font-weight:bold;color:green">WHERE category='A'</span>;</td><td>&gt; db.<wbr/>products.<span style="font-weight:bold;color:purple">update</span>(<span style="font-weight:bold;color:green">{ category : 'A' }</span>,<span style="font-weight:bold;color:blue">{ $inc : { stock : 10 } }</span>, false, true)</td></tr>
+</table>
+</div>
+
+<div id="sec4_oe" class="codelist cline">
+<p id="sec4_pb"><strong>updateの引数</strong></p>
+<div id="sec4_of" class="preWrap">
+<pre>
+<samp>update(condition, operation, upsert, multi)</samp>
+</pre>
+</div>
+<p id="sec4_pc">upsert：trueのとき，<wbr/>conditionに一致するデータが無い場合は，<wbr/>新たにデータが登録されます。<br />
+multi ：trueのとき，<wbr/>conditionに一致したすべてのデータを書き換えます。</p>
+</div>
+
+<h5 id="sec4_h7">削除</h5>
+<div id="sec4_og" class="illust">
+<table border="border" cellspacing="0">
+<tr><th>MySQL</th><th>MongoDB</th></tr>
+<tr><td>&gt; <span style="font-weight:bold;color:purple">DELETE</span> FROM products <span style="font-weight:bold;color:blue">WHERE name="camera case"</span>;</td><td>&gt; db.<wbr/>products.<span style="font-weight:bold;color:purple">remove</span>(<span style="font-weight:bold;color:blue">{ name : "camera case" }</span>)</td></tr>
+</table>
+</div>
+
+
+<p id="sec4_pd">以上のように，<wbr/>Mongoクエリ言語は，<wbr/>JOINを除くほとんどすべてのSQLクエリを再現することができます。</p>
+
+<p id="sec4_pe">次のページでは，<wbr/>MongoDBクエリ言語の使い方を学ぶために，<wbr/>一連の利用シーンを想定して，<wbr/>複数のMongoクエリを実行してみます。</p>
+
+</div>
+<div class="pageSwitch01 autopagerize_insert_before">
+<p class="back"><a href="/dev/serial/01/mongodb/0003?page=1" rel="prev"><img src="http://image.gihyo.co.jp/assets/templates/gihyojp2007/image/image_link/pageSwitch_back.gif" alt="前のページへ" width="81" height="13" class="buttons" /></a></p>
+<ul>
+<li><a href="/dev/serial/01/mongodb/0003?page=1">1</a></li>
+<li class="current"><a href="/dev/serial/01/mongodb/0003?page=2">2</a></li>
+<li><a href="/dev/serial/01/mongodb/0003?page=3">3</a></li>
+<li><a href="/dev/serial/01/mongodb/0003?page=4">4</a></li>
+</ul>
+<p class="next"><a href="/dev/serial/01/mongodb/0003?page=3" rel="next"><img src="http://image.gihyo.co.jp/assets/templates/gihyojp2007/image/image_link/pageSwitch_next.gif" alt="次のページへ" width="81" height="13" class="buttons" /></a></p>
+</div>
+
+
+<div id="bannerRG1" class="robots-nocontent primaryBanner">
+<div id='div-gpt-ad-1369887592403-7' style='width:468px; height:60px; margin:0 auto'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1369887592403-7'); });
+</script>
+</div>
+
+</div>
+
+<div class="sectionInfo01">
+
+<p class="linkTag"> <a href="http://gihyo.jp/tagList/MongoDB" rel="tag nofollow">MongoDB</a>, <a href="http://gihyo.jp/tagList/%E3%82%AF%E3%82%A8%E3%83%AA" rel="tag nofollow">クエリ</a>, <a href="http://gihyo.jp/tagList/Mongo%E3%82%AF%E3%82%A8%E3%83%AA%E8%A8%80%E8%AA%9E" rel="tag nofollow">Mongoクエリ言語</a>, <a href="http://gihyo.jp/tagList/%E3%83%87%E3%83%BC%E3%82%BF%E3%83%99%E3%83%BC%E3%82%B9%E6%93%8D%E4%BD%9C" rel="tag nofollow">データベース操作</a></p>
+
+
+</div>
+
+</div>
+
+<div id="AdSenseContentB" class="robots-nocontent primaryBanner"><div id='div-gpt-ad-1369887592403-10' style='width:336px; height:auto; margin:0 auto'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1369887592403-10'); });
+</script>
+</div>
+</div>
+
+<div id="authorProfile" class="sectionBlock02">
+<h2>著者プロフィール</h2>
+<div class="profile01 clearfix" itemscope itemtype="http://data-vocabulary.org/Person">
+<div class="photo"><img src="http://image.gihyo.co.jp/assets/images/author/2012/ShokenFujisaki.png" style="width:auto;height:auto;max-width:100px"/></div>
+
+<div class="data">
+<h3 class="fn">藤崎祥見（ふじさきしょうけん）</h3>
+<p>野村総合研究所 <a href="http://openstandia.jp/">OpenStandia</a>所属。オープンソースのR&Dとセミナー講師を担当。</p>
+<p>Debian，Ubuntu，Liferayのコミュニティで活動した後，MongoDBの翻訳に関わり，<a href="http://syokenz.github.com/marunouchi-mongodb/">丸の内MongoDB勉強会</a>を始める。</p>
+<p>実家がお寺で，住職の資格を所持する坊主系エンジニア。</p>
+<p>Twitter：<a href="https://twitter.com/#!/syokenz">@syokenz</a></p>
+</div>
+</div><hr /><div class="profile01 clearfix" itemscope itemtype="http://data-vocabulary.org/Person">
+<div class="photo"><img src="http://image.gihyo.co.jp/assets/images/author/2012/TetsutaroWatanabe.png" style="width:auto;height:auto;max-width:100px"/></div>
+
+<div class="data">
+<h3 class="fn">渡部徹太郎（わたなべてつたろう）</h3>
+<p>野村総合研究所 <a href="http://openstandia.jp/">OpenStandia</a>所属。オープンソースを使ったSIやサポートの業務に従事。</p>
+<p>藤崎と共同で<a href="http://syokenz.github.com/marunouchi-mongodb/">丸の内MongoDB勉強会</a>を始める。</p>
+<p>趣味は自宅サーバ。好きなものはLinuxとRuby。</p>
+<p>Twitter：<a href="https://twitter.com/#!/fetarodc">@fetarodc</a></p>
+</div>
+</div><hr /><div class="profile01 clearfix" itemscope itemtype="http://data-vocabulary.org/Person">
+<div class="photo"><img src="http://image.gihyo.co.jp/assets/images/author/2012/AtushiHayashida.png" style="width:auto;height:auto;max-width:100px"/></div>
+
+<div class="data">
+<h3 class="fn">林田敦（はやしだあつし）</h3>
+<p>野村総合研究所 <a href="http://openstandia.jp/">OpenStandia</a>所属。オープンソースを使ったSIや製品開発業務に従事。</p>
+<p><a href="http://syokenz.github.com/marunouchi-mongodb/">丸の内MongoDB勉強会</a>では広報兼雑用係を務める。</p>
+<p>趣味はレザークラフト，ダイビング，スキー，キャンプ，ジェットスキー，カメラ等々。作って滑って撮って潜れるエンジニア。</p>
+<p>Facebook:<a href="http://www.facebook.com/atsushi.hayashida.5">Atsushi Hayashida</a></p>
+</div>
+</div>
+</div>
+
+
+
+
+<div id="backNumber01" class="sectionBlock01">
+<h2>バックナンバー</h2>
+<h3 class="linkHeading02"><a href="http://gihyo.jp/dev/serial/01/mongodb">MongoDBでゆるふわDB体験</a></h3>
+<ul class="linkList02">
+<li><a href="http://gihyo.jp/dev/serial/01/mongodb/0014">第14回　日本のMongoDBコミュニティ</a></li>
+<li><a href="http://gihyo.jp/dev/serial/01/mongodb/0013">第13回　MongoDBの性能</a></li>
+<li><a href="http://gihyo.jp/dev/serial/01/mongodb/0012">第12回　MongoDBの監視</a></li>
+<li><a href="http://gihyo.jp/dev/serial/01/mongodb/0011">第11回　MongoDBのバックアップ</a></li>
+<li><a href="http://gihyo.jp/dev/serial/01/mongodb/0010">第10回　MongoDBでの集計処理</a></li>
+<li><a href="http://gihyo.jp/dev/serial/01/mongodb/0009">第9回　MongoDBの地理空間インデックス</a></li>
+<li><a href="http://gihyo.jp/dev/serial/01/mongodb/0008">第8回　リリース間近！ MongoDB 2.4の新機能</a></li>
+<li><a href="http://gihyo.jp/dev/serial/01/mongodb/0007">第7回　GridFS─大容量のファイルをMongoDBに保存する仕組み</a></li>
+<li><a href="http://gihyo.jp/dev/serial/01/mongodb/0006">第6回　レプリケーション＋シャーディングでMongoDBをもっと使いこなす</a></li>
+<li><a href="http://gihyo.jp/dev/serial/01/mongodb/0005">第5回　MongoDBのシャーディングを試してみよう</a></li>
+</ul>
+<p class="linkParagraph01"><a href="http://gihyo.jp/dev/serial/01/mongodb">バックナンバー一覧</a></p></div>
+
+
+<div id="relArticle" class="sectionBlock01"> 
+<h2>関連記事</h2> 
+<ul class="linkList02"> 
+<li><a href="/admin/clip/01/linux_dt/201710/20">2017年10月20日　MongoDBがNASDAQに上場，初日終値は34％増でオープンソース企業としてはひさびさのIPO大成功</a></li>
+<li><a href="/news/report/2011/03/2301">「MongoDB Conference in Japan」レポート</a></li>
+<li><a href="/news/info/2011/02/2301">3月1日に開催されるMogoDBのカンファレンス「Mongo Tokyo」の詳細タイムテーブルの告知と参加費ディスカウントクーポンコードのご案内</a></li>
+<li><a href="/dev/serial/01/ruby/0033">第33回　RubyistのためのMongoDB入門（2）</a></li>
+<li><a href="/dev/serial/01/ruby/0031">第31回　RubyistのためのMongoDB入門（1） </a></li>
+</ul> 
+</div> 
+
+<style>.adsbygoogle{margin-bottom:20px}</style>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8641133834918837"
+     data-ad-slot="2597624061"
+     data-ad-format="autorelaxed"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<div id="comment" class="robots-nocontent sectionBlock01">
+<a name="comment"></a>
+<h2>コメント</h2>
+<ul class="sectionList01">
+
+<li><a name="jcab3000813895"></a>
+<h3>
+正規表現による絞り込み検索について
+
+</h3>
+<p>正規表現によるドキュメントの絞り込み検索のコマンド書式として、 db.col1.find( { &quot;name&quot; =&gt; /mongo/ } ) のような例が掲載されていますが、正しくは db.col1.find( { &quot;name&quot; : /mongo/ } ) となるべきではないでしょうか。<br />
+<br />
+http://docs.mongodb.org/manual/reference/operator/query/regex/#op._S_regex</p>
+<p class="note">Commented : #1&nbsp; Kensuke Nagae&nbsp;（2013/10/28, 15:48）</p>
+
+</li>
+</ul>
+
+
+<div class="sectionBlock03">
+<a name="jfab300081"></a>
+<h3>コメントの記入</h3>
+
+
+<form method="post" action="/dev/serial/01/mongodb/0003?page=2?jt#jfab300081" class="inputForm01">
+	<input name="JotForm" type="hidden" value="ab3000817ed7420964d54f98223e82c6" />
+	<input name="JotNow" type="hidden" value="834088485" />
+	<input name="parent" type="hidden" value="" />
+	
+<table cellspacing="0">
+<tr> <th><label for="commentFormName">お名前</label></th> <td><input id="commentFormName" name="name" type="text" class="input" value="" /></td> </tr> <tr> <th><label for="commentFormAddress">メールアドレス</label></th> <td><input id="commentFormAddress" name="email" type="text" class="input" value="" /></td> </tr>
+<tr>
+<th><label for="commentFormTitle">タイトル</label></th>
+<td><input id="commentFormTitle" name="title" type="text" class="input" value="" /></td>
+</tr>
+<tr>
+<th><label for="commentFormComment">コメント</label></th>
+<td><textarea id="commentFormComment" name="content" cols="60" rows="15"></textarea></td>
+</tr>
+</table>
+
+<p class="submit"><input type="submit" value="送信" class="submitButton" style="float:none;margin:0 auto" /></p>
+</form>
+</div>
+
+</div>
+</div>
+</article>
+<aside>
+<div id="secondary" class="robots-nocontent" itemscope itemtype="http://schema.org/WPSideBar">
+<div id="secondaryTopTextPr" class="textPR" style="height: 0">
+<div class="prList01">
+<div id='div-gpt-ad-1369887592403-2' style='width:300px; height:auto'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1369887592403-2'); });
+</script>
+</div>
+
+<div id='div-gpt-ad-1369887592403-3' style='width:300px; height:auto'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1369887592403-3'); });
+</script>
+</div>
+
+</div>
+</div>
+<div class="banner" id="bannerRT1">
+<div id='div-gpt-ad-1369887592403-4' style='width:300px; height:auto; margin:0 auto'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1369887592403-4'); });
+</script>
+</div>
+
+</div>
+<div id="gdp" class="sectionBlock04 clearfix">
+<div id='div-gpt-ad-1369887592403-14' style='width:300px; height:auto; margin:0 auto'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1369887592403-14'); });
+</script>
+</div>
+
+</div>
+
+<div id="gihyojpSpecial"  class="sectionBlock04 clearfix">
+<h2>ピックアップ</h2>
+<dl class="definition01">
+
+<dt><a href="dev/column/01/prog/2017/offshore-dev-frontline">オフショア開発最前線―フランジアが目指す事業創生のプラットフォーム</a></dt>
+<dd class="clearfix">
+<div class="logo"><a href="http://gihyo.jp/dev/column/01/prog/2017/offshore-dev-frontline"><img class="lazy" src="http://image.gihyo.co.jp/assets/images/reading.gif" data-original="http://image.gihyo.co.jp/assets/images/ICON/2017/thumb/TH64_1614_offshore-dev-frontline.png" alt="オフショア開発最前線―フランジアが目指す事業創生のプラットフォーム" title="オフショア開発最前線―フランジアが目指す事業創生のプラットフォーム" width="64" height="64" /><noscript><img src="http://image.gihyo.co.jp/assets/images/ICON/2017/thumb/TH64_1614_offshore-dev-frontline.png" alt="オフショア開発最前線―フランジアが目指す事業創生のプラットフォーム" title="オフショア開発最前線―フランジアが目指す事業創生のプラットフォーム" width="64" height="64" /></noscript></a></div>
+<p>ベトナム，シンガポール他5ヵ国9拠点，約1,000名の体制でオフショア開発事業を展開するフランジア社の取り組み，開発の事例を紹介します。</p>
+</dd>
+<dt><a href="ad/01/atlassian">開発スピードに限界を感じたときの処方箋</a></dt>
+<dd class="clearfix">
+<div class="logo"><a href="http://gihyo.jp/ad/01/atlassian"><img class="lazy" src="http://image.gihyo.co.jp/assets/images/reading.gif" data-original="http://image.gihyo.co.jp/assets/images/ICON/2014/thumb/TH64_1297_atlassian.png" alt="開発スピードに限界を感じたときの処方箋" title="開発スピードに限界を感じたときの処方箋" width="64" height="64" /><noscript><img src="http://image.gihyo.co.jp/assets/images/ICON/2014/thumb/TH64_1297_atlassian.png" alt="開発スピードに限界を感じたときの処方箋" title="開発スピードに限界を感じたときの処方箋" width="64" height="64" /></noscript></a></div>
+<p>「JIRA」をはじめとするアトラシアンのツール群。多くのオープンソースソフトウェアを継続して提供する支えとなっている使い易さを探ってみます。</p>
+</dd>
+<dt><a href="ad/2017/ricksoft-rec">［Special Interview］3年で300%急成長のベンチャーがSE・PGを大募集！！</a></dt>
+<dd class="clearfix">
+<div class="logo"><a href="http://gihyo.jp/ad/2017/ricksoft-rec"><img class="lazy" src="http://image.gihyo.co.jp/assets/images/reading.gif" data-original="http://image.gihyo.co.jp/assets/images/ICON/2017/thumb/TH64_1572_ricksoft-rec.png" alt="［Special Interview］3年で300%急成長のベンチャーがSE・PGを大募集！！" title="［Special Interview］3年で300%急成長のベンチャーがSE・PGを大募集！！" width="64" height="64" /><noscript><img src="http://image.gihyo.co.jp/assets/images/ICON/2017/thumb/TH64_1572_ricksoft-rec.png" alt="［Special Interview］3年で300%急成長のベンチャーがSE・PGを大募集！！" title="［Special Interview］3年で300%急成長のベンチャーがSE・PGを大募集！！" width="64" height="64" /></noscript></a></div>
+<p>好評連載中の「うまくいくチーム開発のツール戦略」でお馴染みのリックソフト（株）が業務拡大につき各種エンジニアを募集中です。</p>
+</dd>
+<dt><a href="admin/serial/01/sb_cloud/0002">新たな可能性を生み出すAlibaba Cloud専用型ネットワークサービス「Express Connect」到来</a></dt>
+<dd class="clearfix">
+<div class="logo"><a href="http://gihyo.jp/admin/serial/01/sb_cloud"><img class="lazy" src="http://image.gihyo.co.jp/assets/images/reading.gif" data-original="http://image.gihyo.co.jp/assets/images/ICON/2016/thumb/TH64_1545_sb_cloud.png" alt="世界有数のEC企業とソフトバンクが手を組んだクラウドサービス―いま注目される「Alibaba Cloud」の可能性" title="世界有数のEC企業とソフトバンクが手を組んだクラウドサービス―いま注目される「Alibaba Cloud」の可能性" width="64" height="64" /><noscript><img src="http://image.gihyo.co.jp/assets/images/ICON/2016/thumb/TH64_1545_sb_cloud.png" alt="世界有数のEC企業とソフトバンクが手を組んだクラウドサービス―いま注目される「Alibaba Cloud」の可能性" title="世界有数のEC企業とソフトバンクが手を組んだクラウドサービス―いま注目される「Alibaba Cloud」の可能性" width="64" height="64" /></noscript></a></div>
+<p>Alibaba Cloud 日本サイトのスタートから半年，いよいよ開始される新サービス「Express Connect」の話題を中心にSBクラウドの「今」をお聞きしました。</p>
+</dd>
+<!--<dt><a href="news/report/01/ptcon2017">PASONATECH CONFERENCE 2017イベントレポート</a></dt>
+<dd class="clearfix">
+<div class="logo"><a href="http://gihyo.jp/news/report/01/ptcon2017"><img class="lazy" src="http://image.gihyo.co.jp/assets/images/reading.gif" data-original="http://image.gihyo.co.jp/assets/images/ICON/2017/thumb/TH64_1591_ptcon2017.png" alt="PASONATECH CONFERENCE 2017イベントレポート" title="PASONATECH CONFERENCE 2017イベントレポート" width="64" height="64" /><noscript><img src="http://image.gihyo.co.jp/assets/images/ICON/2017/thumb/TH64_1591_ptcon2017.png" alt="PASONATECH CONFERENCE 2017イベントレポート" title="PASONATECH CONFERENCE 2017イベントレポート" width="64" height="64" /></noscript></a></div>
+<p>「PASONATECH CONFERENCE 2017」デベロッパday，インフラエンジニアdayの模様についてお届けします。</p>
+</dd>-->
+</dl>
+
+</div>
+
+<div id="eventInfo" class="sectionBlock04 clearfix"></div>
+<div class="banner" id="bannerRT2">
+<div id='div-gpt-ad-1369887592403-5' style='width:300px; height:auto; margin:0 auto'>
+<script type='text/javascript'>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1369887592403-5'); });
+</script>
+</div>
+
+</div>
+<div id="otherSerial" class="sectionBlock01">
+<h2>その他の連載</h2>
+<dl class="thumbnailList01">
+<dt><h3 class="linkHeading02"><a href="http://gihyo.jp/design/serial/01/css-animation">CSS3アニメーションでつくるインターフェイス表現</a></h3></dt>
+<dd class="clearfix">
+<div class="logo"><a href="http://gihyo.jp/design/serial/01/css-animation"><img class="lazy" src="http://image.gihyo.co.jp/assets/images/reading.gif" data-original="http://image.gihyo.co.jp/assets/images/ICON/2016/thumb/TH32_1507_css3-animation.png" alt="CSS3アニメーションでつくるインターフェイス表現" title="CSS3アニメーションでつくるインターフェイス表現" width="32" height="32" /><noscript><img src="http://image.gihyo.co.jp/assets/images/ICON/2016/thumb/TH32_1507_css3-animation.png" alt="CSS3アニメーションでつくるインターフェイス表現" title="CSS3アニメーションでつくるインターフェイス表現" width="32" height="32" /></noscript></a></div>
+<p>CSS3によるアニメーション表現を紹介していきます。その中でも，幅広い読者に応用してもらえるだろうインターフェイスを主なお題とします。</p>
+</dd>
+<dt><h3 class="linkHeading02"><a href="http://gihyo.jp/dev/serial/01/mysql-road-construction-news">MySQL道普請便り</a></h3></dt>
+<dd class="clearfix">
+<div class="logo"><a href="http://gihyo.jp/dev/serial/01/mysql-road-construction-news"><img class="lazy" src="http://image.gihyo.co.jp/assets/images/reading.gif" data-original="http://image.gihyo.co.jp/assets/images/ICON/2015/thumb/TH32_1428_mysql.png" alt="MySQL道普請便り" title="MySQL道普請便り" width="32" height="32" /><noscript><img src="http://image.gihyo.co.jp/assets/images/ICON/2015/thumb/TH32_1428_mysql.png" alt="MySQL道普請便り" title="MySQL道普請便り" width="32" height="32" /></noscript></a></div>
+<p>本連載では，MySQLを使ったアプリ開発・運用に関するノウハウをご紹介していきます。</p>
+</dd>
+<dt><h3 class="linkHeading02"><a href="http://gihyo.jp/admin/serial/01/ubuntu-recipe">Ubuntu Weekly Recipe</a></h3></dt>
+<dd class="clearfix">
+<div class="logo"><a href="http://gihyo.jp/admin/serial/01/ubuntu-recipe"><img class="lazy" src="http://image.gihyo.co.jp/assets/images/reading.gif" data-original="http://image.gihyo.co.jp/assets/images/ICON/2008/thumb/TH32_112_ubuntuRecipe.png" alt="Ubuntu Weekly Recipe" title="Ubuntu Weekly Recipe" width="32" height="32" /><noscript><img src="http://image.gihyo.co.jp/assets/images/ICON/2008/thumb/TH32_112_ubuntuRecipe.png" alt="Ubuntu Weekly Recipe" title="Ubuntu Weekly Recipe" width="32" height="32" /></noscript></a></div>
+<p>Ubuntuの強力なデスクトップ機能を活用するための，いろいろなレシピをお届けします。</p>
+</dd>
+<dt><h3 class="linkHeading02"><a href="http://gihyo.jp/dev/serial/01/javascript-security">JavaScriptセキュリティの基礎知識</a></h3></dt>
+<dd class="clearfix">
+<div class="logo"><a href="http://gihyo.jp/dev/serial/01/javascript-security"><img class="lazy" src="http://image.gihyo.co.jp/assets/images/reading.gif" data-original="http://image.gihyo.co.jp/assets/images/ICON/2016/thumb/TH32_1490_javascript-security.png" alt="JavaScriptセキュリティの基礎知識" title="JavaScriptセキュリティの基礎知識" width="32" height="32" /><noscript><img src="http://image.gihyo.co.jp/assets/images/ICON/2016/thumb/TH32_1490_javascript-security.png" alt="JavaScriptセキュリティの基礎知識" title="JavaScriptセキュリティの基礎知識" width="32" height="32" /></noscript></a></div>
+<p>JavaScriptに関するセキュリティ上の問題はどこで発生し，どうすれば防ぐことができるのか？について解説していきます。</p>
+</dd>
+<dt><h3 class="linkHeading02"><a href="http://gihyo.jp/dev/serial/01/java-system-operation">Javaでなぜ問題が起きるのか 〜システムをきちんと運用するための基礎知識</a></h3></dt>
+<dd class="clearfix">
+<div class="logo"><a href="http://gihyo.jp/dev/serial/01/java-system-operation"><img class="lazy" src="http://image.gihyo.co.jp/assets/images/reading.gif" data-original="http://image.gihyo.co.jp/assets/images/ICON/2016/thumb/TH32_1516_java-system-operation.png" alt="Javaでなぜ問題が起きるのか 〜システムをきちんと運用するための基礎知識" title="Javaでなぜ問題が起きるのか 〜システムをきちんと運用するための基礎知識" width="32" height="32" /><noscript><img src="http://image.gihyo.co.jp/assets/images/ICON/2016/thumb/TH32_1516_java-system-operation.png" alt="Javaでなぜ問題が起きるのか 〜システムをきちんと運用するための基礎知識" title="Javaでなぜ問題が起きるのか 〜システムをきちんと運用するための基礎知識" width="32" height="32" /></noscript></a></div>
+<p>システムは「作って終わり」ではなく，運用の中でさまざまな問題が発生します。問題の発生に備えて事前にどのような対応をしておくべきなのか，問題発生時に何をしなければならないのか，ポイントを解説していきます。</p>
+</dd>
+<dt><h3 class="linkHeading02"><a href="http://gihyo.jp/dev/serial/01/funny-play">きたみりゅうじの聞かせて珍プレー</a></h3></dt>
+<dd class="clearfix">
+<div class="logo"><a href="http://gihyo.jp/dev/serial/01/funny-play"><img class="lazy" src="http://image.gihyo.co.jp/assets/images/reading.gif" data-original="http://image.gihyo.co.jp/assets/images/ICON/2007/thumb/TH32_057_funny-play.png" alt="きたみりゅうじの聞かせて珍プレー" title="きたみりゅうじの聞かせて珍プレー" width="32" height="32" /><noscript><img src="http://image.gihyo.co.jp/assets/images/ICON/2007/thumb/TH32_057_funny-play.png" alt="きたみりゅうじの聞かせて珍プレー" title="きたみりゅうじの聞かせて珍プレー" width="32" height="32" /></noscript></a></div>
+<p>ソフトウェア開発の現場で体験したトホホな失敗，思わずうなる珍プレーをきたみりゅうじ氏が四コママンガで紹介。みなさんからの投稿もお待ちしてます！
+</p>
+</dd>
+<dt><h3 class="linkHeading02"><a href="http://gihyo.jp/lifestyle/serial/01/ganshiki-soushi">玩式草子─ソフトウェアとたわむれる日々</a></h3></dt>
+<dd class="clearfix">
+<div class="logo"><a href="http://gihyo.jp/lifestyle/serial/01/ganshiki-soushi"><img class="lazy" src="http://image.gihyo.co.jp/assets/images/reading.gif" data-original="http://image.gihyo.co.jp/assets/images/ICON/2009/thumb/TH32_457_gansiki.png" alt="玩式草子─ソフトウェアとたわむれる日々" title="玩式草子─ソフトウェアとたわむれる日々" width="32" height="32" /><noscript><img src="http://image.gihyo.co.jp/assets/images/ICON/2009/thumb/TH32_457_gansiki.png" alt="玩式草子─ソフトウェアとたわむれる日々" title="玩式草子─ソフトウェアとたわむれる日々" width="32" height="32" /></noscript></a></div>
+<p>Plamo Linuxのメンテナンスの傍ら，Linuxやオープンソースソフトと日々を過ごす著者が，その魅力とつきあい方を，エッセイ風味でお届けします。</p>
+</dd>
+<dt><h3 class="linkHeading02"><a href="http://gihyo.jp/dev/serial/01/readers-forum">はまちちゃんとわかばちゃんのREADER'S FORUM―読者のページ</a></h3></dt>
+<dd class="clearfix">
+<div class="logo"><a href="http://gihyo.jp/dev/serial/01/readers-forum"><img class="lazy" src="http://image.gihyo.co.jp/assets/images/reading.gif" data-original="http://image.gihyo.co.jp/assets/images/ICON/2009/thumb/TH32_384_readersforum.png" alt="はまちちゃんとわかばちゃんのREADER'S FORUM―読者のページ" title="はまちちゃんとわかばちゃんのREADER'S FORUM―読者のページ" width="32" height="32" /><noscript><img src="http://image.gihyo.co.jp/assets/images/ICON/2009/thumb/TH32_384_readersforum.png" alt="はまちちゃんとわかばちゃんのREADER'S FORUM―読者のページ" title="はまちちゃんとわかばちゃんのREADER'S FORUM―読者のページ" width="32" height="32" /></noscript></a></div>
+<p>WEB+DB PRESS特別編集部員，さわやか笑顔のスーパーハカーはまちちゃんとネット大好き14歳わかばちゃんが，毎号，読者の皆さんから寄せられたおたよりを紹介します。皆さんの日頃の悩みにも答えちゃいますよ。</p>
+</dd>
+
+</dl>
+<p class="linkParagraph01"><a href="http://gihyo.jp/serial">連載一覧</a></p>
+</div>
+
+<div id="gihyojpSpecial"  class="sectionBlock04 clearfix">
+<h2>gihyo.jp Special</h2>
+<ul class="linkList02">
+<li><a href="ad/01/gloops">人気ソーシャルアプリを支えるグループスのインフラ環境／開発現場に迫る!!</a></li>
+<li><a href="ad/01/azure_frontier">Windows Azure ユーザーズフロンティア</a></li>
+<li><a href="ad/01/mixi_infra">大規模ソーシャルサービス mixiを支える技術</a></li>
+<li><a href="ad/01/infra">gihyo.jp インフラエンジニア情報局</a></li>
+<li><a href="ad/01/power_up">エンジニアパワーアップ講座 ～システム基盤を活用するための基礎知識～</a></li>
+<li><a href="ad/2008/test">テストエンジニア ステーション</a></li>
+<li><a href="news/interview/20090406">IVIAに賭けた日本のテスト技術への想い</a></li>
+<li><a href="http://gihyo.jp/design/serial/01/net_dynamism">疾走するネット・ダイナミズム</a></li>
+<li><a href="ad/01/hosting">レンタルサーバ導入ガイド</a></li>
+</ul>
+
+</div>
+
+
+</div>
+</aside>
+</div>
+<aside>
+<div id="sub" class="robots-nocontent" itemscope itemtype="http://schema.org/WPSideBar">
+
+<div id="contentList" class="sectionBlock02">
+<div class="section">
+<h2><a href="http://gihyo.jp/" class="gihyojp"><img src="http://image.gihyo.co.jp/assets/templates/gihyojp2007/image/gihyojp_logo.png" alt="gihyo.jp" width="84" height="16" /></a></h2>
+<ul class="level01">
+<li><a href="http://gihyo.jp/dev" title="DEVELOPER STAGE">デベロッパ</a></li><li><a href="http://gihyo.jp/admin" title="ADMINISTRATOR STAGE">アドミニストレータ</a></li><li><a href="http://gihyo.jp/design" title="WEB+DESIGN STAGE">WEB+デザイン</a></li><li><a href="http://gihyo.jp/lifestyle" title="LIFESTYLE STAGE">ライフスタイル</a></li><li><a href="http://gihyo.jp/science" title="SCIENCE STAGE">サイエンス</a></li><li><a href="http://gihyo.jp/news" title="NEWS &amp; REPORT">ニュース&amp;レポート</a></li></ul>
+</div>
+<div class="section">
+<h2><a href="http://gihyo.jp/book">書籍案内</a></h2>
+<ul class="level01"><li><a href="http://gihyo.jp/book/list" title="新刊書籍">新刊書籍</a></li><li><a href="http://gihyo.jp/book/genre" title="書籍ジャンル一覧">書籍ジャンル一覧</a></li><li><a href="http://gihyo.jp/book/series" title="書籍シリーズ一覧">書籍シリーズ一覧</a></li><li><a href="http://gihyo.jp/book/pickup" title="新刊ピックアップ">新刊ピックアップ</a></li><li><a href="http://gihyo.jp/book/longseller" title="ロングセラー">ロングセラー</a></li><li><a href="http://gihyo.jp/book/dennou" title="電脳会議">電脳会議</a></li></ul>
+</div>
+<div class="section">
+<h2><a href="http://gihyo.jp/magazine">定期刊行物一覧</a></h2>
+<ul class="level01">
+<li><a href="http://gihyo.jp/magazine/SD" title="Software Design" class="sd">Software Design</a></li><li><a href="http://gihyo.jp/magazine/wdpress" title="WEB+DB PRESS" class="wdpress">WEB+DB PRESS</a></li></ul>
+</div>
+<div class="section">
+<h2><a href="https://gihyo.jp/dp" title="Gihyo Digital Publishing" style="background-image: none;padding-left: 7px;"><img src="/dp/assets/gdp-icon.png" width="24" height="24" style="position:relative;top:7px;margin-right:2px;">電子書籍ストア</a></h2>
+<ul class="level01">
+<li><a href="https://gihyo.jp/dp/information" title="ストアからのお知らせ">お知らせ</a></li>
+<li><a href="https://gihyo.jp/dp/help" title="ストアについてのヘルプ">ご購入方法・読み方</a></li>
+</ul>
+</div>
+</div>
+
+<div id="pageLink" class="sectionBlock01">
+<ul class="imageList02">
+<li><a href="https://gihyo.jp/dev/serial/01/funny-play/form"><img src="http://image.gihyo.co.jp/assets/images/dev/serial/01/funny-play/funny-play3.png" alt="「きたみりゅうじの聞かせて珍プレー 」投稿案内" width="155" height="68" /></a></li>
+</ul>
+</div>
+
+<div id="recentTag" class="sectionBlock01">
+<h2 class="bigBullet">主なタグ</h2>
+<ul class="linkList01">
+<li><a href="http://gihyo.jp/tagList/FreeBSD" rel="tag">FreeBSD</a></li>
+<li><a href="http://gihyo.jp/tagList/Ubuntu" rel="tag">Ubuntu</a></li>
+<li><a href="http://gihyo.jp/tagList/Linux" rel="tag">Linux</a></li>
+<li><a href="http://gihyo.jp/tagList/Web%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3" rel="tag">Webデザイン</a></li>
+<li><a href="http://gihyo.jp/tagList/%E3%82%B9%E3%83%9E%E3%83%BC%E3%83%88%E3%83%95%E3%82%A9%E3%83%B3" rel="tag">スマートフォン</a></li>
+<li><a href="http://gihyo.jp/tagList/Android" rel="tag">Android</a></li>
+<li><a href="http://gihyo.jp/tagList/Web%E5%BA%83%E5%91%8A" rel="tag">Web広告</a></li>
+<li><a href="http://gihyo.jp/tagList/%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89" rel="tag">クラウド</a></li>
+
+</ul>
+<p class="linkParagraph02"><a href="http://gihyo.jp/tagList">[ タグ一覧 ]</a></p>
+</div>
+<div id="contentsRank" class="sectionBlock01">
+<h2 class="bigBullet">昨日よく読まれた記事</h2>
+<ul class="linkList01">
+<li><a href="http://gihyo.jp/admin/clip/01/linux_dt/201711/14">2017年11月14日　Linux  4.14がリリース，仮想メモリの上限が128PiBに</a></li>
+<li><a href="http://gihyo.jp/news/report/2017/11/0801">これからの業務アプリにXAMLがもたらす可能性―「ECHO Tokyo 2017」で見えた業務アプリ開発の未来</a></li>
+<li><a href="http://gihyo.jp/dev/serial/01/mysql-road-construction-news/0058">第58回　viewの使いどころを考えてみよう</a></li>
+<li><a href="http://gihyo.jp/admin/clip/01/ubuntu-topics/201711/10">2017年11月10日号　Ubuntu 17.10 日本語 Remixのリリース，18.04 LTSのリリーススケジュール，カラー絵文字サポートとNotoフォント</a></li>
+<li><a href="http://gihyo.jp/book/pickup/2017/0087">いま，注目の統合開発環境</a></li>
+<li><a href="http://gihyo.jp/book/pickup/2017/0085">iPhone Xの特別なところ</a></li>
+<li><a href="http://gihyo.jp/lifestyle/clip/01/everyday-cat/201711/13">2017年11月13日　京都のねこーず</a></li>
+<li><a href="http://gihyo.jp/news/report/2017/11/0701">メンテナーが語るQtのこれから―「Qt Contributors' Summit 2017」レポート</a></li>
+<li><a href="http://gihyo.jp/admin/serial/01/ubuntu-recipe/0496">第496回　Ubuntu MATE 17.10の見た目を変更する</a></li>
+<li><a href="http://gihyo.jp/admin/serial/01/bsd-yomoyama/0123">第123回　DragonFly BSD 5.0登場</a></li>
+
+</ul>
+</div>
+<div id="pressRelease" class="sectionBlock01">
+<h2 class="bigBullet">企業動向</h2>
+<ul class="linkList01">
+<li>11/15&nbsp;<a href="http://gihyo.jp/ad/pr/2017/NRR2017157279">広島県福山市役所の職員がデニムファッションショーを開催！
+～...</a>（福山市役所）</li>
+<li>11/15&nbsp;<a href="http://gihyo.jp/ad/pr/2017/NRR2017157209">[ASPIC IoT・クラウドアワード2017]日立の2つのサービスが運用部...</a>（株式会社日立製作所（ITサービス＆プロダクト））</li>
+<li>11/15&nbsp;<a href="http://gihyo.jp/ad/pr/2017/NRR2017156738">AI/IoT/Robot事業の支援に特化するビジネスマッチングサイト「A...</a>（株式会社ニューズ・ツー・ユー）</li>
+<li>11/15&nbsp;<a href="http://gihyo.jp/ad/pr/2017/NRR2017157072">山梨県民は実質0円で遊べちゃう！「山梨県民感謝デー」開催！【...</a>（富士観光開発株式会社）</li>
+<li>11/15&nbsp;<a href="http://gihyo.jp/ad/pr/2017/NRR2017157266">山梨県民以外の方も楽しめる「山梨県民の日フェア」開催！【山梨...</a>（富士観光開発株式会社）</li>
+
+</ul>
+<p class="linkParagraph02"><a href="http://gihyo.jp/ad/pr">[ 企業動向一覧 ]</a></p>
+</div>
+
+</div>
+</aside>
+
+</div>
+<footer role="contentinfo">
+<div id="footer" itemscope itemtype="http://schema.org/WPFooter">
+
+<div id="footerContent" class="clearfix">
+
+<div id="information">
+<h2><a href="http://gihyo.jp/mail">メールでのお知らせ</a></h2>
+<p>メールで次の案内をお送りしております。メールの配信を希望する方は，利用したい項目をチェックしてメールアドレスを入力し，［登録］ボタンをクリックしてください。</p>
+<form id="informationForm" name="informationForm" method="post" action="/mail?mailregist#mailinfo">
+<ul>
+<li><input type="checkbox" id="informationFormCheck00" name="gihyojp" value="checked" checked="checked" />
+<label for="informationFormCheck00">gihyo.jp UPDATES［ほぼ週間に1回］</label>
+</li>
+<li><input type="checkbox" id="informationFormCheck01" name="newPublished" value="checked" checked="checked" />
+<label for="informationFormCheck01">新刊メールマガジン［ほぼ週間に1回］</label>
+</li>
+<li><input type="checkbox" id="informationFormCheck02" name="dennou" value="checked" checked="checked" />
+<label for="informationFormCheck02">電脳会議の各号案内［ほぼ1ヵ月半に1回］</label></li>
+</ul>
+<p class="submit"><input name="mailaddress" id="informationFormEmail" type="email" value="e-mailアドレスを入力" autocapitalize="off" autocorrect="off" autocomplete="email" onfocus="this.value=(this.value=='e-mailアドレスを入力')? '' : this.value ;" onblur="this.value=(this.value=='')? 'e-mailアドレスを入力' : this.value ;" />
+<input class="submitButton" id="informationFormSubmit" type="submit" value="登録" /></p>
+</form>
+<p class="note">※変更する場合や停止する場合は，<a href="http://gihyo.jp/mail">登録情報変更ページ</a>をご覧ください。</p>
+<p class="note">※登録いただいたメールアドレスには，そのお知らせ以外，配信いたしません。</p>
+</div>
+
+<div id="siteSummary">
+<h2><a href="http://gihyo.jp/site">このサイトについて</a></h2>
+<ul>
+<li><a href="http://gihyo.jp/site/profile">会社案内</a></li>
+<li><a href="http://gihyo.jp/site/policy">プライバシーポリシー</a></li>
+<li><a href="http://gihyo.jp/site/social">ソーシャルメディアの運用について</a></li>
+<li><a href="http://gihyo.jp/site/purchase">刊行物の購入について</a></li>
+<li><a href="http://gihyo.jp/site/ad">広告出稿のご案内</a></li>
+<li><a href="http://gihyo.jp/site/inquiry">お問い合わせ</a></li>
+</ul>
+</div>
+
+</div>
+
+<div class="utility">
+<ul class="logoIcon">
+<li class="num01"><a href="http://gihyo.jp/magazine/SD" title="「Software Design」のトップページに移動"><img src="http://image.gihyo.co.jp/assets/templates/gihyojp2007/image/btn_icon_sd.gif" alt="Software Design" width="23" height="21" class="buttons" /></a></li>
+<li class="num02"><a href="http://gihyo.jp/magazine/wdpress" title="「WEB+DB PRESS」のトップページに移動"><img src="http://image.gihyo.co.jp/assets/templates/gihyojp2007/image/btn_icon_wd.gif" alt="WEB+DB PRESS" width="23" height="21" class="buttons" /></a></li>
+</ul>
+
+<p class="feed"><a href="http://gihyo.jp/feed" title="gihyo.jpのフィードを確認">RSS/ATOM</a></p>
+<p id="gotoHeader"><a href="/dev/serial/01/mongodb/0003?page=2#header">このページの先頭へ</a></p>
+</div>
+
+<div id="copyright">
+<div class="logo"><a href="http://www.gihyo.co.jp/"><img src="http://image.gihyo.co.jp/assets/templates/gihyojp2007/image/gihyo_logo.png" alt="技術評論社" width="97" height="18" /></a></div>
+<p>Copyright &copy; 2007-2017 All Rights Reserved by Gijutsu-Hyohron Co., Ltd.<br />ページ内容の全部あるいは一部を無断で利用することを禁止します。個別にライセンスが設定されている記事等はそのライセンスに従います。</p>
+</div>
+
+</div>
+</footer>
+
+</div>
+<script>var o = document.querySelector('#primary .readingContent01');if(window.navigator.userAgent.toLowerCase().indexOf('android') > -1 && o){o.style.textAlign = 'left'}</script>
+<noscript><link rel="stylesheet" href="http://image.gihyo.co.jp/assets/templates/gihyojp2007/css/setAll0210.css"></noscript>
+<script type="text/javascript">var l=document.createElement('link');l.setAttribute('rel','stylesheet');l.setAttribute('type','text/css');l.setAttribute('media','all');l.setAttribute('href','http://image.gihyo.co.jp/assets/templates/gihyojp2007/css/setAll0210.css');document.head.appendChild(l);l=null;</script><script type="text/javascript">
+$('#searchFormKeyword, #searchForm form').focus(function(e){this.value=(this.value=='検索したい用語を入力')?'':this.value;}).blur(function(e){this.value=(this.value=='')?'検索したい用語を入力':this.value;}).submit(function(e){this.value=(this.value=='検索したい用語を入力')?'':this.value;});
+function loadScript(src,callback){var e=document.createElement('script');if(e.readyState){e.onreadystatechange=function(){if(e.readyState=='loaded'||e.readyState=='complete'){e.onreadystatechange=null;callback();}};}else{e.onload=function(){callback();}};e.type='text/javascript';e.async=true;e.src=src;var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(e,s);}
+loadScript('http://image.gihyo.co.jp/assets/js/jquery.lazyload.min.js',function(){$("#sub img.lazy").show().lazyload();$("#secondary img.lazy").show().lazyload();$("#primary img.lazy").show().lazyload();
+});
+loadScript('http://image.gihyo.co.jp/assets/js/smoothscroll-min.js',function(){});
+</script>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-4149703-1', 'auto');
+ga('require', 'displayfeatures');
+ga('send', 'pageview');
+</script>
+<script async>window.addEventListener('load', function(e) {
+var tadclip = function ($obj) {
+  var $base = $obj.contentWindow.document.querySelector('html');
+  var $body = $base.querySelector('body');
+  if ($body.innerHTML.replace(/\s/g, '') === '') {
+    $obj.parentNode.parentNode.removeChild($obj.parentNode);
+  } else if ($body) {
+    var html = $body.innerHTML.replace(/^([\s\S]*?)(<br>\s*)?$/, "$1");
+    html = '<style>body{font-family:Arial,sans-serif;font-size:14px;line-height:18px;padding-top:10px}span{display:block;border-bottom:1px solid #E5E5E5;padding-bottom:10px}a{color:#05C;text-decoration:none;padding:4px 0}a span{border-bottom:none;padding-bottom:2px}b{padding:0 0 0 18px;background:url(/assets/templates/gihyojp2007/image/pr13x13.gif) 0px 0 no-repeat}a:hover{color:#38C;text-decoration:underline}body>br{display:none}</style>' + html;
+    $body.innerHTML = html;
+    setTimeout(function(){
+      var h = $base.offsetHeight;
+      if (h < 18) {
+        h = $body.offsetHeight;
+        if (h < 14) {
+          h = 46;
+        }
+      }
+      $obj.setAttribute('height', h);
+    }, 10);
+  }
+}
+var $ptt = document.getElementById('primaryTopTextPr');
+if ($ptt) {
+  $ptt.style.height = 'auto';
+}
+var $tl1 = document.getElementById('google_ads_iframe_/33530947/dev-textlink1_0');
+var $tl2 = document.getElementById('google_ads_iframe_/33530947/dev-textlink2_0');
+if ($tl1) {
+  if ($tl1.contentWindow.document.readyState == 'complete') {
+    tadclip($tl1);
+  } else {
+    $tl1.addEventListener('load', function(e) {
+      tadclip(e.target);
+    });
+  }
+}
+if ($tl2) {
+  if ($tl2.contentWindow.document.readyState == 'complete') {
+    tadclip($tl2);
+  } else {
+    $tl2.addEventListener('load', function(e) {
+      tadclip(e.target);
+    });
+  }
+}
+var ctadclip = function ($cobj) {
+  var $cbase = $cobj.contentWindow.document.querySelector('html');
+  var $cbody = $cbase.querySelector('body');
+  if ($cbody.innerHTML.replace(/\s/g, '') === '') {
+    $cobj.parentNode.parentNode.removeChild($cobj.parentNode);
+  } else if ($cbody) {
+    var html = $cbody.innerHTML.replace(/^([\s\S]*?)(<br>\s*)?$/, "$1");
+    html = '<style>body{font-family:Arial,sans-serif;font-size:12px;line-height:16px;padding-top:4px;text-rendering:optimizeLegibility;-webkit-font-feature-settings:"kern","liga","palt";-moz-font-feature-settings:"kern","liga","palt";font-feature-settings:"kern","liga","palt"}span{display:block}a{color:#05C;text-decoration:none;font-size:14px;line-height:19px}b{border-bottom:none;padding-bottom:2px}b{padding:6px 0 0 15px;background:url(/assets/templates/gihyojp2007/image/bg/pr_02.gif) 0px 10px no-repeat}a:hover{color:#38C;text-decoration:underline}body>br{display:none}</style>' + html;
+    $cbody.innerHTML = html;
+    setTimeout(function(){
+      var h = $cbase.offsetHeight;
+      if (h < 16) {
+        h = $cbody.offsetHeight;
+        if (h < 12) {
+          h = 54;
+        }
+      }
+      $cobj.setAttribute('height', h);
+    }, 10);
+  }
+}
+var $stt = document.getElementById('secondaryTopTextPr');
+if ($stt) {
+  $stt.style.height = 'auto';
+}
+var $ctl1 = document.getElementById('google_ads_iframe_/33530947/dev-centertextlink1_0');
+var $ctl2 = document.getElementById('google_ads_iframe_/33530947/dev-centertextlink2_0');
+if ($ctl1) {
+  if ($ctl1.contentWindow.document.readyState == 'complete') {
+    ctadclip($ctl1);
+  } else {
+    $ctl1.addEventListener('load', function(e) {
+      ctadclip(e.target);
+    });
+  }
+}
+if ($ctl2) {
+  if ($ctl2.contentWindow.document.readyState == 'complete') {
+    ctadclip($ctl2);
+  } else {
+    $ctl2.addEventListener('load', function(e) {
+      ctadclip(e.target);
+    });
+  }
+}
+})</script>
+
+<script type="text/javascript">
+(function(a){a("a img.buttons").hover(function(){this.originalSrc=a(this).attr("src");this.rolloverSrc=this.originalSrc.replace(/(_on)?(.gif|.jpg|.png)$/,"_on$2");this.rolloverImg=new Image;this.rolloverImg.src=this.rolloverSrc;a(this).attr("src",this.rolloverSrc)},function(){a(this).attr("src",this.originalSrc)})})(jQuery);
+(function(n){var m=new function(){for(var a="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".split(""),b=[],c=0;64>c;c++)b["ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".charAt(c)]=c;this.encode=function(b,c){var d=c?l.unpackUTF8(b):l.unpackChar(b),i=d.length%3,h="",f,j=0;if(i)for(f=3-i;0<f;f--)d[d.length]=0;for(f=0;f<d.length;f+=3)j=d[f]<<16|d[f+1]<<8|d[f+2],h+=a[j>>>18&63]+a[j>>>12&63]+a[j>>>6&63]+a[j&63];if(i){i=3-i;for(h=h.substr(0,h.length-i);i--;)h+="="}return h};
+this.decode=function(a,c){var d;d=a.replace(/[^A-Za-z0-9\+\/]/g,"");var i=d.length%4,h,f,j,k=[];if(i)for(f=0;f<4-i;f++)d+="A";for(h=f=0;f<d.length;f+=4,h+=3)j=b[d.charAt(f)]<<18|b[d.charAt(f+1)]<<12|b[d.charAt(f+2)]<<6|b[d.charAt(f+3)],k[h]=j>>>16,k[h+1]=j>>>8&255,k[h+2]=j&255;i&&(k.length-=[0,0,2,1][i]);return c?l.packUTF8(k):l.packChar(k)}},l=new function(){this.unpackUTF16=function(a){var b,c=[];for(b=0;b<a.length;b++)c[b]=a.charCodeAt(b);return c};this.unpackChar=function(a){var a=this.unpackUTF16(a),
+b,c,e=[];for(c=b=0;b<a.length;b++)255>=a[b]?e[c++]=a[b]:(e[c++]=a[b]>>8,e[c++]=a[b]&255);return e};this.packChar=this.packUTF16=function(a){var b,c="";for(b in a)c+=String.fromCharCode(a[b]);return c};this.unpackUTF8=function(a){return this.toUTF8(this.unpackUTF16(a))};this.packUTF8=function(a){return this.packUTF16(this.toUTF16(a))};this.toUTF8=function(a){var b=[],c=0,e,g,d;for(e=0;e<a.length;e++)if(d=a[e],127>=d)b[c++]=d;else if(2047>=d)b[c++]=192|d>>>6,b[c++]=128|d&63;else if(65535>=d)b[c++]=
+224|d>>>12,b[c++]=128|d>>>6&63,b[c++]=128|d&63;else{for(g=4;d>>6*g;)g++;for(b[c++]=65280>>>g&255|d>>>6*--g;g--;)b[c++]=128|d>>>6*g&63}return b};this.toUTF16=function(a){var b=[],c=0,e,g;for(e=0;e<a.length;e++,c++)if(127>=a[e])b[c]=a[e];else if(6==a[e]>>5)b[c]=(a[e]&31)<<6|a[++e]&63;else if(14==a[e]>>4)b[c]=(a[e]&15)<<12|(a[++e]&63)<<6|a[++e]&63;else{for(g=1;a[e]&32>>>g;)g++;for(b[c]=a[e]&31>>>g;0<=g--;)b[c]=b[c]<<6^a[++e]&63}return b};this.URLencode=function(a){return a.replace(/([^a-zA-Z0-9_\-\.])/g,
+function(a,c){if(" "==c)return"+";var e=l.toUTF8([c.charCodeAt(0)]),g="",d;for(d in e)d=e[d].toString(16),1==d.length&&(d="0"+d),g+="%"+d;return g})};this.URLdecode=function(a){a=a.replace(/\+/g," ");a=a.replace(/%([a-fA-F0-9][a-fA-F0-9])/g,function(a,c){return String.fromCharCode(parseInt(c,16))});return this.packChar(this.toUTF16(this.unpackUTF16(a)))}};n.extend({base64:{encode:m.encode,decode:m.decode,codec:"function"==typeof atob?"builtin":"alternate"}})})(jQuery);
+window.onerror=function(mes,fname,lnum){var erIgnore=['top.GLOBALS','originalCreateNotification','canvas.contentDocument','fb_xd_fragment','Script error.'];for(i=0;i<erIgnore.length;i++){if(mes.indexOf(erIgnore[i])>-1){return false;}};var mes='message:'+mes+', file:'+fname+', line:'+lnum+', href:'+location.href+', UA:'+window.navigator.userAgent;ga('send','event','Error','JSError',mes);};</script>
+
+
+
+<script type="text/javascript">
+var html = "<h2>イベント</h2>\n<ul class=\"linkList02\">\n";
+var array = {
+'http://nodefest.jp/2017/': '5p2x5LqsTm9kZeWtpuWckuelrTIwMTfvvIgxMS8yNSwgMjbvvIk=',
+'https://www.adobe.com/jp/events/creativecloud/maxjapan.html': 'QWRvYmUgTUFYIEphcGFuIDIwMTfvvIgxMS8yOO+8iQ==',
+'https://www.nic.ad.jp/iw2017/': 'SW50ZXJuZXQgV2VlayAyMDE377yIMTEvMjjjgJwxMi8x77yJ',
+'http://japanr.net/': 'SmFwYW4uUiAyMDE377yIMTIvMu+8iQ==',
+'http://www.pgconf.asia/JA/2017/': 'UEdDb25mLkFTSUEgMjAxN++8iDEyLzTjgJw277yJ',
+'http://www.oracle.co.jp/events/cloudworld/2017/index.html?source=JPMK170521P00080:ex:nc:::MS4': 'T3JhY2xlIENsb3VkV29ybGQgVG9reW8gMjAxN++8iDEyLzfvvIk=',
+'http://globalgamejam.org/': 'R2xvYmFsIEdhbWUgSmFtIDIwMTjvvIgxLzI2772eMjjvvIk=',
+'https://droidkaigi.github.io/2018/': 'RHJvaWRLYWlnaSAyMDE477yIMi84LCA577yJ',
+'http://inside-frontend.com/': 'SW5zaWRlIEZyb250ZW5kICMy77yIMi8xMe+8iQ==',
+'http://25.ruby.or.jp': 'UnVieTI177yIMi8yNO+8iQ==',
+'https://manabiya.tech/': 'TUFOQUJJWUEgLXRlcmF0YWlsIERldmVsb3BlciBEYXlzLe+8iDMvMjMsIDI077yJ',
+
+};
+for(key in array){
+  var str = $.base64.decode(array[key], 1);
+  var tmp = str.match(/^(.+?)(（.+?）)$/);
+  if(tmp){
+    html = html + '<li><a href="' + key + '" rel="external">' + tmp[1] + '</a>' + tmp[2] + "</li>\n";
+  }
+}
+html = html + "</ul>";
+document.getElementById("eventInfo").innerHTML = html;
+</script>
+<script type="text/javascript" src="//platform.twitter.com/widgets.js" async="async" defer="defer"></script>
+<script type="text/javascript" src="//connect.facebook.net/ja_JP/sdk.js#xfbml=1&amp;appId=185201618169441&amp;version=v2.8" id="facebook-jssdk" async="async" defer="defer"></script>
+<script type="text/javascript" src="//apis.google.com/js/platform.js" async="async" defer="defer"></script>
+<script type="text/javascript" src="//b.hatena.ne.jp/js/bookmark_button.js" charset="utf-8" async="async" defer="defer"></script>
+<script type="text/javascript">
+var fbc = 10;
+var twc = 10;
+function fbEventSet() {
+  if(window.FB) {
+    FB.Event.subscribe('edge.create', function(targetUrl) {
+      ga('send', 'social', 'facebook', 'like', targetUrl);
+    });
+    FB.Event.subscribe('edge.remove', function(targetUrl) {
+      ga('send', 'social', 'facebook', 'unlike', targetUrl);
+    });
+  } else {
+    if(fbc > 0){
+      setTimeout(fbEventSet, 100);
+      fbc--;
+    }
+  }
+}
+function extractParamFromUri(uri, paramName) {
+  if (!uri) {
+    return;
+  }
+  var uri = uri.split('#')[0];
+  var parts = uri.split('?');
+  if (parts.length == 1) {
+    return;
+  }
+  var query = decodeURI(parts[1]);
+
+  paramName += '=';
+  var params = query.split('&');
+  for (var i = 0, param; param = params[i]; ++i) {
+    if (param.indexOf(paramName) === 0) {
+      return unescape(param.split('=')[1]);
+    }
+  }
+}
+function twttrEventSet() {
+  if(window.twttr) {
+    twttr.events.bind('tweet', function(event) {
+      if (event) {
+        var targetUrl;
+        if (event.target && event.target.nodeName == 'IFRAME') {
+          targetUrl = extractParamFromUri(event.target.src, 'url');
+        }
+        ga('send', 'social', 'twitter', 'tweet', targetUrl);
+      }
+    });
+  } else {
+    if(twc > 0){
+      setTimeout(twttrEventSet, 100);
+      twc--;
+    }
+  }
+}
+fbEventSet();
+twttrEventSet();
+</script>
+
+</body>
+</html>
