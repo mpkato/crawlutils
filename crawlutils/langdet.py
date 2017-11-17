@@ -41,7 +41,7 @@ class Langdet(object):
 
     def _header_detect(self, header):
         if "Content-Type" in header:
-            enc = self._group(self.HEAD_CHARTAG.search(header["Content-Type"]), 1)
+            enc = self._group(self.HEAD_CHARTAG.search(header["Content-Type"][0]), 1)
             return enc
         return None
 

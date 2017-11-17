@@ -30,7 +30,6 @@ class Tabdet(object):
         for table in tables:
             if not self._is_nested(table)\
                 and self._is_valid(table):
-                print(table)
                 yield table
 
     def _is_nested(self, table):
